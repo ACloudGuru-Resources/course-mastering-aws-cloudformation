@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "required": ["Origin"],
+  "additionalProperties": false,
+  "properties": {
+    "Host": {
+      "type": "string"
+    },
+    "Origin": {
+      "type": "string"
+    },
+    "Service": {
+      "type": "string"
+    },
+    "Stage": {
+      "type": "string"
+    },
+    "Dashboard": {
+      "type": "string"
+    }
+  }
+}

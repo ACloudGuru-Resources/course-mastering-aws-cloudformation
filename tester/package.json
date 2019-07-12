@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "prettyjson": "^1.2.1"
+  }
+}

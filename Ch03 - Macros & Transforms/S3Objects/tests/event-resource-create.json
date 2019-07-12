@@ -1,0 +1,19 @@
+{
+  "RequestType": "Create",
+  "ServiceToken": "arn:aws:lambda:us-east-1:104477223281:function:macro-s3objects-ResourceFunction-1KHRIK0HPKT2M",
+  "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A104477223281%3Astack/s3objects3/2daf9010-946c-11e9-abd3-1235152b041e%7CObject1%7Cd15252b8-7d81-4212-9e56-13116bcc9e44?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190621T213346Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWTSAJFC3R7%2F20190621%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=b9660d9c338129072b60e4b788c67da9ac42f0d8050056b41da48301f77e6557",
+  "StackId": "arn:aws:cloudformation:us-east-1:104477223281:stack/s3objects3/2daf9010-946c-11e9-abd3-1235152b041e",
+  "RequestId": "d15252b8-7d81-4212-9e56-13116bcc9e44",
+  "LogicalResourceId": "Object1",
+  "ResourceType": "Custom::S3Object",
+  "ResourceProperties": {
+      "ServiceToken": "arn:aws:lambda:us-east-1:104477223281:function:macro-s3objects-ResourceFunction-1KHRIK0HPKT2M",
+      "Target": {
+          "ContentType": "text/markdown",
+          "Bucket": "s3objects3-bucket-bq97nmcgjagh",
+          "ACL": "private",
+          "Key": "README.md"
+      },
+      "Body": "# My text file\n\nThis is my text file;\nthere are many like it,\nbut this one is mine.\n"
+  }
+}
