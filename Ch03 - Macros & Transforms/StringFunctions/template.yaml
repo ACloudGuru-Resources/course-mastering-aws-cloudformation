@@ -1,53 +1,23 @@
-AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
 Resources:
-  TransformExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: [lambda.amazonaws.com]
-            Action: ["sts:AssumeRole"]
-      Path: /
-      Policies:
-        - PolicyName: root
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action: ["logs:*"]
-                Resource: "arn:aws:logs:*:*:*"
   TransformFunction:
-    Type: AWS::Lambda::Function
+    Type: AWS::Serverless::Function
     Properties:
-      Code:
-        ZipFile: |
-          exports.handler = (event, context, callback) => {
-            console.log('event', JSON.stringify(event));
-            const { requestId, fragment } = event;
-            const resp = {
-              requestId,
-              status: 'SUCCESS',
-              fragment,
-            };
-
-            callback(null, resp);
-          };
-
+      Runtime: nodejs10.x
+      CodeUri: src
       Handler: index.handler
-      Runtime: nodejs8.10
-      Role: !GetAtt TransformExecutionRole.Arn
+
   TransformFunctionPermissions:
     Type: AWS::Lambda::Permission
     Properties:
-      Action: "lambda:InvokeFunction"
+      Action: lambda:InvokeFunction
       FunctionName: !GetAtt TransformFunction.Arn
-      Principal: "cloudformation.amazonaws.com"
+      Principal: cloudformation.amazonaws.com
+
   Transform:
     Type: AWS::CloudFormation::Macro
     Properties:
-      Name: "String"
+      Name: String
       Description: Provides various string processing functions
       FunctionName: !GetAtt TransformFunction.Arn

@@ -2,45 +2,45 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: tests String macro functions
 Parameters:
   InputString:
-    Default: "This is a test input string"
+    Default: This is a test input string
     Type: String
 Resources:
   S3Bucket:
-    Type: "AWS::S3::Bucket"
+    Type: AWS::S3::Bucket
     Properties:
       Tags:
         - Key: Upper
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: Upper
         - Key: Lower
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: Lower
         - Key: Capitalize
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: Capitalize
         - Key: Title
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: Title
         - Key: Replace
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: Replace
@@ -49,7 +49,7 @@ Resources:
         - Key: Strip
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: Strip
@@ -57,7 +57,7 @@ Resources:
         - Key: ShortenLeft
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: MaxLength
@@ -66,8 +66,9 @@ Resources:
         - Key: ShortenRight
           Value:
             "Fn::Transform":
-              - Name: "String"
+              - Name: String
                 Parameters:
                   InputString: !Ref InputString
                   Operation: MaxLength
                   Length: 4
+                  StripFrom: Right

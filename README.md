@@ -1,4 +1,4 @@
-# acg-mastering-cloudformation
+****# acg-mastering-cloudformation
 
 A Cloud Guru Course: Mastering CloudFormation
 
@@ -81,30 +81,23 @@ Eg. feat-blue--projectx.domain.com
 ### Ch03_L01 – Overview
 
 1. What they are
-2. Features & Benefits
-3. Usage Examples
-4. Snippet vs Whole Template
-5. Limits
+2. Snippet vs Whole Template
+3. Features & Use Cases
+4. Limits
 
-### Ch03_L02 – Let's Make Some Snippet Macros
+### Ch03_L02 – Let's Build Some Macros!
 
 1. String Operations (Capitalize, Replace, Max Length)
-2. Count
-4. Demo
-   - Review Template
-   - Deploy
-   - Delete Stack
+2. DEMO: String Operations Macro
+3. Count
+4. DEMO: Count Macro
+5. S3Objects
+6. DEMO: S3Objects Macro
 
-### Ch03_L03 – Let's Make Some Template Macros
 
-1. Naming Convention
-2. Enforce standards
-3. No public S3 buckets
-4. S3Objects
-5. Demo
-   - Review Template
-   - Deploy
-   - Delete Stack
+7. Naming Convention
+8. Enforce standards
+9. No public S3 buckets
 
 ## Chapter 4 – Best Practises for Template/Stack Management
 
@@ -115,14 +108,15 @@ Eg. feat-blue--projectx.domain.com
 3. DEMO - Clone Course Repository
 4. AWS Serverless Application Repository
 
-### Ch04_L02 - Nested Stacks vs Cross-Stack Referencing
+### Ch04_L02 - Nesting & Referencing Templates
 
-1. Nested Stacks vs Cross-Stack Referencing
-2. Features & Benefits
-3. Limitations
-4. DEMO - Nested Stacks
-5. DEMO - Cross-Stack Referencing
-6. Recover a nested stacks hierarchy with ResourcesToSkip
+1. AWS::Include
+2. Nested Stacks vs Cross-Stack Referencing
+3. Features & Benefits
+4. Limitations
+5. DEMO - Nested Stacks
+6. DEMO - Cross-Stack Referencing
+7. Recover a nested stacks hierarchy with ResourcesToSkip
 
 ## Chapter 5 - Mastering Deployments
 
