@@ -1,5 +1,5 @@
 exports.handler = (event, context, callback) => {
-  console.log('event', JSON.stringify(event));
+  // console.log('event', JSON.stringify(event));
   let fragment,
     status = 'success';
   const {
@@ -25,11 +25,11 @@ exports.handler = (event, context, callback) => {
     if (InputString <= Length) {
       fragment = InputString;
     } else if (StripFrom) {
-      if (StripFrom === 'Right') {
+      if (StripFrom === 'Left') {
         const strLength = InputString.length;
         fragment = InputString.slice(strLength - Length, strLength + 1);
-      } else if (StripFrom === 'Left') {
-        fragment = InputString.slice(0, Length - 1);
+      } else if (StripFrom === 'Right') {
+        fragment = InputString.slice(0, Length);
       } else {
         response['status'] = 'failure';
       }
@@ -59,8 +59,8 @@ const title = str =>
 const swapcase = str =>
   str
     .split('')
-    .map(c => (c === c.toUpperCase() ? c.lower : c.upper))
-    .join();
+    .map(c => (c === c.toUpperCase() ? lower(c) : upper(c)))
+    .join('');
 const strip = (s, c) => {
   if (!c) return s.trim();
   if (c.indexOf(s[0]) > -1) return strip(s.substring(1), c);

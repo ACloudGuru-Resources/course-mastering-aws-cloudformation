@@ -20,7 +20,7 @@ A Cloud Guru Course: Mastering CloudFormation
 ### Ch01_L03 – Template Anatomy Refresher
 
 1. Parameters
-   - [Constraits](http://bit.ly/2YyuvjE)
+   - [Constraints](http://bit.ly/2YyuvjE)
    - AWS-Specific Parameter Types
 2. Mappings
 3. Conditions
@@ -34,7 +34,7 @@ A Cloud Guru Course: Mastering CloudFormation
    - Ref, GetAtt
 2. Export/Imports Outputs
 
-### Ch01_L06 – Tips & Watchouts
+### Ch01_L05 – Tips & Watchouts
 
 1. Trick-out your IDE
 2. Lambda@Edge Deletion Times
@@ -81,7 +81,7 @@ Eg. feat-blue--projectx.domain.com
 ### Ch03_L01 – Overview
 
 1. What they are
-2. Snippet vs Whole Template
+2. Snippet vs Template-Level
 3. Features & Use Cases
 4. Limits
 
@@ -89,19 +89,22 @@ Eg. feat-blue--projectx.domain.com
 
 1. String Operations (Capitalize, Replace, Max Length)
 2. DEMO: String Operations Macro
+   1. Show CFN console view processed template http://bit.ly/32GrwIn
 3. Count
 4. DEMO: Count Macro
 5. S3Objects
 6. DEMO: S3Objects Macro
-
-
-7. Naming Convention
-8. Enforce standards
-9. No public S3 buckets
+7. Unit Testing
+8. DEMO: Setting up Macro Unit Tests
+   1. validate-template
 
 ## Chapter 4 – Best Practises for Template/Stack Management
 
 ### Ch04_L01 - Template / Stack Reuse
+
+**Lecture Description:** Learn some of the best practises, workflows and tools for managing your templates
+
+https://amzn.to/32Gkl36
 
 1. Reuse & Stack Separation
 2. Git Template Repository
@@ -110,7 +113,7 @@ Eg. feat-blue--projectx.domain.com
 
 ### Ch04_L02 - Nesting & Referencing Templates
 
-1. AWS::Include
+1. AWS::Include Transform
 2. Nested Stacks vs Cross-Stack Referencing
 3. Features & Benefits
 4. Limitations
@@ -119,6 +122,8 @@ Eg. feat-blue--projectx.domain.com
 7. Recover a nested stacks hierarchy with ResourcesToSkip
 
 ## Chapter 5 - Mastering Deployments
+
+**Lecture Description:** Learn processes to create fast and reliable CI pipelines for your CloudFormation templates
 
 ### Ch05_L01 – Overview
 
@@ -150,20 +155,20 @@ Eg. feat-blue--projectx.domain.com
 1. What we’re going to Build/Learn
 2. Resources to be used
 
-### Ch06_L03 – Provisioning
+### Ch06_L02 – Provisioning
 
 1. [UserData (Procedural)](https://acloud.guru/course/aws-advanced-cloudformation/learn/d8067ef9-7840-7c93-e19e-6e1d9a52d756/e72173eb-7bbe-7db7-0d7c-eb486ba6e6f6/watch?backUrl=~2Fcourses)
 2. CloudFormationInit (Desired State)
 3. [cfn-signal](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-signal.html)
 
-### Ch06_L04 - Creation/Deletion Policies
+### Ch06_L03 - Creation/Deletion Policies
 
 1. Creation Policy Overview
 2. DEMO - Creation Policy
 3. Deletion Policy Overview
 4. DEMO - Deletion Policy
 
-### Ch06_L05 – Deploy & Review
+### Ch06_L04 – Deploy & Review
 
 1. DEMO - Deploying the Stack
 2. DEMO - Reviewing the CloudFormation Console
@@ -176,8 +181,8 @@ Eg. feat-blue--projectx.domain.com
 ### Ch07_L01 – Overview
 
 1. What we’re going to build
-2. Resources to be used
-3. What we’ll learn
+2. What we’ll learn
+3. Resources to be used
 
 ### Ch07_L02 – Code Review
 
@@ -192,6 +197,8 @@ Eg. feat-blue--projectx.domain.com
 3. Deleting S3 assets as part of stack delete
 
 ## Chapter 8 - Putting it all together (Self Service Portal)
+
+**Demo Description:** Learn how you can use the AWS SDK programmatically to handle deployments for your templates, securely exposing this two your users.
 
 ### Ch08_L01 – Overview
 
