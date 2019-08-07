@@ -64,3 +64,5 @@ typings/
 packaged.yaml
 
 examples
+
+.vscode

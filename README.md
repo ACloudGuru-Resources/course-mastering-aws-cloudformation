@@ -10,14 +10,24 @@ A Cloud Guru Course: Mastering CloudFormation
 
 ### Ch01_L02 – A Quick Refresher
 
-1. How CloudFormation works
-2. How to efficiently search and read the docs
+1. DEMO: Working with the AWS CLI
+2. How CloudFormation works
+3. How to efficiently search and read the docs
    - Properties
    - Return Values (Ref, Fn::GetAtt)
-3. DEMO: Finding Resource documentation
-4. DEMO: Working with the AWS CLI
+4. DEMO: Finding Resource documentation
 
-### Ch01_L03 – Template Anatomy Refresher
+### Ch01_L03 – Tips & Watchouts
+
+1. Trick-out your IDE
+2. Lambda@Edge Deletion Times
+3. CloudFront Propagation Times
+4. Stack Creation Manual Steps
+5. Renaming Things
+6. Stateful Resources and Updates / Deletes
+7. [Limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
+
+### Ch01_L04 – Template Anatomy Refresher
 
 1. Parameters
    - [Constraints](http://bit.ly/2YyuvjE)
@@ -28,21 +38,11 @@ A Cloud Guru Course: Mastering CloudFormation
 5. Resources
 6. Outputs
 
-### Ch01_L04 – Template Operations
+### Ch01_L05 – Template Operations
 
 1. Intrinsic Functions
    - Ref, GetAtt
 2. Export/Imports Outputs
-
-### Ch01_L05 – Tips & Watchouts
-
-1. Trick-out your IDE
-2. Lambda@Edge Deletion Times
-3. CloudFront Propagation Times
-4. Stack Creation Manual Steps
-5. Renaming Things
-6. Stateful Resources and Updates / Deletes
-7. [Limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
 
 ## Chapter 2 - Custom Resources
 
@@ -109,7 +109,8 @@ https://amzn.to/32Gkl36
 1. Reuse & Stack Separation
 2. Git Template Repository
 3. DEMO - Clone Course Repository
-4. AWS Serverless Application Repository
+4. Stack Policies and Temporary Policies
+5. AWS Serverless Application Repository
 
 ### Ch04_L02 - Nesting & Referencing Templates
 
@@ -280,5 +281,12 @@ https://amzn.to/32Gkl36
 
 
 
-DependsOn
-**Tags**
+
+## Missing Topics
+- CFN Designer
+- DependsOn
+- Tags
+- Replacement update behavior (http://bit.ly/31liOh8)
+- UpdateReplace Policies
+- DeletionPolicy
+- Stack Policies

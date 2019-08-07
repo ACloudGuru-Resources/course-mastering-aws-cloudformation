@@ -103,8 +103,8 @@ Resources:
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
-                  - logs:PutLogEvents
                   - logs:DescribeLogStreams
+                  - logs:PutLogEvents
                 Resource: arn:aws:logs:*:*:*
               - Effect: Allow
                 Action:

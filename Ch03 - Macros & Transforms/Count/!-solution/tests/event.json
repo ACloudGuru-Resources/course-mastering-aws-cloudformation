@@ -1,0 +1,28 @@
+{
+  "region": "us-east-1",
+  "accountId": "104477223281",
+  "fragment": {
+      "Resources": {
+          "Thing1": {
+            "Type": "AWS::S3::Bucket"
+          },
+          "Thing2": {
+            "Type": "AWS::S3::Bucket"
+          },
+          "Bucket": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                  "Tags": [
+                    { "Key": "TestKey", "Value": "my bucket %d" },
+                    { "Key": "TestKey", "Value": "%d value" }
+                  ]
+              },
+              "Count": 3
+          }
+      }
+  },
+  "transformId": "104477223281::Count",
+  "params": {},
+  "requestId": "344cb126-a06c-493e-8b5e-b9ff98284472",
+  "templateParameterValues": {}
+}

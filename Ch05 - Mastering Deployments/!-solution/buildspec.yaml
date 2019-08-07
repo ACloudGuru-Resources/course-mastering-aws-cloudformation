@@ -1,0 +1,11 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - npm install
+  build:
+    commands:
+      - ./node_modules/.bin/serverless deploy --stage cicd | tee deploy.out
+  post_build:
+    commands:
+      - ./test.sh
