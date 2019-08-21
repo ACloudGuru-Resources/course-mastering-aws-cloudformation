@@ -1,7 +1,5 @@
 Resources:
-  S3Bucket:
+  WebsiteBucket:
     Type: AWS::S3::Bucket
-
-Outputs:
-  S3BucketName:
-    Value: !Ref S3Bucket
+    Properties:
+      BucketName: mysupercoolbucketofglory

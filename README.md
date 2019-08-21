@@ -290,3 +290,11 @@ https://amzn.to/32Gkl36
 - UpdateReplace Policies
 - DeletionPolicy
 - Stack Policies
+
+
+## Edits
+- Template Operations
+  - Conditionals !And is not used in example
+  - all code examples need to wipe in
+  - !Split UsualSuspectsParam instead of UsualSuspects:
+  
