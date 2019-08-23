@@ -294,41 +294,53 @@ Resources:
       GroupDescription: Enable incoming requests + SSH access
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 38.99.136.178/32
+          FromPort: "80"
+          ToPort: "80"
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 38.99.136.178/32
+          FromPort: "443"
+          ToPort: "443"
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 35.182.69.133/32
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 35.182.69.133/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 38.99.136.178/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 38.99.136.178/32
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp: 0.0.0.0/0
+        # - IpProtocol: tcp
+        #   FromPort: 80
+        #   ToPort: 80
+        #   CidrIp: 38.99.136.178/32
+        # - IpProtocol: tcp
+        #   FromPort: 443
+        #   ToPort: 443
+        #   CidrIp: 38.99.136.178/32
+        # - IpProtocol: tcp
+        #   FromPort: 80
+        #   ToPort: 80
+        #   CidrIp: 72.15.59.210/32
+        # - IpProtocol: tcp
+        #   FromPort: 443
+        #   ToPort: 443
+        #   CidrIp: 72.15.59.210/32
+        # - IpProtocol: tcp
+        #   FromPort: 80
+        #   ToPort: 80
+        #   CidrIp: 35.182.69.133/32
+        # - IpProtocol: tcp
+        #   FromPort: 443
+        #   ToPort: 443
+        #   CidrIp: 35.182.69.133/32
+        # - IpProtocol: tcp
+        #   FromPort: 22
+        #   ToPort: 22
+        #   CidrIp: 38.99.136.178/32
+        # - IpProtocol: tcp
+        #   FromPort: 22
+        #   ToPort: 22
+        #   CidrIp: 72.15.59.210/32
+        # - IpProtocol: tcp
+        #   FromPort: 22
+        #   ToPort: 22
+        #   CidrIp: 38.99.136.178/32
       VpcId:
         Ref: GhostVpc
   GhostDbEc2SecurityGroup:
@@ -394,11 +406,17 @@ Resources:
         install_and_enable_cfn_hup:
           files:
             /etc/cfn/cfn-hup.conf:
-              content: !Sub |
-                [main]
-                stack=${AWS::StackId}
-                region=${AWS::Region}
-                interval=5
+              content:
+                "Fn::Join":
+                  - ""
+                  - - "[main]\n"
+                    - "stack="
+                    - Ref: "AWS::StackId"
+                    - "\n"
+                    - "region="
+                    - Ref: "AWS::Region"
+                    - "\n"
+                    - "interval=5\n"
               mode: "000400"
               owner: root
               group: root
@@ -419,17 +437,17 @@ Resources:
                     - "\n"
                     - "runas=root\n"
             /lib/systemd/system/cfn-hup.service:
-              content: |
-                [Unit]
-                Description=cfn-hup daemon
-
-                [Service]
-                Type=simple
-                ExecStart=/usr/local/bin/cfn-hup
-                Restart=always
-
-                [Install]
-                WantedBy=multi-user.target
+              content:
+                "Fn::Join":
+                  - ""
+                  - - "[Unit]\n"
+                    - "Description=cfn-hup daemon\n\n"
+                    - "[Service]\n"
+                    - "Type=simple\n"
+                    - "ExecStart=/usr/local/bin/cfn-hup\n"
+                    - "Restart=always\n\n"
+                    - "[Install]\n"
+                    - "WantedBy=multi-user.target"
           commands:
             01enable_cfn_hup:
               command: systemctl enable cfn-hup.service
