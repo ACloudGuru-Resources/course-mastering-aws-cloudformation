@@ -298,3 +298,6 @@ https://amzn.to/32Gkl36
   - all code examples need to wipe in
   - !Split UsualSuspectsParam instead of UsualSuspects:
   
+- Setup of main deploy bucket
+- setup yarn shortcut to install all node modules
+

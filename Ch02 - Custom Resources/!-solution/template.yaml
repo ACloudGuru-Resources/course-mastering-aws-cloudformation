@@ -22,7 +22,7 @@ Resources:
       Path: /
       RoleName: stack-proxy-proxyentry-role
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -32,7 +32,7 @@ Resources:
       Policies:
         - PolicyName: stack-proxy-proxyentry-role
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -44,8 +44,8 @@ Resources:
                 Action:
                   - dynamodb:*
                 Resource:
-                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/stack-proxy-*"
-                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/stack-proxy-*/index/*"
+                  - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/stack-proxy-*
+                  - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/stack-proxy-*/index/*
   OriginMapTBL:
     Type: AWS::DynamoDB::Table
     Properties:
