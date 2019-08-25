@@ -181,8 +181,10 @@ Resources:
         - Key: Application
           Value:
             Ref: "AWS::StackName"
+    DependsOn: GhostVpc
   PubSubnetDefaultRoute:
     Type: "AWS::EC2::Route"
+    DependsOn: InternetGateway
     Properties:
       RouteTableId:
         Ref: PubSubnetRouteTable
@@ -228,6 +230,7 @@ Resources:
         - Key: Application
           Value:
             Ref: "AWS::StackName"
+    DependsOn: GhostVpc
   DbSubnet2:
     Type: "AWS::EC2::Subnet"
     Properties:
@@ -247,6 +250,7 @@ Resources:
         - Key: Application
           Value:
             Ref: "AWS::StackName"
+    DependsOn: GhostVpc
   InternetGateway:
     Type: "AWS::EC2::InternetGateway"
   InternetGatewayVPCAttachment:
@@ -275,6 +279,7 @@ Resources:
       PolicyName: SESSendPolicy
       Users:
         - Ref: GhostSesUser
+    DependsOn: GhostSesUser
   GhostSesUser:
     Type: "AWS::IAM::User"
     Properties:
@@ -294,41 +299,18 @@ Resources:
       GroupDescription: Enable incoming requests + SSH access
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 38.99.136.178/32
+          FromPort: "80"
+          ToPort: "80"
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 38.99.136.178/32
+          FromPort: "443"
+          ToPort: "443"
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 35.182.69.133/32
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 35.182.69.133/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 38.99.136.178/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 38.99.136.178/32
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp:
+            Ref: SSHLocation
       VpcId:
         Ref: GhostVpc
   GhostDbEc2SecurityGroup:
@@ -337,21 +319,22 @@ Resources:
       GroupDescription: Open database for access
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
+          FromPort: "3306"
+          ToPort: "3306"
           SourceSecurityGroupId:
             Ref: GhostServerSecurityGroup
       VpcId:
         Ref: GhostVpc
   GhostDbInstance:
     Type: "AWS::RDS::DBInstance"
+    DependsOn: GhostDbEc2SecurityGroup
     Properties:
       DBName:
         Ref: DbName
       Engine: MySQL
       EngineVersion: "5.7"
-      BackupRetentionPeriod: 7
-      MultiAZ: false
+      BackupRetentionPeriod: "7"
+      MultiAZ: "false"
       MasterUsername: root
       MasterUserPassword:
         Ref: DbRootPassword
@@ -414,7 +397,7 @@ Resources:
                   - ""
                   - - "[cfn-auto-reloader-hook]\n"
                     - "triggers=post.update\n"
-                    - "path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init"
+                    - "path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init\n"
                     - "action=/usr/local/bin/cfn-init -v "
                     - " --stack "
                     - Ref: "AWS::StackName"
@@ -448,17 +431,17 @@ Resources:
                 "Fn::Join":
                   - ""
                   - - "CREATE DATABASE IF NOT EXISTS "
-                    - Ref: DbName
+                    - Ref: "DbName"
                     - ";\n"
                     - "CREATE USER IF NOT EXISTS '"
-                    - Ref: DbUser
+                    - Ref: "DbUser"
                     - "'@'%' IDENTIFIED BY '"
-                    - Ref: DbPassword
+                    - Ref: "DbPassword"
                     - "';\n"
                     - "GRANT ALL ON "
-                    - Ref: DbName
+                    - Ref: "DbName"
                     - ".* TO '"
-                    - Ref: DbUser
+                    - Ref: "DbUser"
                     - "'@'%';\n"
                     - "FLUSH PRIVILEGES;\n"
               mode: "000644"
@@ -472,12 +455,12 @@ Resources:
                     - "apt-get upgrade nginx mysql-client-5.7 -y\n"
                     - "mysql -h "
                     - "Fn::GetAtt":
-                        - GhostDbInstance
-                        - Endpoint.Address
+                        - "GhostDbInstance"
+                        - "Endpoint.Address"
                     - " -u root -p"
-                    - Ref: DbRootPassword
+                    - Ref: "DbRootPassword"
                     - " < /tmp/setup.mysql > /dev/null 2>&1\n"
-                    - "rm /tmp/setup.mysql\n"
+                    # - "rm /tmp/setup.mysql\n"
               mode: "000700"
               owner: root
               group: root
@@ -489,8 +472,8 @@ Resources:
                     - "export GHOSTDIR=/var/www/ghost\n"
                     - "export MAIL_PWD=`(echo -en '\\x02'; echo -n 'SendRawEmail' | openssl dgst -sha256 -hmac "
                     - "Fn::GetAtt":
-                        - GhostSesUserAccessKey
-                        - SecretAccessKey
+                        - "GhostSesUserAccessKey"
+                        - "SecretAccessKey"
                     - " -binary) | openssl enc -base64`\n"
                     - "(id ghostuser > /dev/null 2>&1 && echo ghostuser exists...) "
                     - "  || (useradd --user-group --create-home ghostuser && echo creating ghostuser...)\n"
@@ -517,108 +500,108 @@ Resources:
                     - 'su - ghostuser -c "cd /var/www/ghost && ghost install '
                     - "--verbose "
                     - "--url https://"
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - " "
                     - "--ip 0.0.0.0 "
                     - "--dbhost "
                     - "Fn::GetAtt":
-                        - GhostDbInstance
-                        - Endpoint.Address
+                        - "GhostDbInstance"
+                        - "Endpoint.Address"
                     - " "
                     - "--dbuser "
-                    - Ref: DbUser
+                    - Ref: "DbUser"
                     - " "
                     - "--dbpass "
-                    - Ref: DbPassword
+                    - Ref: "DbPassword"
                     - " "
                     - "--dbname "
-                    - Ref: DbName
+                    - Ref: "DbName"
                     - " "
                     - "--mail SMTP "
                     - "--mailuser "
-                    - Ref: GhostSesUserAccessKey
+                    - Ref: "GhostSesUserAccessKey"
                     - " "
                     - "--mailpass $MAIL_PWD "
                     - "--mailhost "
-                    - Ref: SesSmtpEndpoint
+                    - Ref: "SesSmtpEndpoint"
                     - " "
                     - "--mailport 587 "
                     - "--sslemail "
-                    - Ref: SslEmail
+                    - Ref: "SslEmail"
                     - " "
                     - "--process systemd "
                     - "--no-prompt --auto\"\n"
                     - 'su - ghostuser -c "cd $GHOSTDIR && ghost config mail.from '
-                    - Ref: FromAddress
+                    - Ref: "FromAddress"
                     - "\"\n"
                     - "if [ -f $GHOSTDIR/system/files/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - ".conf ]; then\n"
                     - "echo SSL for www configured...\n"
                     - "else\n"
                     - "echo generating cert and configuring nginx for www...\n"
                     - 'su - ghostuser -c "cd $GHOSTDIR && ghost config url '
                     - "Fn::Join":
-                        - .
+                        - "."
                         - - "https://www"
-                          - Ref: DomainName
+                          - Ref: "DomainName"
                     - "\"\n"
                     - 'su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx ssl --sslemail '
-                    - Ref: SslEmail
+                    - Ref: "SslEmail"
                     - "\"\n"
                     - 'su - ghostuser -c "cd $GHOSTDIR && ghost config url '
                     - "Fn::Join":
                         - ""
                         - - "https://"
-                          - Ref: DomainName
+                          - Ref: "DomainName"
                     - "\"\n"
                     - "awk '!/proxy_set_header/' $GHOSTDIR/system/files/"
                     - "Fn::Join":
-                        - .
-                        - - www
-                          - Ref: DomainName
-                          - conf
+                        - "."
+                        - - "www"
+                          - Ref: "DomainName"
+                          - "conf"
                     - " > "
                     - "Fn::Join":
-                        - .
-                        - - /tmp/www
-                          - Ref: DomainName
-                          - conf
+                        - "."
+                        - - "/tmp/www"
+                          - Ref: "DomainName"
+                          - "conf"
                     - "\n"
                     - "awk '!/proxy_set_header/' $GHOSTDIR/system/files/"
                     - "www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "-ssl.conf"
                     - " > "
                     - "/tmp/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "-ssl.conf"
                     - "\n"
                     - "sed -i 's/proxy_pass.*/return 301 https:\\/\\/"
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "\\$request_uri;/' /tmp/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - ".conf\n"
                     - "sed -i 's/proxy_pass.*/return 301 https:\\/\\/"
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "\\$request_uri;/' /tmp/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "-ssl.conf\n"
                     - "mv /tmp/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - ".conf $GHOSTDIR/system/files/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - ".conf\n"
                     - "mv /tmp/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "-ssl.conf $GHOSTDIR/system/files/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - "-ssl.conf\n"
                     - "chown ghostuser:ghostuser $GHOSTDIR/system/files/www."
-                    - Ref: DomainName
+                    - Ref: "DomainName"
                     - ".conf\n"
                     - "chown ghostuser:ghostuser $GHOSTDIR/system/files/www."
-                    - Ref: DomainName
+                    - "Ref": "DomainName"
                     - "-ssl.conf\n"
                     - "nginx -t\n"
                     - "nginx -s reload\n"
@@ -682,8 +665,10 @@ Resources:
               - "         --region "
               - Ref: "AWS::Region"
               - "\n"
+
   GhostServerRootRecordSet:
     Type: "AWS::Route53::RecordSet"
+    DependsOn: GhostServerEip
     Properties:
       HostedZoneId:
         Ref: HostedZoneId

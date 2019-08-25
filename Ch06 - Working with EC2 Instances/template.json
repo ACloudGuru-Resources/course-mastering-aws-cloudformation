@@ -2,1149 +2,1149 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "AWS CloudFormation Sample Template Ghost_Single_Instance: ",
   "Parameters": {
-    "KeyName": {
-      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
-      "Type": "AWS::EC2::KeyPair::KeyName",
-      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
-    },
-    "InstanceType": {
-      "Description": "EC2 instance type",
-      "Type": "String",
-      "Default": "t2.micro",
-      "AllowedValues": [
-        "t2.micro",
-        "t2.small",
-        "t2.medium",
-        "t2.large"
-      ],
-      "ConstraintDescription": "t2.micro is current free tier instance type, choose a larger one to provide more resources for ghost to consume"
-    },
-    "DbInstanceClass": {
-      "Default": "db.t2.micro",
-      "Description": "RDS db instance class, db.t2.micro is current free tier",
-      "Type": "String"
-    },
-    "DbAllocatedStorage": {
-      "Default": "20",
-      "Description": "RDS Allocated storage in GB. 20GB is free tier limit",
-      "Type": "String"
-    },
-    "DbName": {
-      "Default": "ghost",
-      "Description": "The ghost database name",
-      "Type": "String",
-      "MinLength": "1",
-      "MaxLength": "64",
-      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
-      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
-    },
-    "DbUser": {
-      "NoEcho": "true",
-      "Description": "The ghost database admin account username",
-      "Type": "String",
-      "MinLength": "1",
-      "MaxLength": "16",
-      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
-      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
-    },
-    "DbPassword": {
-      "NoEcho": "true",
-      "Description": "The ghost database admin account password",
-      "Type": "String",
-      "MinLength": "8",
-      "MaxLength": "41",
-      "AllowedPattern": "[a-zA-Z0-9]*",
-      "ConstraintDescription": "must contain only alphanumeric characters."
-    },
-    "DbRootPassword": {
-      "NoEcho": "true",
-      "Description": "MySQL root password",
-      "Type": "String",
-      "MinLength": "8",
-      "MaxLength": "41",
-      "AllowedPattern": "[a-zA-Z0-9]*",
-      "ConstraintDescription": "must contain only alphanumeric characters."
-    },
-    "SSHLocation": {
-      "Default": "0.0.0.0/0",
-      "NoEcho": "true",
-      "Description": "CIDR Address from which one can SSH to the ghost instance",
-      "Type": "String",
-      "MinLength": "9",
-      "MaxLength": "18",
-      "ConstraintDescription": "must be a valid CIDR specification."
-    },
-    "FromAddress": {
-      "NoEcho": "true",
-      "Description": "the email address from which mail will be sent by the ghost server",
-      "Type": "String",
-      "AllowedPattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
-      "ConstraintDescription": "must be a valid email address"
-    },
-    "SesSmtpEndpoint": {
-      "Description": "AWS SES SMPT Endpoint",
-      "Type": "String",
-      "Default": "email-smtp.us-east-1.amazonaws.com",
-      "AllowedValues": [
-        "email-smtp.us-east-1.amazonaws.com",
-        "email-smtp.us-west-2.amazonaws.com",
-        "email-smtp.eu-west-1.amazonaws.com"
-      ],
-      "ConstraintDescription": "must be a valid SES SMTP endpoint"
-    },
-    "DomainName": {
-      "Description": "Fully Qualified Domain name to configure ghost to use, e.g. www.example.com",
-      "Type": "String"
-    },
-    "HostedZoneId": {
-      "Description": "HostedZoneId in which Route53 Recordset will be created.",
-      "Type": "String"
-    },
-    "SslEmail": {
-      "Description": "e-mail used in LetsEncrypt cert creation",
-      "Type": "String"
-    }
+  "KeyName": {
+  "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+  "Type": "AWS::EC2::KeyPair::KeyName",
+  "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+  },
+  "InstanceType": {
+  "Description": "EC2 instance type",
+  "Type": "String",
+  "Default": "t2.micro",
+  "AllowedValues": [
+  "t2.micro",
+  "t2.small",
+  "t2.medium",
+  "t2.large"
+  ],
+  "ConstraintDescription": "t2.micro is current free tier instance type, choose a larger one to provide more resources for ghost to consume"
+  },
+  "DbInstanceClass": {
+  "Default": "db.t2.micro",
+  "Description": "RDS db instance class, db.t2.micro is current free tier",
+  "Type": "String"
+  },
+  "DbAllocatedStorage": {
+  "Default": "20",
+  "Description": "RDS Allocated storage in GB. 20GB is free tier limit",
+  "Type": "String"
+  },
+  "DbName": {
+  "Default": "ghost",
+  "Description": "The ghost database name",
+  "Type": "String",
+  "MinLength": "1",
+  "MaxLength": "64",
+  "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+  "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
+  },
+  "DbUser": {
+  "NoEcho": "true",
+  "Description": "The ghost database admin account username",
+  "Type": "String",
+  "MinLength": "1",
+  "MaxLength": "16",
+  "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+  "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
+  },
+  "DbPassword": {
+  "NoEcho": "true",
+  "Description": "The ghost database admin account password",
+  "Type": "String",
+  "MinLength": "8",
+  "MaxLength": "41",
+  "AllowedPattern": "[a-zA-Z0-9]*",
+  "ConstraintDescription": "must contain only alphanumeric characters."
+  },
+  "DbRootPassword": {
+  "NoEcho": "true",
+  "Description": "MySQL root password",
+  "Type": "String",
+  "MinLength": "8",
+  "MaxLength": "41",
+  "AllowedPattern": "[a-zA-Z0-9]*",
+  "ConstraintDescription": "must contain only alphanumeric characters."
+  },
+  "SSHLocation": {
+  "Default": "0.0.0.0/0",
+  "NoEcho": "true",
+  "Description": "CIDR Address from which one can SSH to the ghost instance",
+  "Type": "String",
+  "MinLength": "9",
+  "MaxLength": "18",
+  "ConstraintDescription": "must be a valid CIDR specification."
+  },
+  "FromAddress": {
+  "NoEcho": "true",
+  "Description": "the email address from which mail will be sent by the ghost server",
+  "Type": "String",
+  "AllowedPattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+  "ConstraintDescription": "must be a valid email address"
+  },
+  "SesSmtpEndpoint": {
+  "Description": "AWS SES SMPT Endpoint",
+  "Type": "String",
+  "Default": "email-smtp.us-east-1.amazonaws.com",
+  "AllowedValues": [
+  "email-smtp.us-east-1.amazonaws.com",
+  "email-smtp.us-west-2.amazonaws.com",
+  "email-smtp.eu-west-1.amazonaws.com"
+  ],
+  "ConstraintDescription": "must be a valid SES SMTP endpoint"
+  },
+  "DomainName": {
+  "Description": "Fully Qualified Domain name to configure ghost to use, e.g. www.example.com",
+  "Type": "String"
+  },
+  "HostedZoneId": {
+  "Description": "HostedZoneId in which Route53 Recordset will be created.",
+  "Type": "String"
+  },
+  "SslEmail": {
+  "Description": "e-mail used in LetsEncrypt cert creation",
+  "Type": "String"
+  }
   },
   "Mappings": {
-    "AWSInstanceType2Arch": {
-      "t2.micro": {
-        "Arch": "HVM64"
-      },
-      "t2.small": {
-        "Arch": "HVM64"
-      },
-      "t2.medium": {
-        "Arch": "HVM64"
-      },
-      "t2.large": {
-        "Arch": "HVM64"
-      }
-    },
-    "AWSRegionArch2AMI": {
-      "ap-northeast-1": {
-        "HVM64": "ami-0f63c02167ca94956"
-      },
-      "ap-northeast-2": {
-        "HVM64": "ami-069c1055fab7b32e5"
-      },
-      "ap-northeast-3": {
-        "HVM64": "ami-084e4de48dc0834e8"
-      },
-      "ap-south-1": {
-        "HVM64": "ami-092e1fd695ed0e93c"
-      },
-      "ap-southeast-1": {
-        "HVM64": "ami-0393b4f16793f7f12"
-      },
-      "ap-southeast-2": {
-        "HVM64": "ami-0deda1f8bbb52aac7"
-      },
-      "ca-central-1": {
-        "HVM64": "ami-008c2d1a8ad81bc10"
-      },
-      "eu-central-1": {
-        "HVM64": "ami-0cf8fa6a01bb07363"
-      },
-      "eu-north-1": {
-        "HVM64": "ami-73d65f0d"
-      },
-      "eu-west-1": {
-        "HVM64": "ami-0286372f78291e588"
-      },
-      "eu-west-2": {
-        "HVM64": "ami-04b69fa254407c8ee"
-      },
-      "eu-west-3": {
-        "HVM64": "ami-0e82c2554d8492095"
-      },
-      "sa-east-1": {
-        "HVM64": "ami-05a01ab93a59b45de"
-      },
-      "us-east-1": {
-        "HVM64": "ami-012fd5eb46f56731f"
-      },
-      "us-east-2": {
-        "HVM64": "ami-06e2e609dbf389341"
-      },
-      "us-west-1": {
-        "HVM64": "ami-0bf3d63a666665438"
-      },
-      "us-west-2": {
-        "HVM64": "ami-082fd9a18128c9e8c"
-      },
-      "cn-north-1": {
-        "HVM64": "ami-05596fb52c3802012"
-      },
-      "cn-northwest-1": {
-        "HVM64": "ami-03f7db8b059795736"
-      }
-    },
-    "CidrConfig": {
-      "GhostVpc": {
-        "Cidr": "10.2.0.0/16"
-      },
-      "PubSubnet": {
-        "Cidr": "10.2.3.0/24"
-      },
-      "DbSubnet1": {
-        "Cidr": "10.2.4.0/24"
-      },
-      "DbSubnet2": {
-        "Cidr": "10.2.5.0/24"
-      }
-    },
-    "SubnetAvailabilityZone": {
-      "PubSubnet": {
-        "AvailabilityZone": "us-east-1a"
-      },
-      "DbSubnet1": {
-        "AvailabilityZone": "us-east-1a"
-      },
-      "DbSubnet2": {
-        "AvailabilityZone": "us-east-1b"
-      }
-    }
+  "AWSInstanceType2Arch": {
+  "t2.micro": {
+  "Arch": "HVM64"
+  },
+  "t2.small": {
+  "Arch": "HVM64"
+  },
+  "t2.medium": {
+  "Arch": "HVM64"
+  },
+  "t2.large": {
+  "Arch": "HVM64"
+  }
+  },
+  "AWSRegionArch2AMI": {
+  "ap-northeast-1": {
+  "HVM64": "ami-0f63c02167ca94956"
+  },
+  "ap-northeast-2": {
+  "HVM64": "ami-069c1055fab7b32e5"
+  },
+  "ap-northeast-3": {
+  "HVM64": "ami-084e4de48dc0834e8"
+  },
+  "ap-south-1": {
+  "HVM64": "ami-092e1fd695ed0e93c"
+  },
+  "ap-southeast-1": {
+  "HVM64": "ami-0393b4f16793f7f12"
+  },
+  "ap-southeast-2": {
+  "HVM64": "ami-0deda1f8bbb52aac7"
+  },
+  "ca-central-1": {
+  "HVM64": "ami-008c2d1a8ad81bc10"
+  },
+  "eu-central-1": {
+  "HVM64": "ami-0cf8fa6a01bb07363"
+  },
+  "eu-north-1": {
+  "HVM64": "ami-73d65f0d"
+  },
+  "eu-west-1": {
+  "HVM64": "ami-0286372f78291e588"
+  },
+  "eu-west-2": {
+  "HVM64": "ami-04b69fa254407c8ee"
+  },
+  "eu-west-3": {
+  "HVM64": "ami-0e82c2554d8492095"
+  },
+  "sa-east-1": {
+  "HVM64": "ami-05a01ab93a59b45de"
+  },
+  "us-east-1": {
+  "HVM64": "ami-012fd5eb46f56731f"
+  },
+  "us-east-2": {
+  "HVM64": "ami-06e2e609dbf389341"
+  },
+  "us-west-1": {
+  "HVM64": "ami-0bf3d63a666665438"
+  },
+  "us-west-2": {
+  "HVM64": "ami-082fd9a18128c9e8c"
+  },
+  "cn-north-1": {
+  "HVM64": "ami-05596fb52c3802012"
+  },
+  "cn-northwest-1": {
+  "HVM64": "ami-03f7db8b059795736"
+  }
+  },
+  "CidrConfig": {
+  "GhostVpc": {
+  "Cidr": "10.2.0.0/16"
+  },
+  "PubSubnet": {
+  "Cidr": "10.2.3.0/24"
+  },
+  "DbSubnet1": {
+  "Cidr": "10.2.4.0/24"
+  },
+  "DbSubnet2": {
+  "Cidr": "10.2.5.0/24"
+  }
+  },
+  "SubnetAvailabilityZone": {
+  "PubSubnet": {
+  "AvailabilityZone": "us-east-1a"
+  },
+  "DbSubnet1": {
+  "AvailabilityZone": "us-east-1a"
+  },
+  "DbSubnet2": {
+  "AvailabilityZone": "us-east-1b"
+  }
+  }
   },
   "Resources": {
-    "GhostVpc": {
-      "Type": "AWS::EC2::VPC",
-      "Properties": {
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "CidrConfig",
-            "GhostVpc",
-            "Cidr"
-          ]
-        },
-        "InstanceTenancy": "default"
-      }
-    },
-    "PubSubnet": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "GhostVpc"
-        },
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "CidrConfig",
-            "PubSubnet",
-            "Cidr"
-          ]
-        },
-        "AvailabilityZone": {
-          "Fn::FindInMap": [
-            "SubnetAvailabilityZone",
-            "PubSubnet",
-            "AvailabilityZone"
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Application",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          }
-        ]
-      },
-      "DependsOn": "GhostVpc"
-    },
-    "PubSubnetDefaultRoute": {
-      "Type": "AWS::EC2::Route",
-      "DependsOn": "InternetGateway",
-      "Properties": {
-        "RouteTableId": {
-          "Ref": "PubSubnetRouteTable"
-        },
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "GatewayId": {
-          "Ref": "InternetGateway"
-        }
-      }
-    },
-    "PubSubnetRouteTable": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "GhostVpc"
-        }
-      }
-    },
-    "PubSubnetRouteTableAssociation": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PubSubnet"
-        },
-        "RouteTableId": {
-          "Ref": "PubSubnetRouteTable"
-        }
-      }
-    },
-    "GhostDbSubnetGroup": {
-      "Type": "AWS::RDS::DBSubnetGroup",
-      "Properties": {
-        "DBSubnetGroupDescription": "database subnet group",
-        "DBSubnetGroupName": "GhostDbSubnetGroup",
-        "SubnetIds": [
-          {
-            "Ref": "DbSubnet1"
-          },
-          {
-            "Ref": "DbSubnet2"
-          }
-        ]
-      }
-    },
-    "DbSubnet1": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "GhostVpc"
-        },
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "CidrConfig",
-            "DbSubnet1",
-            "Cidr"
-          ]
-        },
-        "AvailabilityZone": {
-          "Fn::FindInMap": [
-            "SubnetAvailabilityZone",
-            "DbSubnet1",
-            "AvailabilityZone"
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Application",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          }
-        ]
-      },
-      "DependsOn": "GhostVpc"
-    },
-    "DbSubnet2": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "GhostVpc"
-        },
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "CidrConfig",
-            "DbSubnet2",
-            "Cidr"
-          ]
-        },
-        "AvailabilityZone": {
-          "Fn::FindInMap": [
-            "SubnetAvailabilityZone",
-            "DbSubnet2",
-            "AvailabilityZone"
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Application",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          }
-        ]
-      },
-      "DependsOn": "GhostVpc"
-    },
-    "InternetGateway": {
-      "Type": "AWS::EC2::InternetGateway"
-    },
-    "InternetGatewayVPCAttachment": {
-      "Type": "AWS::EC2::VPCGatewayAttachment",
-      "Properties": {
-        "InternetGatewayId": {
-          "Ref": "InternetGateway"
-        },
-        "VpcId": {
-          "Ref": "GhostVpc"
-        }
-      }
-    },
-    "SESSendPolicy": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ses:SendEmail",
-                "ses:SendRawEmail"
-              ],
-              "Resource": [
-                "*"
-              ],
-              "Condition": {
-                "StringEquals": {
-                  "ses:FromAddress": {
-                    "Ref": "FromAddress"
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "PolicyName": "SESSendPolicy",
-        "Users": [
-          {
-            "Ref": "GhostSesUser"
-          }
-        ]
-      },
-      "DependsOn": "GhostSesUser"
-    },
-    "GhostSesUser": {
-      "Type": "AWS::IAM::User",
-      "Properties": {
-        "UserName": {
-          "Fn::Join": [
-            "-",
-            [
-              {
-                "Ref": "AWS::Region"
-              },
-              "ghost-ses"
-            ]
-          ]
-        }
-      }
-    },
-    "GhostSesUserAccessKey": {
-      "Type": "AWS::IAM::AccessKey",
-      "Properties": {
-        "UserName": {
-          "Ref": "GhostSesUser"
-        }
-      }
-    },
-    "GhostServerSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "Enable incoming requests + SSH access",
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "80",
-            "ToPort": "80",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "443",
-            "ToPort": "443",
-            "CidrIp": "0.0.0.0/0"
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "22",
-            "ToPort": "22",
-            "CidrIp": {
-              "Ref": "SSHLocation"
-            }
-          }
-        ],
-        "VpcId": {
-          "Ref": "GhostVpc"
-        }
-      }
-    },
-    "GhostDbEc2SecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "Open database for access",
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "3306",
-            "ToPort": "3306",
-            "SourceSecurityGroupId": {
-              "Ref": "GhostServerSecurityGroup"
-            }
-          }
-        ],
-        "VpcId": {
-          "Ref": "GhostVpc"
-        }
-      }
-    },
-    "GhostDbInstance": {
-      "Type": "AWS::RDS::DBInstance",
-      "DependsOn": "GhostDbEc2SecurityGroup",
-      "Properties": {
-        "DBName": {
-          "Ref": "DbName"
-        },
-        "Engine": "MySQL",
-        "EngineVersion": "5.7",
-        "BackupRetentionPeriod": "7",
-        "MultiAZ": "false",
-        "MasterUsername": "root",
-        "MasterUserPassword": {
-          "Ref": "DbRootPassword"
-        },
-        "DBInstanceClass": {
-          "Ref": "DbInstanceClass"
-        },
-        "AllocatedStorage": {
-          "Ref": "DbAllocatedStorage"
-        },
-        "VPCSecurityGroups": [
-          {
-            "Fn::GetAtt": [
-              "GhostDbEc2SecurityGroup",
-              "GroupId"
-            ]
-          }
-        ],
-        "DBSubnetGroupName": {
-          "Ref": "GhostDbSubnetGroup"
-        }
-      }
-    },
-    "GhostServerEip": {
-      "Type": "AWS::EC2::EIP",
-      "Properties": {
-        "Domain": "vpc"
-      }
-    },
-    "GhostServerEipAssociation": {
-      "Type": "AWS::EC2::EIPAssociation",
-      "Properties": {
-        "AllocationId": {
-          "Fn::GetAtt": [
-            "GhostServerEip",
-            "AllocationId"
-          ]
-        },
-        "InstanceId": {
-          "Ref": "GhostServer"
-        }
-      }
-    },
-    "GhostServer": {
-      "Type": "AWS::EC2::Instance",
-      "DependsOn": [
-        "GhostDbInstance",
-        "GhostServerWwwRecordSet",
-        "GhostServerWwwRecordSet",
-        "GhostDbInstance"
-      ],
-      "Metadata": {
-        "AWS::CloudFormation::Init": {
-          "configSets": {
-            "full_install": [
-              "install_and_enable_cfn_hup",
-              "prep_ghost"
-            ]
-          },
-          "install_and_enable_cfn_hup": {
-            "files": {
-              "/etc/cfn/cfn-hup.conf": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "[main]\n",
-                      "stack=",
-                      {
-                        "Ref": "AWS::StackId"
-                      },
-                      "\n",
-                      "region=",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      "\n",
-                      "interval=5\n"
-                    ]
-                  ]
-                },
-                "mode": "000400",
-                "owner": "root",
-                "group": "root"
-              },
-              "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "[cfn-auto-reloader-hook]\n",
-                      "triggers=post.update\n",
-                      "path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init\n",
-                      "action=/usr/local/bin/cfn-init -v ",
-                      " --stack ",
-                      {
-                        "Ref": "AWS::StackName"
-                      },
-                      " --resource GhostServer",
-                      " --configsets full_install ",
-                      " --region ",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      "\n",
-                      "runas=root\n"
-                    ]
-                  ]
-                }
-              },
-              "/lib/systemd/system/cfn-hup.service": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "[Unit]\n",
-                      "Description=cfn-hup daemon\n\n",
-                      "[Service]\n",
-                      "Type=simple\n",
-                      "ExecStart=/usr/local/bin/cfn-hup\n",
-                      "Restart=always\n\n",
-                      "[Install]\n",
-                      "WantedBy=multi-user.target"
-                    ]
-                  ]
-                }
-              }
-            },
-            "commands": {
-              "01enable_cfn_hup": {
-                "command": "systemctl enable cfn-hup.service"
-              },
-              "02start_cfn_hup": {
-                "command": "systemctl start cfn-hup.service"
-              }
-            }
-          },
-          "prep_ghost": {
-            "files": {
-              "/tmp/setup.mysql": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "CREATE DATABASE IF NOT EXISTS ",
-                      {
-                        "Ref": "DbName"
-                      },
-                      ";\n",
-                      "CREATE USER IF NOT EXISTS '",
-                      {
-                        "Ref": "DbUser"
-                      },
-                      "'@'%' IDENTIFIED BY '",
-                      {
-                        "Ref": "DbPassword"
-                      },
-                      "';\n",
-                      "GRANT ALL ON ",
-                      {
-                        "Ref": "DbName"
-                      },
-                      ".* TO '",
-                      {
-                        "Ref": "DbUser"
-                      },
-                      "'@'%';\n",
-                      "FLUSH PRIVILEGES;\n"
-                    ]
-                  ]
-                },
-                "mode": "000644",
-                "owner": "root",
-                "group": "root"
-              },
-              "/usr/local/bin/run_mysql_setup": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "#!/bin/bash\n",
-                      "apt-get upgrade nginx mysql-client-5.7 -y\n",
-                      "mysql -h ",
-                      {
-                        "Fn::GetAtt": [
-                          "GhostDbInstance",
-                          "Endpoint.Address"
-                        ]
-                      },
-                      " -u root -p",
-                      {
-                        "Ref": "DbRootPassword"
-                      },
-                      " < /tmp/setup.mysql > /dev/null 2>&1\n",
-                      "rm /tmp/setup.mysql\n"
-                    ]
-                  ]
-                },
-                "mode": "000700",
-                "owner": "root",
-                "group": "root"
-              },
-              "/usr/local/bin/prep_and_install_ghost": {
-                "content": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "#!/bin/bash\n",
-                      "export GHOSTDIR=/var/www/ghost\n",
-                      "export MAIL_PWD=`(echo -en '\\x02'; echo -n 'SendRawEmail' | openssl dgst -sha256 -hmac ",
-                      {
-                        "Fn::GetAtt": [
-                          "GhostSesUserAccessKey",
-                          "SecretAccessKey"
-                        ]
-                      },
-                      " -binary) | openssl enc -base64`\n",
-                      "(id ghostuser > /dev/null 2>&1 && echo ghostuser exists...) ",
-                      "  || (useradd --user-group --create-home ghostuser && echo creating ghostuser...)\n",
-                      "( [[ `groups ghostuser | awk '{print $4}'` == sudo ]] && echo ghostuser has sudo access...) ",
-                      "  || (usermod -aG sudo ghostuser && echo giving ghostuser sudo access...)\n",
-                      "( [[ -f /etc/sudoers.d/ghostuser ]] && echo ghostuser can execute sudo w/o password) ",
-                      "  || (echo 'ghostuser ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/ghostuser && echo allowing ghostuser to execute sudo w/o password as required by cli...)\n",
-                      "(node -v > /dev/null 2>&1 && echo node installed...) ",
-                      "  || (curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash && echo node repo configured)\n",
-                      "node -v > /dev/null 2>&1 ",
-                      "  || (sudo apt-get install -y nodejs && echo node installed)\n",
-                      "(ghost version && echo ghost present...) ",
-                      "  || (sudo npm install ghost-cli@latest -g && echo ghost installed...)\n",
-                      "( [[ -d $GHOSTDIR ]] && echo $GHOSTDIR directory exists...) ",
-                      "  || (sudo mkdir -p $GHOSTDIR && echo ghost app directory created)\n",
-                      "( [[ `stat -c %U $GHOSTDIR` == ghostuser ]] && [[ `stat -c %G $GHOSTDIR` == ghostuser ]] && echo $GHOSTDIR ownership correct...) ",
-                      "  || (sudo chown ghostuser:ghostuser $GHOSTDIR && echo ghost ownership set...)\n",
-                      "( [[ `stat -c %a $GHOSTDIR` == 775 ]] && echo $GHOSTDIR permissions correct...) ",
-                      "  || (sudo chmod 775 $GHOSTDIR && echo $GHOSTDIR permissions set...)\n",
-                      "if [[ -f config.production.json ]]; then\n",
-                      "echo ghost present...\n",
-                      "else\n",
-                      "echo ghost not present, installing...\n",
-                      "su - ghostuser -c \"cd /var/www/ghost && ghost install ",
-                      "--verbose ",
-                      "--url https://",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      " ",
-                      "--ip 0.0.0.0 ",
-                      "--dbhost ",
-                      {
-                        "Fn::GetAtt": [
-                          "GhostDbInstance",
-                          "Endpoint.Address"
-                        ]
-                      },
-                      " ",
-                      "--dbuser ",
-                      {
-                        "Ref": "DbUser"
-                      },
-                      " ",
-                      "--dbpass ",
-                      {
-                        "Ref": "DbPassword"
-                      },
-                      " ",
-                      "--dbname ",
-                      {
-                        "Ref": "DbName"
-                      },
-                      " ",
-                      "--mail SMTP ",
-                      "--mailuser ",
-                      {
-                        "Ref": "GhostSesUserAccessKey"
-                      },
-                      " ",
-                      "--mailpass $MAIL_PWD ",
-                      "--mailhost ",
-                      {
-                        "Ref": "SesSmtpEndpoint"
-                      },
-                      " ",
-                      "--mailport 587 ",
-                      "--sslemail ",
-                      {
-                        "Ref": "SslEmail"
-                      },
-                      " ",
-                      "--process systemd ",
-                      "--no-prompt --auto\"\n",
-                      "su - ghostuser -c \"cd $GHOSTDIR && ghost config mail.from ",
-                      {
-                        "Ref": "FromAddress"
-                      },
-                      "\"\n",
-                      "if [ -f $GHOSTDIR/system/files/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      ".conf ]; then\n",
-                      "echo SSL for www configured...\n",
-                      "else\n",
-                      "echo generating cert and configuring nginx for www...\n",
-                      "su - ghostuser -c \"cd $GHOSTDIR && ghost config url ",
-                      {
-                        "Fn::Join": [
-                          ".",
-                          [
-                            "https://www",
-                            {
-                              "Ref": "DomainName"
-                            }
-                          ]
-                        ]
-                      },
-                      "\"\n",
-                      "su - ghostuser -c \"cd $GHOSTDIR && ghost setup nginx ssl --sslemail ",
-                      {
-                        "Ref": "SslEmail"
-                      },
-                      "\"\n",
-                      "su - ghostuser -c \"cd $GHOSTDIR && ghost config url ",
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "https://",
-                            {
-                              "Ref": "DomainName"
-                            }
-                          ]
-                        ]
-                      },
-                      "\"\n",
-                      "awk '!/proxy_set_header/' $GHOSTDIR/system/files/",
-                      {
-                        "Fn::Join": [
-                          ".",
-                          [
-                            "www",
-                            {
-                              "Ref": "DomainName"
-                            },
-                            "conf"
-                          ]
-                        ]
-                      },
-                      " > ",
-                      {
-                        "Fn::Join": [
-                          ".",
-                          [
-                            "/tmp/www",
-                            {
-                              "Ref": "DomainName"
-                            },
-                            "conf"
-                          ]
-                        ]
-                      },
-                      "\n",
-                      "awk '!/proxy_set_header/' $GHOSTDIR/system/files/",
-                      "www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "-ssl.conf",
-                      " > ",
-                      "/tmp/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "-ssl.conf",
-                      "\n",
-                      "sed -i 's/proxy_pass.*/return 301 https:\\/\\/",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "\\$request_uri;/' /tmp/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      ".conf\n",
-                      "sed -i 's/proxy_pass.*/return 301 https:\\/\\/",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "\\$request_uri;/' /tmp/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "-ssl.conf\n",
-                      "mv /tmp/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      ".conf $GHOSTDIR/system/files/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      ".conf\n",
-                      "mv /tmp/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "-ssl.conf $GHOSTDIR/system/files/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "-ssl.conf\n",
-                      "chown ghostuser:ghostuser $GHOSTDIR/system/files/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      ".conf\n",
-                      "chown ghostuser:ghostuser $GHOSTDIR/system/files/www.",
-                      {
-                        "Ref": "DomainName"
-                      },
-                      "-ssl.conf\n",
-                      "nginx -t\n",
-                      "nginx -s reload\n",
-                      "fi\n",
-                      "su - ghostuser -c \"cd $GHOSTDIR && ghost restart\"\n",
-                      "fi\n"
-                    ]
-                  ]
-                },
-                "mode": "000700",
-                "owner": "root",
-                "group": "root"
-              }
-            },
-            "commands": {
-              "01setup_mysql": {
-                "command": "/usr/local/bin/run_mysql_setup"
-              },
-              "02setup_ghost": {
-                "command": "/usr/local/bin/prep_and_install_ghost"
-              },
-              "03cleanup": {
-                "command": "rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost"
-              }
-            }
-          }
-        }
-      },
-      "Properties": {
-        "AvailabilityZone": {
-          "Fn::FindInMap": [
-            "SubnetAvailabilityZone",
-            "PubSubnet",
-            "AvailabilityZone"
-          ]
-        },
-        "ImageId": {
-          "Fn::FindInMap": [
-            "AWSRegionArch2AMI",
-            {
-              "Ref": "AWS::Region"
-            },
-            {
-              "Fn::FindInMap": [
-                "AWSInstanceType2Arch",
-                {
-                  "Ref": "InstanceType"
-                },
-                "Arch"
-              ]
-            }
-          ]
-        },
-        "InstanceType": {
-          "Ref": "InstanceType"
-        },
-        "SecurityGroupIds": [
-          {
-            "Ref": "GhostServerSecurityGroup"
-          }
-        ],
-        "KeyName": {
-          "Ref": "KeyName"
-        },
-        "SubnetId": {
-          "Ref": "PubSubnet"
-        },
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "#!/bin/bash -xe\n",
-                "apt-get update -y\n",
-                "DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' upgrade\n",
-                "apt-get install python-pip -y\n",
-                "wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
-                "pip install aws-cfn-bootstrap-latest.tar.gz\n",
-                "cfn-init -v ",
-                "         --stack ",
-                {
-                  "Ref": "AWS::StackName"
-                },
-                "         --resource GhostServer ",
-                "         --configsets full_install ",
-                "         --region ",
-                {
-                  "Ref": "AWS::Region"
-                },
-                "\n",
-                "cfn-signal -e $? ",
-                "         --stack ",
-                {
-                  "Ref": "AWS::StackName"
-                },
-                "         --resource GhostServer ",
-                "         --region ",
-                {
-                  "Ref": "AWS::Region"
-                },
-                "\n"
-              ]
-            ]
-          }
-        }
-      }
-    },
-    "GhostServerRootRecordSet": {
-      "Type": "AWS::Route53::RecordSet",
-      "DependsOn": "GhostServerEip",
-      "Properties": {
-        "HostedZoneId": {
-          "Ref": "HostedZoneId"
-        },
-        "Comment": "DNS name for my Ghost Instance.",
-        "Name": {
-          "Ref": "DomainName"
-        },
-        "Type": "A",
-        "TTL": "60",
-        "ResourceRecords": [
-          {
-            "Ref": "GhostServerEip"
-          }
-        ]
-      }
-    },
-    "GhostServerWwwRecordSet": {
-      "Type": "AWS::Route53::RecordSet",
-      "DependsOn": "GhostServerEip",
-      "Properties": {
-        "HostedZoneId": {
-          "Ref": "HostedZoneId"
-        },
-        "Comment": "DNS name for my Ghost Instance.",
-        "Name": {
-          "Fn::Join": [
-            ".",
-            [
-              "www",
-              {
-                "Ref": "DomainName"
-              }
-            ]
-          ]
-        },
-        "Type": "A",
-        "TTL": "60",
-        "ResourceRecords": [
-          {
-            "Ref": "GhostServerEip"
-          }
-        ]
-      }
-    }
+  "GhostVpc": {
+  "Type": "AWS::EC2::VPC",
+  "Properties": {
+  "CidrBlock": {
+  "Fn::FindInMap": [
+  "CidrConfig",
+  "GhostVpc",
+  "Cidr"
+  ]
+  },
+  "InstanceTenancy": "default"
+  }
+  },
+  "PubSubnet": {
+  "Type": "AWS::EC2::Subnet",
+  "Properties": {
+  "VpcId": {
+  "Ref": "GhostVpc"
+  },
+  "CidrBlock": {
+  "Fn::FindInMap": [
+  "CidrConfig",
+  "PubSubnet",
+  "Cidr"
+  ]
+  },
+  "AvailabilityZone": {
+  "Fn::FindInMap": [
+  "SubnetAvailabilityZone",
+  "PubSubnet",
+  "AvailabilityZone"
+  ]
+  },
+  "Tags": [
+  {
+  "Key": "Application",
+  "Value": {
+  "Ref": "AWS::StackName"
+  }
+  }
+  ]
+  },
+  "DependsOn": "GhostVpc"
+  },
+  "PubSubnetDefaultRoute": {
+  "Type": "AWS::EC2::Route",
+  "DependsOn": "InternetGateway",
+  "Properties": {
+  "RouteTableId": {
+  "Ref": "PubSubnetRouteTable"
+  },
+  "DestinationCidrBlock": "0.0.0.0/0",
+  "GatewayId": {
+  "Ref": "InternetGateway"
+  }
+  }
+  },
+  "PubSubnetRouteTable": {
+  "Type": "AWS::EC2::RouteTable",
+  "Properties": {
+  "VpcId": {
+  "Ref": "GhostVpc"
+  }
+  }
+  },
+  "PubSubnetRouteTableAssociation": {
+  "Type": "AWS::EC2::SubnetRouteTableAssociation",
+  "Properties": {
+  "SubnetId": {
+  "Ref": "PubSubnet"
+  },
+  "RouteTableId": {
+  "Ref": "PubSubnetRouteTable"
+  }
+  }
+  },
+  "GhostDbSubnetGroup": {
+  "Type": "AWS::RDS::DBSubnetGroup",
+  "Properties": {
+  "DBSubnetGroupDescription": "database subnet group",
+  "DBSubnetGroupName": "GhostDbSubnetGroup",
+  "SubnetIds": [
+  {
+  "Ref": "DbSubnet1"
+  },
+  {
+  "Ref": "DbSubnet2"
+  }
+  ]
+  }
+  },
+  "DbSubnet1": {
+  "Type": "AWS::EC2::Subnet",
+  "Properties": {
+  "VpcId": {
+  "Ref": "GhostVpc"
+  },
+  "CidrBlock": {
+  "Fn::FindInMap": [
+  "CidrConfig",
+  "DbSubnet1",
+  "Cidr"
+  ]
+  },
+  "AvailabilityZone": {
+  "Fn::FindInMap": [
+  "SubnetAvailabilityZone",
+  "DbSubnet1",
+  "AvailabilityZone"
+  ]
+  },
+  "Tags": [
+  {
+  "Key": "Application",
+  "Value": {
+  "Ref": "AWS::StackName"
+  }
+  }
+  ]
+  },
+  "DependsOn": "GhostVpc"
+  },
+  "DbSubnet2": {
+  "Type": "AWS::EC2::Subnet",
+  "Properties": {
+  "VpcId": {
+  "Ref": "GhostVpc"
+  },
+  "CidrBlock": {
+  "Fn::FindInMap": [
+  "CidrConfig",
+  "DbSubnet2",
+  "Cidr"
+  ]
+  },
+  "AvailabilityZone": {
+  "Fn::FindInMap": [
+  "SubnetAvailabilityZone",
+  "DbSubnet2",
+  "AvailabilityZone"
+  ]
+  },
+  "Tags": [
+  {
+  "Key": "Application",
+  "Value": {
+  "Ref": "AWS::StackName"
+  }
+  }
+  ]
+  },
+  "DependsOn": "GhostVpc"
+  },
+  "InternetGateway": {
+  "Type": "AWS::EC2::InternetGateway"
+  },
+  "InternetGatewayVPCAttachment": {
+  "Type": "AWS::EC2::VPCGatewayAttachment",
+  "Properties": {
+  "InternetGatewayId": {
+  "Ref": "InternetGateway"
+  },
+  "VpcId": {
+  "Ref": "GhostVpc"
+  }
+  }
+  },
+  "SESSendPolicy": {
+  "Type": "AWS::IAM::Policy",
+  "Properties": {
+  "PolicyDocument": {
+  "Version": "2012-10-17",
+  "Statement": [
+  {
+  "Effect": "Allow",
+  "Action": [
+  "ses:SendEmail",
+  "ses:SendRawEmail"
+  ],
+  "Resource": [
+  "*"
+  ],
+  "Condition": {
+  "StringEquals": {
+  "ses:FromAddress": {
+  "Ref": "FromAddress"
+  }
+  }
+  }
+  }
+  ]
+  },
+  "PolicyName": "SESSendPolicy",
+  "Users": [
+  {
+  "Ref": "GhostSesUser"
+  }
+  ]
+  },
+  "DependsOn": "GhostSesUser"
+  },
+  "GhostSesUser": {
+  "Type": "AWS::IAM::User",
+  "Properties": {
+  "UserName": {
+  "Fn::Join": [
+  "-",
+  [
+  {
+  "Ref": "AWS::Region"
+  },
+  "ghost-ses"
+  ]
+  ]
+  }
+  }
+  },
+  "GhostSesUserAccessKey": {
+  "Type": "AWS::IAM::AccessKey",
+  "Properties": {
+  "UserName": {
+  "Ref": "GhostSesUser"
+  }
+  }
+  },
+  "GhostServerSecurityGroup": {
+  "Type": "AWS::EC2::SecurityGroup",
+  "Properties": {
+  "GroupDescription": "Enable incoming requests + SSH access",
+  "SecurityGroupIngress": [
+  {
+  "IpProtocol": "tcp",
+  "FromPort": "80",
+  "ToPort": "80",
+  "CidrIp": "0.0.0.0/0"
+  },
+  {
+  "IpProtocol": "tcp",
+  "FromPort": "443",
+  "ToPort": "443",
+  "CidrIp": "0.0.0.0/0"
+  },
+  {
+  "IpProtocol": "tcp",
+  "FromPort": "22",
+  "ToPort": "22",
+  "CidrIp": {
+  "Ref": "SSHLocation"
+  }
+  }
+  ],
+  "VpcId": {
+  "Ref": "GhostVpc"
+  }
+  }
+  },
+  "GhostDbEc2SecurityGroup": {
+  "Type": "AWS::EC2::SecurityGroup",
+  "Properties": {
+  "GroupDescription": "Open database for access",
+  "SecurityGroupIngress": [
+  {
+  "IpProtocol": "tcp",
+  "FromPort": "3306",
+  "ToPort": "3306",
+  "SourceSecurityGroupId": {
+  "Ref": "GhostServerSecurityGroup"
+  }
+  }
+  ],
+  "VpcId": {
+  "Ref": "GhostVpc"
+  }
+  }
+  },
+  "GhostDbInstance": {
+  "Type": "AWS::RDS::DBInstance",
+  "DependsOn": "GhostDbEc2SecurityGroup",
+  "Properties": {
+  "DBName": {
+  "Ref": "DbName"
+  },
+  "Engine": "MySQL",
+  "EngineVersion": "5.7",
+  "BackupRetentionPeriod": "7",
+  "MultiAZ": "false",
+  "MasterUsername": "root",
+  "MasterUserPassword": {
+  "Ref": "DbRootPassword"
+  },
+  "DBInstanceClass": {
+  "Ref": "DbInstanceClass"
+  },
+  "AllocatedStorage": {
+  "Ref": "DbAllocatedStorage"
+  },
+  "VPCSecurityGroups": [
+  {
+  "Fn::GetAtt": [
+  "GhostDbEc2SecurityGroup",
+  "GroupId"
+  ]
+  }
+  ],
+  "DBSubnetGroupName": {
+  "Ref": "GhostDbSubnetGroup"
+  }
+  }
+  },
+  "GhostServerEip": {
+  "Type": "AWS::EC2::EIP",
+  "Properties": {
+  "Domain": "vpc"
+  }
+  },
+  "GhostServerEipAssociation": {
+  "Type": "AWS::EC2::EIPAssociation",
+  "Properties": {
+  "AllocationId": {
+  "Fn::GetAtt": [
+  "GhostServerEip",
+  "AllocationId"
+  ]
+  },
+  "InstanceId": {
+  "Ref": "GhostServer"
+  }
+  }
+  },
+  "GhostServer": {
+  "Type": "AWS::EC2::Instance",
+  "DependsOn": [
+  "GhostDbInstance",
+  "GhostServerWwwRecordSet",
+  "GhostServerWwwRecordSet",
+  "GhostDbInstance"
+  ],
+  "Metadata": {
+  "AWS::CloudFormation::Init": {
+  "configSets": {
+  "full_install": [
+  "install_and_enable_cfn_hup",
+  "prep_ghost"
+  ]
+  },
+  "install_and_enable_cfn_hup": {
+  "files": {
+  "/etc/cfn/cfn-hup.conf": {
+  "content": {
+  "Fn::Join": [
+  "",
+  [
+  "[main]\n",
+  "stack=",
+  {
+  "Ref": "AWS::StackId"
+  },
+  "\n",
+  "region=",
+  {
+  "Ref": "AWS::Region"
+  },
+  "\n",
+  "interval=5\n"
+  ]
+  ]
+  },
+  "mode": "000400",
+  "owner": "root",
+  "group": "root"
+  },
+  "/etc/cfn/hooks.d/cfn-auto-reloader.conf": {
+  "content": {
+  "Fn::Join": [
+  "",
+  [
+  "[cfn-auto-reloader-hook]\n",
+  "triggers=post.update\n",
+  "path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init\n",
+  "action=/usr/local/bin/cfn-init -v ",
+  " --stack ",
+  {
+  "Ref": "AWS::StackName"
+  },
+  " --resource GhostServer",
+  " --configsets full_install ",
+  " --region ",
+  {
+  "Ref": "AWS::Region"
+  },
+  "\n",
+  "runas=root\n"
+  ]
+  ]
+  }
+  },
+  "/lib/systemd/system/cfn-hup.service": {
+  "content": {
+  "Fn::Join": [
+  "",
+  [
+  "[Unit]\n",
+  "Description=cfn-hup daemon\n\n",
+  "[Service]\n",
+  "Type=simple\n",
+  "ExecStart=/usr/local/bin/cfn-hup\n",
+  "Restart=always\n\n",
+  "[Install]\n",
+  "WantedBy=multi-user.target"
+  ]
+  ]
+  }
+  }
+  },
+  "commands": {
+  "01enable_cfn_hup": {
+  "command": "systemctl enable cfn-hup.service"
+  },
+  "02start_cfn_hup": {
+  "command": "systemctl start cfn-hup.service"
+  }
+  }
+  },
+  "prep_ghost": {
+  "files": {
+  "/tmp/setup.mysql": {
+  "content": {
+  "Fn::Join": [
+  "",
+  [
+  "CREATE DATABASE IF NOT EXISTS ",
+  {
+  "Ref": "DbName"
+  },
+  ";\n",
+  "CREATE USER IF NOT EXISTS '",
+  {
+  "Ref": "DbUser"
+  },
+  "'@'%' IDENTIFIED BY '",
+  {
+  "Ref": "DbPassword"
+  },
+  "';\n",
+  "GRANT ALL ON ",
+  {
+  "Ref": "DbName"
+  },
+  ".* TO '",
+  {
+  "Ref": "DbUser"
+  },
+  "'@'%';\n",
+  "FLUSH PRIVILEGES;\n"
+  ]
+  ]
+  },
+  "mode": "000644",
+  "owner": "root",
+  "group": "root"
+  },
+  "/usr/local/bin/run_mysql_setup": {
+  "content": {
+  "Fn::Join": [
+  "",
+  [
+  "#!/bin/bash\n",
+  "apt-get upgrade nginx mysql-client-5.7 -y\n",
+  "mysql -h ",
+  {
+  "Fn::GetAtt": [
+  "GhostDbInstance",
+  "Endpoint.Address"
+  ]
+  },
+  " -u root -p",
+  {
+  "Ref": "DbRootPassword"
+  },
+  " < /tmp/setup.mysql > /dev/null 2>&1\n",
+  "rm /tmp/setup.mysql\n"
+  ]
+  ]
+  },
+  "mode": "000700",
+  "owner": "root",
+  "group": "root"
+  },
+  "/usr/local/bin/prep_and_install_ghost": {
+  "content": {
+  "Fn::Join": [
+  "",
+  [
+  "#!/bin/bash\n",
+  "export GHOSTDIR=/var/www/ghost\n",
+  "export MAIL_PWD=`(echo -en '\\x02'; echo -n 'SendRawEmail' | openssl dgst -sha256 -hmac ",
+  {
+  "Fn::GetAtt": [
+  "GhostSesUserAccessKey",
+  "SecretAccessKey"
+  ]
+  },
+  " -binary) | openssl enc -base64`\n",
+  "(id ghostuser > /dev/null 2>&1 && echo ghostuser exists...) ",
+  "  || (useradd --user-group --create-home ghostuser && echo creating ghostuser...)\n",
+  "( [[ `groups ghostuser | awk '{print $4}'` == sudo ]] && echo ghostuser has sudo access...) ",
+  "  || (usermod -aG sudo ghostuser && echo giving ghostuser sudo access...)\n",
+  "( [[ -f /etc/sudoers.d/ghostuser ]] && echo ghostuser can execute sudo w/o password) ",
+  "  || (echo 'ghostuser ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/ghostuser && echo allowing ghostuser to execute sudo w/o password as required by cli...)\n",
+  "(node -v > /dev/null 2>&1 && echo node installed...) ",
+  "  || (curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash && echo node repo configured)\n",
+  "node -v > /dev/null 2>&1 ",
+  "  || (sudo apt-get install -y nodejs && echo node installed)\n",
+  "(ghost version && echo ghost present...) ",
+  "  || (sudo npm install ghost-cli@latest -g && echo ghost installed...)\n",
+  "( [[ -d $GHOSTDIR ]] && echo $GHOSTDIR directory exists...) ",
+  "  || (sudo mkdir -p $GHOSTDIR && echo ghost app directory created)\n",
+  "( [[ `stat -c %U $GHOSTDIR` == ghostuser ]] && [[ `stat -c %G $GHOSTDIR` == ghostuser ]] && echo $GHOSTDIR ownership correct...) ",
+  "  || (sudo chown ghostuser:ghostuser $GHOSTDIR && echo ghost ownership set...)\n",
+  "( [[ `stat -c %a $GHOSTDIR` == 775 ]] && echo $GHOSTDIR permissions correct...) ",
+  "  || (sudo chmod 775 $GHOSTDIR && echo $GHOSTDIR permissions set...)\n",
+  "if [[ -f config.production.json ]]; then\n",
+  "echo ghost present...\n",
+  "else\n",
+  "echo ghost not present, installing...\n",
+  "su - ghostuser -c \"cd /var/www/ghost && ghost install ",
+  "--verbose ",
+  "--url https://",
+  {
+  "Ref": "DomainName"
+  },
+  " ",
+  "--ip 0.0.0.0 ",
+  "--dbhost ",
+  {
+  "Fn::GetAtt": [
+  "GhostDbInstance",
+  "Endpoint.Address"
+  ]
+  },
+  " ",
+  "--dbuser ",
+  {
+  "Ref": "DbUser"
+  },
+  " ",
+  "--dbpass ",
+  {
+  "Ref": "DbPassword"
+  },
+  " ",
+  "--dbname ",
+  {
+  "Ref": "DbName"
+  },
+  " ",
+  "--mail SMTP ",
+  "--mailuser ",
+  {
+  "Ref": "GhostSesUserAccessKey"
+  },
+  " ",
+  "--mailpass $MAIL_PWD ",
+  "--mailhost ",
+  {
+  "Ref": "SesSmtpEndpoint"
+  },
+  " ",
+  "--mailport 587 ",
+  "--sslemail ",
+  {
+  "Ref": "SslEmail"
+  },
+  " ",
+  "--process systemd ",
+  "--no-prompt --auto\"\n",
+  "su - ghostuser -c \"cd $GHOSTDIR && ghost config mail.from ",
+  {
+  "Ref": "FromAddress"
+  },
+  "\"\n",
+  "if [ -f $GHOSTDIR/system/files/www.",
+  {
+  "Ref": "DomainName"
+  },
+  ".conf ]; then\n",
+  "echo SSL for www configured...\n",
+  "else\n",
+  "echo generating cert and configuring nginx for www...\n",
+  "su - ghostuser -c \"cd $GHOSTDIR && ghost config url ",
+  {
+  "Fn::Join": [
+  ".",
+  [
+  "https://www",
+  {
+  "Ref": "DomainName"
+  }
+  ]
+  ]
+  },
+  "\"\n",
+  "su - ghostuser -c \"cd $GHOSTDIR && ghost setup nginx ssl --sslemail ",
+  {
+  "Ref": "SslEmail"
+  },
+  "\"\n",
+  "su - ghostuser -c \"cd $GHOSTDIR && ghost config url ",
+  {
+  "Fn::Join": [
+  "",
+  [
+  "https://",
+  {
+  "Ref": "DomainName"
+  }
+  ]
+  ]
+  },
+  "\"\n",
+  "awk '!/proxy_set_header/' $GHOSTDIR/system/files/",
+  {
+  "Fn::Join": [
+  ".",
+  [
+  "www",
+  {
+  "Ref": "DomainName"
+  },
+  "conf"
+  ]
+  ]
+  },
+  " > ",
+  {
+  "Fn::Join": [
+  ".",
+  [
+  "/tmp/www",
+  {
+  "Ref": "DomainName"
+  },
+  "conf"
+  ]
+  ]
+  },
+  "\n",
+  "awk '!/proxy_set_header/' $GHOSTDIR/system/files/",
+  "www.",
+  {
+  "Ref": "DomainName"
+  },
+  "-ssl.conf",
+  " > ",
+  "/tmp/www.",
+  {
+  "Ref": "DomainName"
+  },
+  "-ssl.conf",
+  "\n",
+  "sed -i 's/proxy_pass.*/return 301 https:\\/\\/",
+  {
+  "Ref": "DomainName"
+  },
+  "\\$request_uri;/' /tmp/www.",
+  {
+  "Ref": "DomainName"
+  },
+  ".conf\n",
+  "sed -i 's/proxy_pass.*/return 301 https:\\/\\/",
+  {
+  "Ref": "DomainName"
+  },
+  "\\$request_uri;/' /tmp/www.",
+  {
+  "Ref": "DomainName"
+  },
+  "-ssl.conf\n",
+  "mv /tmp/www.",
+  {
+  "Ref": "DomainName"
+  },
+  ".conf $GHOSTDIR/system/files/www.",
+  {
+  "Ref": "DomainName"
+  },
+  ".conf\n",
+  "mv /tmp/www.",
+  {
+  "Ref": "DomainName"
+  },
+  "-ssl.conf $GHOSTDIR/system/files/www.",
+  {
+  "Ref": "DomainName"
+  },
+  "-ssl.conf\n",
+  "chown ghostuser:ghostuser $GHOSTDIR/system/files/www.",
+  {
+  "Ref": "DomainName"
+  },
+  ".conf\n",
+  "chown ghostuser:ghostuser $GHOSTDIR/system/files/www.",
+  {
+  "Ref": "DomainName"
+  },
+  "-ssl.conf\n",
+  "nginx -t\n",
+  "nginx -s reload\n",
+  "fi\n",
+  "su - ghostuser -c \"cd $GHOSTDIR && ghost restart\"\n",
+  "fi\n"
+  ]
+  ]
+  },
+  "mode": "000700",
+  "owner": "root",
+  "group": "root"
+  }
+  },
+  "commands": {
+  "01setup_mysql": {
+  "command": "/usr/local/bin/run_mysql_setup"
+  },
+  "02setup_ghost": {
+  "command": "/usr/local/bin/prep_and_install_ghost"
+  },
+  "03cleanup": {
+  "command": "rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost"
+  }
+  }
+  }
+  }
+  },
+  "Properties": {
+  "AvailabilityZone": {
+  "Fn::FindInMap": [
+  "SubnetAvailabilityZone",
+  "PubSubnet",
+  "AvailabilityZone"
+  ]
+  },
+  "ImageId": {
+  "Fn::FindInMap": [
+  "AWSRegionArch2AMI",
+  {
+  "Ref": "AWS::Region"
+  },
+  {
+  "Fn::FindInMap": [
+  "AWSInstanceType2Arch",
+  {
+  "Ref": "InstanceType"
+  },
+  "Arch"
+  ]
+  }
+  ]
+  },
+  "InstanceType": {
+  "Ref": "InstanceType"
+  },
+  "SecurityGroupIds": [
+  {
+  "Ref": "GhostServerSecurityGroup"
+  }
+  ],
+  "KeyName": {
+  "Ref": "KeyName"
+  },
+  "SubnetId": {
+  "Ref": "PubSubnet"
+  },
+  "UserData": {
+  "Fn::Base64": {
+  "Fn::Join": [
+  "",
+  [
+  "#!/bin/bash -xe\n",
+  "apt-get update -y\n",
+  "DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' upgrade\n",
+  "apt-get install python-pip -y\n",
+  "wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
+  "pip install aws-cfn-bootstrap-latest.tar.gz\n",
+  "cfn-init -v ",
+  "         --stack ",
+  {
+  "Ref": "AWS::StackName"
+  },
+  "         --resource GhostServer ",
+  "         --configsets full_install ",
+  "         --region ",
+  {
+  "Ref": "AWS::Region"
+  },
+  "\n",
+  "cfn-signal -e $? ",
+  "         --stack ",
+  {
+  "Ref": "AWS::StackName"
+  },
+  "         --resource GhostServer ",
+  "         --region ",
+  {
+  "Ref": "AWS::Region"
+  },
+  "\n"
+  ]
+  ]
+  }
+  }
+  }
+  },
+  "GhostServerRootRecordSet": {
+  "Type": "AWS::Route53::RecordSet",
+  "DependsOn": "GhostServerEip",
+  "Properties": {
+  "HostedZoneId": {
+  "Ref": "HostedZoneId"
+  },
+  "Comment": "DNS name for my Ghost Instance.",
+  "Name": {
+  "Ref": "DomainName"
+  },
+  "Type": "A",
+  "TTL": "60",
+  "ResourceRecords": [
+  {
+  "Ref": "GhostServerEip"
+  }
+  ]
+  }
+  },
+  "GhostServerWwwRecordSet": {
+  "Type": "AWS::Route53::RecordSet",
+  "DependsOn": "GhostServerEip",
+  "Properties": {
+  "HostedZoneId": {
+  "Ref": "HostedZoneId"
+  },
+  "Comment": "DNS name for my Ghost Instance.",
+  "Name": {
+  "Fn::Join": [
+  ".",
+  [
+  "www",
+  {
+  "Ref": "DomainName"
+  }
+  ]
+  ]
+  },
+  "Type": "A",
+  "TTL": "60",
+  "ResourceRecords": [
+  {
+  "Ref": "GhostServerEip"
+  }
+  ]
+  }
+  }
   },
   "Outputs": {
-    "GhostUrl": {
-      "Description": "URL to reach the Ghost Front End",
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "https://",
-            {
-              "Ref": "DomainName"
-            }
-          ]
-        ]
-      },
-      "Export": {
-        "Name": {
-          "Fn::Sub": "${AWS::StackName}-GhostUrl"
-        }
-      }
-    },
-    "GhostAdminUrl": {
-      "Description": "URL to reach the Ghost Admin Interface",
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "https://",
-            {
-              "Ref": "DomainName"
-            },
-            "/admin"
-          ]
-        ]
-      },
-      "Export": {
-        "Name": {
-          "Fn::Sub": "${AWS::StackName}-GhostAdminUrl"
-        }
-      }
-    },
-    "InstanceIPAddress": {
-      "Description": "IP Address to use to SSH to the Ghsot instance",
-      "Value": {
-        "Ref": "GhostServerEip"
-      },
-      "Export": {
-        "Name": {
-          "Fn::Sub": "${AWS::StackName}-InstanceIPAddress"
-        }
-      }
-    },
-    "RDSDBInstanceHostname": {
-      "Description": "Hostname of the Ghost Database",
-      "Value": {
-        "Fn::GetAtt": [
-          "GhostDbInstance",
-          "Endpoint.Address"
-        ]
-      },
-      "Export": {
-        "Name": {
-          "Fn::Sub": "${AWS::StackName}-RDSDBInstanceHostname"
-        }
-      }
-    },
-    "RDSDBInstancePort": {
-      "Description": "Port of the Ghost Database",
-      "Value": {
-        "Fn::GetAtt": [
-          "GhostDbInstance",
-          "Endpoint.Port"
-        ]
-      },
-      "Export": {
-        "Name": {
-          "Fn::Sub": "${AWS::StackName}-RDSDBInstancePort"
-        }
-      }
-    }
+  "GhostUrl": {
+  "Description": "URL to reach the Ghost Front End",
+  "Value": {
+  "Fn::Join": [
+  "",
+  [
+  "https://",
+  {
+  "Ref": "DomainName"
   }
-}
+  ]
+  ]
+  },
+  "Export": {
+  "Name": {
+  "Fn::Sub": "${AWS::StackName}-GhostUrl"
+  }
+  }
+  },
+  "GhostAdminUrl": {
+  "Description": "URL to reach the Ghost Admin Interface",
+  "Value": {
+  "Fn::Join": [
+  "",
+  [
+  "https://",
+  {
+  "Ref": "DomainName"
+  },
+  "/admin"
+  ]
+  ]
+  },
+  "Export": {
+  "Name": {
+  "Fn::Sub": "${AWS::StackName}-GhostAdminUrl"
+  }
+  }
+  },
+  "InstanceIPAddress": {
+  "Description": "IP Address to use to SSH to the Ghsot instance",
+  "Value": {
+  "Ref": "GhostServerEip"
+  },
+  "Export": {
+  "Name": {
+  "Fn::Sub": "${AWS::StackName}-InstanceIPAddress"
+  }
+  }
+  },
+  "RDSDBInstanceHostname": {
+  "Description": "Hostname of the Ghost Database",
+  "Value": {
+  "Fn::GetAtt": [
+  "GhostDbInstance",
+  "Endpoint.Address"
+  ]
+  },
+  "Export": {
+  "Name": {
+  "Fn::Sub": "${AWS::StackName}-RDSDBInstanceHostname"
+  }
+  }
+  },
+  "RDSDBInstancePort": {
+  "Description": "Port of the Ghost Database",
+  "Value": {
+  "Fn::GetAtt": [
+  "GhostDbInstance",
+  "Endpoint.Port"
+  ]
+  },
+  "Export": {
+  "Name": {
+  "Fn::Sub": "${AWS::StackName}-RDSDBInstancePort"
+  }
+  }
+  }
+  }
+  }
