@@ -300,4 +300,4 @@ https://amzn.to/32Gkl36
   
 - Setup of main deploy bucket
 - setup yarn shortcut to install all node modules
-
+- Remove statement about using cfn-lambda as module

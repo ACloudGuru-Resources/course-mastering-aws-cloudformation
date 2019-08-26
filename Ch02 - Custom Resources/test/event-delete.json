@@ -1,0 +1,14 @@
+{
+   "RequestType": "Delete",
+   "RequestId": "unique id for this delete request",
+   "ResponseURL": "pre-signed-url-for-delete-response",
+   "ResourceType": "Custom::MyCustomResourceType",
+   "LogicalResourceId": "name of resource in template",
+   "StackId": "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
+   "PhysicalResourceId": "feat-sls--projectx.companyx.com",
+   "ResourceProperties": {
+      "Service": "projectx",
+      "Stage": "feat-sls",
+      "Origin": "new-bucket"
+   }
+}
