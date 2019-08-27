@@ -27,9 +27,9 @@ exports.handler = async (event, context, callback) => {
       console.log('Creating Item in DDB...', JSON.stringify(ddbParams));
       await handlePut(ddbParams);
       await sendResponse(event, 'SUCCESS', 'Created');
-
-      // UPDATE
-    } else if (RequestType === 'Update') {
+    }
+    // UPDATE
+    else if (RequestType === 'Update') {
       if (!Host && (!Stage && !Service))
         await sendResponse(
           event,
@@ -40,15 +40,15 @@ exports.handler = async (event, context, callback) => {
       console.log('Updating DDB...', JSON.stringify(ddbParams));
       await handleUpdate(PhysicalResourceId, ddbParams);
       await sendResponse(event, 'SUCCESS', 'Updated');
-
-      // DELETE
-    } else if (RequestType === 'Delete') {
+    }
+    // DELETE
+    else if (RequestType === 'Delete') {
       console.log('Deleting Item from DDB...', PhysicalResourceId);
       await handleDelete(PhysicalResourceId);
       await sendResponse(event, 'SUCCESS', 'Deleted');
-
-      // FAILED
-    } else {
+    }
+    // FAILED
+    else {
       await sendResponse(event, 'FAILED', `Unexpected: ${RequestType}`);
     }
   } catch (error) {

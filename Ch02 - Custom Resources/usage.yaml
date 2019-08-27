@@ -20,7 +20,7 @@ Resources:
 
 Outputs:
   SiteURL:
-    Description: URL for this site
+    Description: URL for this Site
     Value: !Sub
       - https://${Domain}
       - { Domain: !GetAtt ProxyEntry.Host }

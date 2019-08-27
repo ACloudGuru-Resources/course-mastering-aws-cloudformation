@@ -1,0 +1,38 @@
+#!/bin/bash
+export GHOSTDIR=/var/www/ghost
+export MAIL_PWD=`(echo -en '\x02'; echo -n 'SendRawEmail' | openssl dgst -sha256 -hmac zJYMBzxvIcxEAIgJGsxLAlQ9bc0upQGap/DRGdUY -binary) | openssl enc -base64`
+(id ghostuser > /dev/null 2>&1 && echo ghostuser exists...)   || (useradd --user-group --create-home ghostuser && echo creating ghostuser...)
+( [[ `groups ghostuser | awk '{print $4}'` == sudo ]] && echo ghostuser has sudo access...)   || (usermod -aG sudo ghostuser && echo giving ghostuser sudo access...)
+( [[ -f /etc/sudoers.d/ghostuser ]] && echo ghostuser can execute sudo w/o password)   || (echo 'ghostuser ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/ghostuser && echo allowing ghostuser to execute sudo w/o password as required by cli...)
+(node -v > /dev/null 2>&1 && echo node installed...)   || (curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash && echo node repo configured)
+node -v > /dev/null 2>&1   || (sudo apt-get install -y nodejs && echo node installed)
+(ghost version && echo ghost present...)   || (sudo npm install ghost-cli@latest -g && echo ghost installed...)
+( [[ -d $GHOSTDIR ]] && echo $GHOSTDIR directory exists...)   || (sudo mkdir -p $GHOSTDIR && echo ghost app directory created)
+( [[ `stat -c %U $GHOSTDIR` == ghostuser ]] && [[ `stat -c %G $GHOSTDIR` == ghostuser ]] && echo $GHOSTDIR ownership correct...)   || (sudo chown ghostuser:ghostuser $GHOSTDIR && echo ghost ownership set...)
+( [[ `stat -c %a $GHOSTDIR` == 775 ]] && echo $GHOSTDIR permissions correct...)   || (sudo chmod 775 $GHOSTDIR && echo $GHOSTDIR permissions set...)
+if [[ -f config.production.json ]]; then
+echo ghost present...
+else
+echo ghost not present, installing...
+su - ghostuser -c "cd /var/www/ghost && ghost install --verbose --url https://ghost3.klickstuff.com --ip 0.0.0.0 --dbhost gg1fzvr0xagpxba.co7bmnns0t6j.us-east-1.rds.amazonaws.com --dbuser ghostuser --dbpass Bp4qQkeTTKvtixtxWya --dbname ghost --mail SMTP --mailuser AKIARQU2T5FYT4WEP6BN --mailpass $MAIL_PWD --mailhost email-smtp.us-east-1.amazonaws.com --mailport 587 --sslemail dvanbrunt@klick.com --process systemd --no-prompt --auto"
+su - ghostuser -c "cd $GHOSTDIR && ghost config mail.from dvanbrunt@klick.com"
+if [ -f $GHOSTDIR/system/files/www.ghost3.klickstuff.com.conf ]; then
+echo SSL for www configured...
+else
+echo generating cert and configuring nginx for www...
+su - ghostuser -c "cd $GHOSTDIR && ghost config url https://www.ghost3.klickstuff.com"
+su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx ssl --sslemail dvanbrunt@klick.com"
+su - ghostuser -c "cd $GHOSTDIR && ghost config url https://ghost3.klickstuff.com"
+awk '!/proxy_set_header/' $GHOSTDIR/system/files/www.ghost3.klickstuff.com.conf > /tmp/www.ghost3.klickstuff.com.conf
+awk '!/proxy_set_header/' $GHOSTDIR/system/files/www.ghost3.klickstuff.com-ssl.conf > /tmp/www.ghost3.klickstuff.com-ssl.conf
+sed -i 's/proxy_pass.*/return 301 https:\/\/ghost3.klickstuff.com\$request_uri;/' /tmp/www.ghost3.klickstuff.com.conf
+sed -i 's/proxy_pass.*/return 301 https:\/\/ghost3.klickstuff.com\$request_uri;/' /tmp/www.ghost3.klickstuff.com-ssl.conf
+mv /tmp/www.ghost3.klickstuff.com.conf $GHOSTDIR/system/files/www.ghost3.klickstuff.com.conf
+mv /tmp/www.ghost3.klickstuff.com-ssl.conf $GHOSTDIR/system/files/www.ghost3.klickstuff.com-ssl.conf
+chown ghostuser:ghostuser $GHOSTDIR/system/files/www.ghost3.klickstuff.com.conf
+chown ghostuser:ghostuser $GHOSTDIR/system/files/www.ghost3.klickstuff.com-ssl.conf
+nginx -t
+nginx -s reload
+fi
+su - ghostuser -c "cd $GHOSTDIR && ghost restart"
+fi

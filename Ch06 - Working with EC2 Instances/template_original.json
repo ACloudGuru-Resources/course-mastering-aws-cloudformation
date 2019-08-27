@@ -685,7 +685,8 @@
   {
   "Ref": "DbRootPassword"
   },
-  " < /tmp/setup.mysql > /dev/null 2>&1\n"
+  " < /tmp/setup.mysql > /dev/null 2>&1\n",
+  "rm /tmp/setup.mysql\n"
   ]
   ]
   },
@@ -930,6 +931,9 @@
   },
   "02setup_ghost": {
   "command": "/usr/local/bin/prep_and_install_ghost"
+  },
+  "03cleanup": {
+  "command": "rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost"
   }
   }
   }

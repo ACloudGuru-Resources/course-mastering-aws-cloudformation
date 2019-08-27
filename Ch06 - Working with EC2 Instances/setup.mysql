@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS ghost;
+CREATE USER IF NOT EXISTS 'ghostuser'@'%' IDENTIFIED BY 'Bp4qQkeTTKvtixtxWya';
+GRANT ALL ON ghost.* TO 'ghostuser'@'%';
+FLUSH PRIVILEGES;

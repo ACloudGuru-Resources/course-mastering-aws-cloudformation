@@ -1,9 +1,9 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: Ghost Single Instance
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "AWS CloudFormation Sample Template Ghost_Single_Instance: "
 Parameters:
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
-    Type: AWS::EC2::KeyPair::KeyName
+    Type: "AWS::EC2::KeyPair::KeyName"
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
   InstanceType:
     Description: EC2 instance type
@@ -55,6 +55,14 @@ Parameters:
     MaxLength: "41"
     AllowedPattern: "[a-zA-Z0-9]*"
     ConstraintDescription: must contain only alphanumeric characters.
+  SSHLocation:
+    Default: 0.0.0.0/0
+    NoEcho: "true"
+    Description: CIDR Address from which one can SSH to the ghost instance
+    Type: String
+    MinLength: "9"
+    MaxLength: "18"
+    ConstraintDescription: must be a valid CIDR specification.
   FromAddress:
     NoEcho: "true"
     Description: the email address from which mail will be sent by the ghost server
@@ -71,7 +79,7 @@ Parameters:
       - email-smtp.eu-west-1.amazonaws.com
     ConstraintDescription: must be a valid SES SMTP endpoint
   DomainName:
-    Description: Fully Qualified Domain name to configure ghost to use, e.g. www.example.com
+    Description: "Fully Qualified Domain name to configure ghost to use, e.g. www.example.com"
     Type: String
   HostedZoneId:
     Description: HostedZoneId in which Route53 Recordset will be created.
@@ -146,177 +154,215 @@ Mappings:
       AvailabilityZone: us-east-1b
 Resources:
   GhostVpc:
-    Type: AWS::EC2::VPC
+    Type: "AWS::EC2::VPC"
     Properties:
-      CidrBlock: !FindInMap [CidrConfig, GhostVpc, Cidr]
+      CidrBlock:
+        "Fn::FindInMap":
+          - CidrConfig
+          - GhostVpc
+          - Cidr
       InstanceTenancy: default
   PubSubnet:
-    Type: AWS::EC2::Subnet
+    Type: "AWS::EC2::Subnet"
     Properties:
-      VpcId: !Ref GhostVpc
-      CidrBlock: !FindInMap [CidrConfig, PubSubnet, Cidr]
+      VpcId:
+        Ref: GhostVpc
+      CidrBlock:
+        "Fn::FindInMap":
+          - CidrConfig
+          - PubSubnet
+          - Cidr
       AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, PubSubnet, AvailabilityZone]
+        "Fn::FindInMap":
+          - SubnetAvailabilityZone
+          - PubSubnet
+          - AvailabilityZone
       Tags:
         - Key: Application
-          Value: !Ref AWS::StackName
+          Value:
+            Ref: "AWS::StackName"
+    DependsOn: GhostVpc
   PubSubnetDefaultRoute:
-    Type: AWS::EC2::Route
+    Type: "AWS::EC2::Route"
+    DependsOn: InternetGateway
     Properties:
-      RouteTableId: !Ref PubSubnetRouteTable
+      RouteTableId:
+        Ref: PubSubnetRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
+      GatewayId:
+        Ref: InternetGateway
   PubSubnetRouteTable:
-    Type: AWS::EC2::RouteTable
+    Type: "AWS::EC2::RouteTable"
     Properties:
-      VpcId: !Ref GhostVpc
+      VpcId:
+        Ref: GhostVpc
   PubSubnetRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
     Properties:
-      SubnetId: !Ref PubSubnet
-      RouteTableId: !Ref PubSubnetRouteTable
+      SubnetId:
+        Ref: PubSubnet
+      RouteTableId:
+        Ref: PubSubnetRouteTable
   GhostDbSubnetGroup:
-    Type: AWS::RDS::DBSubnetGroup
+    Type: "AWS::RDS::DBSubnetGroup"
     Properties:
       DBSubnetGroupDescription: database subnet group
       DBSubnetGroupName: GhostDbSubnetGroup
       SubnetIds:
-        - !Ref DbSubnet1
-        - !Ref DbSubnet2
+        - Ref: DbSubnet1
+        - Ref: DbSubnet2
   DbSubnet1:
-    Type: AWS::EC2::Subnet
+    Type: "AWS::EC2::Subnet"
     Properties:
-      VpcId: !Ref GhostVpc
-      CidrBlock: !FindInMap [CidrConfig, DbSubnet1, Cidr]
+      VpcId:
+        Ref: GhostVpc
+      CidrBlock:
+        "Fn::FindInMap":
+          - CidrConfig
+          - DbSubnet1
+          - Cidr
       AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, DbSubnet1, AvailabilityZone]
+        "Fn::FindInMap":
+          - SubnetAvailabilityZone
+          - DbSubnet1
+          - AvailabilityZone
       Tags:
         - Key: Application
-          Value: !Ref AWS::StackName
+          Value:
+            Ref: "AWS::StackName"
+    DependsOn: GhostVpc
   DbSubnet2:
-    Type: AWS::EC2::Subnet
+    Type: "AWS::EC2::Subnet"
     Properties:
-      VpcId: !Ref GhostVpc
-      CidrBlock: !FindInMap [CidrConfig, DbSubnet2, Cidr]
+      VpcId:
+        Ref: GhostVpc
+      CidrBlock:
+        "Fn::FindInMap":
+          - CidrConfig
+          - DbSubnet2
+          - Cidr
       AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, DbSubnet2, AvailabilityZone]
+        "Fn::FindInMap":
+          - SubnetAvailabilityZone
+          - DbSubnet2
+          - AvailabilityZone
       Tags:
         - Key: Application
-          Value: !Ref AWS::StackName
+          Value:
+            Ref: "AWS::StackName"
+    DependsOn: GhostVpc
   InternetGateway:
-    Type: AWS::EC2::InternetGateway
+    Type: "AWS::EC2::InternetGateway"
   InternetGatewayVPCAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
+    Type: "AWS::EC2::VPCGatewayAttachment"
     Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref GhostVpc
+      InternetGatewayId:
+        Ref: InternetGateway
+      VpcId:
+        Ref: GhostVpc
   SESSendPolicy:
-    Type: AWS::IAM::Policy
+    Type: "AWS::IAM::Policy"
     Properties:
       PolicyDocument:
-        Version: 2012-10-17
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Action:
-              - ses:SendEmail
-              - ses:SendRawEmail
+              - "ses:SendEmail"
+              - "ses:SendRawEmail"
             Resource:
               - "*"
             Condition:
               StringEquals:
-                "ses:FromAddress": !Ref FromAddress
+                "ses:FromAddress":
+                  Ref: FromAddress
       PolicyName: SESSendPolicy
       Users:
-        - !Ref GhostSesUser
+        - Ref: GhostSesUser
+    DependsOn: GhostSesUser
   GhostSesUser:
-    Type: AWS::IAM::User
+    Type: "AWS::IAM::User"
     Properties:
-      UserName: !Sub ${AWS::Region}-ghost-ses
+      UserName:
+        "Fn::Join":
+          - "-"
+          - - Ref: "AWS::Region"
+            - ghost-ses
   GhostSesUserAccessKey:
-    Type: AWS::IAM::AccessKey
+    Type: "AWS::IAM::AccessKey"
     Properties:
-      UserName: !Ref GhostSesUser
+      UserName:
+        Ref: GhostSesUser
   GhostServerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+    Type: "AWS::EC2::SecurityGroup"
     Properties:
       GroupDescription: Enable incoming requests + SSH access
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 38.99.136.178/32 # Klick Office
+          FromPort: "80"
+          ToPort: "80"
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 72.15.59.210/32 # Klick Office
+          FromPort: "443"
+          ToPort: "443"
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 35.182.69.133/32 # vpn.klick.com
-
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 38.99.136.178/32
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 35.182.69.133/32
-
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 38.99.136.178/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 72.15.59.210/32
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 35.182.69.133/32
-      VpcId: !Ref GhostVpc
+          FromPort: "22"
+          ToPort: "22"
+          CidrIp:
+            Ref: SSHLocation
+      VpcId:
+        Ref: GhostVpc
   GhostDbEc2SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+    Type: "AWS::EC2::SecurityGroup"
     Properties:
       GroupDescription: Open database for access
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
+          FromPort: "3306"
+          ToPort: "3306"
           SourceSecurityGroupId:
             Ref: GhostServerSecurityGroup
-      VpcId: !Ref GhostVpc
+      VpcId:
+        Ref: GhostVpc
   GhostDbInstance:
-    Type: AWS::RDS::DBInstance
+    Type: "AWS::RDS::DBInstance"
+    DependsOn: GhostDbEc2SecurityGroup
     Properties:
-      DBName: !Ref DbName
+      DBName:
+        Ref: DbName
       Engine: MySQL
       EngineVersion: "5.7"
-      BackupRetentionPeriod: 7
-      MultiAZ: false
+      BackupRetentionPeriod: "7"
+      MultiAZ: "false"
       MasterUsername: root
-      MasterUserPassword: !Ref DbRootPassword
-      DBInstanceClass: !Ref DbInstanceClass
-      AllocatedStorage: !Ref DbAllocatedStorage
+      MasterUserPassword:
+        Ref: DbRootPassword
+      DBInstanceClass:
+        Ref: DbInstanceClass
+      AllocatedStorage:
+        Ref: DbAllocatedStorage
       VPCSecurityGroups:
-        - !GetAtt GhostDbEc2SecurityGroup.GroupId
-      DBSubnetGroupName: !Ref GhostDbSubnetGroup
+        - "Fn::GetAtt":
+            - GhostDbEc2SecurityGroup
+            - GroupId
+      DBSubnetGroupName:
+        Ref: GhostDbSubnetGroup
   GhostServerEip:
-    Type: AWS::EC2::EIP
+    Type: "AWS::EC2::EIP"
     Properties:
       Domain: vpc
   GhostServerEipAssociation:
-    Type: AWS::EC2::EIPAssociation
+    Type: "AWS::EC2::EIPAssociation"
     Properties:
-      AllocationId: !GetAtt GhostServerEip.AllocationId
-      InstanceId: !Ref GhostServer
+      AllocationId:
+        "Fn::GetAtt":
+          - GhostServerEip
+          - AllocationId
+      InstanceId:
+        Ref: GhostServer
   GhostServer:
-    Type: AWS::EC2::Instance
+    Type: "AWS::EC2::Instance"
     DependsOn:
       - GhostDbInstance
       - GhostServerWwwRecordSet
@@ -439,47 +485,77 @@ Resources:
             #   command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost
     Properties:
       AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, PubSubnet, AvailabilityZone]
+        "Fn::FindInMap":
+          - SubnetAvailabilityZone
+          - PubSubnet
+          - AvailabilityZone
       ImageId:
         "Fn::FindInMap":
           - AWSRegionArch2AMI
-          - !Ref AWS::Region
+          - Ref: "AWS::Region"
           - "Fn::FindInMap":
               - AWSInstanceType2Arch
-              - !Ref InstanceType
+              - Ref: InstanceType
               - Arch
-      InstanceType: !Ref InstanceType
+      InstanceType:
+        Ref: InstanceType
       SecurityGroupIds:
-        - !Ref GhostServerSecurityGroup
-      KeyName: !Ref KeyName
-      SubnetId: !Ref PubSubnet
+        - Ref: GhostServerSecurityGroup
+      KeyName:
+        Ref: KeyName
+      SubnetId:
+        Ref: PubSubnet
       UserData:
-        "Fn::Base64": !Sub |
-          #!/bin/bash -xe
-          apt-get update -y
-          DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' upgrade
-          apt-get install python-pip -y
-          wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
-          pip install aws-cfn-bootstrap-latest.tar.gz
-          cfn-init -v --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
-          cfn-signal -e $? --stack ${AWS::StackName} --resource GhostServer --region ${AWS::Region}
+        "Fn::Base64":
+          "Fn::Join":
+            - ""
+            - - "#!/bin/bash -xe\n"
+              - "apt-get update -y\n"
+              - "DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' upgrade\n"
+              - "apt-get install python-pip -y\n"
+              - "wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n"
+              - "pip install aws-cfn-bootstrap-latest.tar.gz\n"
+              - "cfn-init -v "
+              - "         --stack "
+              - Ref: "AWS::StackName"
+              - "         --resource GhostServer "
+              - "         --configsets full_install "
+              - "         --region "
+              - Ref: "AWS::Region"
+              - "\n"
+              - "cfn-signal -e $? "
+              - "         --stack "
+              - Ref: "AWS::StackName"
+              - "         --resource GhostServer "
+              - "         --region "
+              - Ref: "AWS::Region"
+              - "\n"
 
   GhostServerRootRecordSet:
-    Type: AWS::Route53::RecordSet
+    Type: "AWS::Route53::RecordSet"
+    DependsOn: GhostServerEip
     Properties:
-      HostedZoneId: !Ref HostedZoneId
+      HostedZoneId:
+        Ref: HostedZoneId
       Comment: DNS name for my Ghost Instance.
-      Name: !Ref DomainName
+      Name:
+        Ref: DomainName
       Type: A
       TTL: "60"
       ResourceRecords:
         - Ref: GhostServerEip
   GhostServerWwwRecordSet:
-    Type: AWS::Route53::RecordSet
+    Type: "AWS::Route53::RecordSet"
+    DependsOn: GhostServerEip
     Properties:
-      HostedZoneId: !Ref HostedZoneId
+      HostedZoneId:
+        Ref: HostedZoneId
       Comment: DNS name for my Ghost Instance.
-      Name: !Sub www.${DomainName}
+      Name:
+        "Fn::Join":
+          - .
+          - - www
+            - Ref: DomainName
       Type: A
       TTL: "60"
       ResourceRecords:
@@ -487,27 +563,47 @@ Resources:
 Outputs:
   GhostUrl:
     Description: URL to reach the Ghost Front End
-    Value: !Sub https://${DomainName}
+    Value:
+      "Fn::Join":
+        - ""
+        - - "https://"
+          - Ref: DomainName
     Export:
-      Name: !Sub ${AWS::StackName}-GhostUrl
+      Name:
+        "Fn::Sub": "${AWS::StackName}-GhostUrl"
   GhostAdminUrl:
     Description: URL to reach the Ghost Admin Interface
-    Value: !Sub https://${DomainName}/admin
+    Value:
+      "Fn::Join":
+        - ""
+        - - "https://"
+          - Ref: DomainName
+          - /admin
     Export:
-      Name: !Sub ${AWS::StackName}-GhostAdminUrl
+      Name:
+        "Fn::Sub": "${AWS::StackName}-GhostAdminUrl"
   InstanceIPAddress:
     Description: IP Address to use to SSH to the Ghsot instance
     Value:
       Ref: GhostServerEip
     Export:
-      Name: !Sub ${AWS::StackName}-InstanceIPAddress
+      Name:
+        "Fn::Sub": "${AWS::StackName}-InstanceIPAddress"
   RDSDBInstanceHostname:
     Description: Hostname of the Ghost Database
-    Value: !GetAtt GhostDbInstance.Endpoint.Address
+    Value:
+      "Fn::GetAtt":
+        - GhostDbInstance
+        - Endpoint.Address
     Export:
-      Name: !Sub ${AWS::StackName}-RDSDBInstanceHostname
+      Name:
+        "Fn::Sub": "${AWS::StackName}-RDSDBInstanceHostname"
   RDSDBInstancePort:
     Description: Port of the Ghost Database
-    Value: !GetAtt GhostDbInstance.Endpoint.Port
+    Value:
+      "Fn::GetAtt":
+        - GhostDbInstance
+        - Endpoint.Port
     Export:
-      Name: !Sub ${AWS::StackName}-RDSDBInstancePort
+      Name:
+        "Fn::Sub": "${AWS::StackName}-RDSDBInstancePort"
