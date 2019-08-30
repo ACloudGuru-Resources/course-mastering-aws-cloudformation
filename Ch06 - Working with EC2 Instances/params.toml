@@ -1,9 +1,9 @@
 KeyName=ghostblog
 StackName=ghost-blog
-DbPassword=Bp4qQkeTTKvtixtxWya
-DbRootPassword=UyhGBptVmD4QHTEqGEi
+DbPassword=CaGHrN4cUpCzsQyzNsJ
+DbRootPassword=K3AdmphXzjFAaisDXth
 DbUser=ghostuser
-DomainName=ghost6.klickstuff.com
+DomainName=ghost.klickstuff.com
 FromAddress=dvanbrunt@klick.com
 HostedZoneId=ZBFSBY8N4M62
 SslEmail=dvanbrunt@klick.com

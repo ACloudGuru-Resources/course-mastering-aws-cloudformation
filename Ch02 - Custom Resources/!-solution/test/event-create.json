@@ -1,0 +1,13 @@
+{
+   "RequestType" : "Create",
+   "RequestId" : "unique id for this create request",
+   "ResponseURL" : "pre-signed-url-for-create-response",
+   "ResourceType" : "Custom::MyCustomResourceType",
+   "LogicalResourceId" : "name of resource in template",
+   "StackId" : "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
+   "ResourceProperties" : {
+      "Service" : "projectx",
+      "Stage": "feat-sls",
+      "Origin": "test-bucket"
+   }
+}

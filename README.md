@@ -2,13 +2,13 @@
 
 A Cloud Guru Course: Mastering CloudFormation
 
-## Chapter 1 - Intro and Theory
+## Chapter 1 - Intro and Theory (~56:00)
 
-### Ch01_L01 – Introduction
+### Ch01_L01 – Introduction (?)
 
 *Lecture Description:* Gain a high-level look at what this course has to offer. We’ll also give some tips for how to work thru it.
 
-### Ch01_L02 – A Quick Refresher
+### Ch01_L02 – A Quick Refresher (15:24)
 
 1. DEMO: Working with the AWS CLI
 2. How CloudFormation works
@@ -17,17 +17,8 @@ A Cloud Guru Course: Mastering CloudFormation
    - Return Values (Ref, Fn::GetAtt)
 4. DEMO: Finding Resource documentation
 
-### Ch01_L03 – Tips & Watchouts
 
-1. Trick-out your IDE
-2. Lambda@Edge Deletion Times
-3. CloudFront Propagation Times
-4. Stack Creation Manual Steps
-5. Renaming Things
-6. Stateful Resources and Updates / Deletes
-7. [Limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
-
-### Ch01_L04 – Template Anatomy Refresher
+### Ch01_L03 – Template Anatomy (12:17)
 
 1. Parameters
    - [Constraints](http://bit.ly/2YyuvjE)
@@ -38,19 +29,31 @@ A Cloud Guru Course: Mastering CloudFormation
 5. Resources
 6. Outputs
 
-### Ch01_L05 – Template Operations
+### Ch01_L04 – Template Operations (10:15)
 
 1. Intrinsic Functions
    - Ref, GetAtt
 2. Export/Imports Outputs
 
-## Chapter 2 - Custom Resources
+
+### Ch01_L05 – Tips & Watchouts (18:45)
+
+1. Trick-out your IDE
+2. Lambda@Edge Deletion Times
+3. CloudFront Propagation Times
+4. Stack Creation Manual Steps
+5. Renaming Things
+6. Stateful Resources and Updates / Deletes
+7. [Limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
+
+
+## Chapter 2 - Custom Resources (~59:00)
 
 **Lecture Description:** Learn to create, deploy and implement custom resources that can help extend native CloudFormation resources.
 **Demo Description:** Create and use a custom resource that provisions unique subdomains and routing based on application version.
 Eg. feat-blue--projectx.domain.com
 
-### Ch02_L01 – Overview
+### Ch02_L01 – Overview (10:23)
 
 1. What they are
    - Lambda: Create, Update, Delete
@@ -58,47 +61,64 @@ Eg. feat-blue--projectx.domain.com
 2. Features & Use Cases
 3. Limits
 
-### Ch02_L02 – Let's Make one
+### Ch02_L02 – What We Are Building (07:22) 
 
-1. Tips & Tricks
+1. Important Notes
    - Timeouts & Catching Errors
    - How CloudFormation identifies and replaces resources
    - Design functions for idempotency
-2. Helpers Libraries
-3. Diagram: What We're Building
-4. DEMO: Create/Deploy Template
+2. Helper Libraries
+3. Diagram: What We Are Building
 
-### Ch02_L03 – Let's Use It
+### Ch02_L02 – Let's Make one (19:28)
 
-1. Use Custom Resource in another Template
+1. DEMO: Create/Deploy Custom Resource
+2. DEMO: Review Custom Resource Function
+3. DEMO: Review Exports in Console
+
+### Ch02_L03 – Let's Use It (10:58)
+
+1. Using in another Template
 2. DEMO: Create, Update and Delete
 3. DEMO: Cleanup
 
-## Chapter 3 - Macros & Transforms
+## Chapter 3 - Macros & Transforms (?)
 
 **Lecture Description:** Amplify your template functionality with Macros and Transforms. Learn to create and use custom template functions.
 
-### Ch03_L01 – Overview
+### Ch03_L01 – Overview (11:22)
 
 1. What they are
 2. Snippet vs Template-Level
 3. Features & Use Cases
 4. Limits
 
-### Ch03_L02 – Let's Build Some Macros!
+### Ch03_L02 – Macro: String Operations
 
-1. String Operations (Capitalize, Replace, Max Length)
-2. DEMO: String Operations Macro
-   1. Show CFN console view processed template http://bit.ly/32GrwIn
-3. Count
-4. DEMO: Count Macro
-5. S3Objects
-6. DEMO: S3Objects Macro
-7. Unit Testing
-8. DEMO: Setting up Macro Unit Tests
-   1. validate-template
+1. What We're Building
+  - String Operations (Capitalize, Replace, Max Length)
+2. DEMO: Create/Deploy String Operations Macro
+  - Show CFN console view processed template http://bit.ly/32GrwIn
+3. DEMO: Use Macro
 
-## Chapter 4 – Best Practises for Template/Stack Management
+### Ch03_L03 – Macro: Cloning Resources
+
+1. What We're Building
+2. DEMO: Create/Deploy Count Macro
+3. DEMO: Use Macro
+
+### Ch03_L04 – Macro: Custom Resource Types
+
+1. What We're Building
+2. DEMO: Create/Deploy S3Objects Macro
+3. DEMO: Use Macro
+
+### Ch03_L05 – Unit Testing
+1. Unit Testing
+2. DEMO: Setting up Macro Unit Tests
+  - validate-template
+
+## Chapter 4 – Best Practises
 
 ### Ch04_L01 - Template / Stack Reuse
 
@@ -280,7 +300,25 @@ https://amzn.to/32Gkl36
 - [Macro Ideas](https://www.alexdebrie.com/posts/cloudformation-macros/)
 
 
+# Timelines
 
+- Chapter 1 - Intro and Theory (~56:00)
+  - Ch01_L01 – Introduction (?)
+  - Ch01_L02 – A Quick Refresher (15:24)
+  - Ch01_L03 – Template Anatomy (12:17)
+  - Ch01_L04 – Template Operations (10:15)
+  - Ch01_L05 – Tips & Watchouts (18:45)
+- Chapter 2 - Custom Resources (~59:00)
+  - Ch02_L01 – Overview (10:23)
+  - Ch02_L02 – What We Are Building (07:22)
+  - Ch02_L02 – Let's Make one (19:28)
+  - Ch02_L03 – Let's Use It (10:58)
+- Chapter 3 - Macros & Transforms (?)
+  - Ch03_L01 – Overview (11:22)
+  - Ch03_L02 – Macro: String Operations (?)
+  - Ch03_L03 – Macro: Cloning Resources (?)
+  - Ch03_L04 – Macro: Custom Resource Types (?)
+  - Ch03_L05 – Unit Testing (?)
 
 ## Missing Topics
 - CFN Designer
