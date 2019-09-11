@@ -1,0 +1,26 @@
+Parameters:
+  ServiceParameter:
+    Type: String
+    Description: Service Name
+  StageParameter:
+    Type: String
+    Default: dev
+    Description: Feature Branch Name
+Resources:
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+  ProxyEntry:
+    Type: Custom::ProxyEntry
+    Version: 1.0
+    Properties:
+      ServiceToken: !ImportValue stack-proxy-proxyentry-lambda-arn
+      Service: !Ref ServiceParameter
+      Stage: !Ref StageParameter
+      Origin: !GetAtt WebsiteBucket.DomainName
+
+Outputs:
+  SiteURL:
+    Description: URL for this Site
+    Value: !Sub
+      - https://${Domain}
+      - { Domain: !GetAtt ProxyEntry.Host }

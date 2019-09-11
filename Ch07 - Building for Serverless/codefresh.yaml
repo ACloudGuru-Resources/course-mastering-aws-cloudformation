@@ -1,0 +1,130 @@
+version: "1.0"
+steps:
+  CheckStatus:
+    title: Check Branch Build Status
+    image: codefresh/cli
+    commands:
+      - CF_PIPELINE_NAME=$(codefresh get builds ${{CF_BUILD_ID}} | awk '{print $2}' | egrep -v "PIPELINE-NAME | no available") | awk 'END{print}'
+      - while [ $(codefresh get builds --status=running --pipeline-name=$CF_PIPELINE_NAME | grep ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} | grep ${{CF_BRANCH}} | wc -l) -gt 1 -a $(codefresh get builds --status=running --pipeline-name=$CF_PIPELINE_NAME | grep ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} | grep ${{CF_BRANCH}} | awk -v def="no-running-builds" '{print $1} END { if(NR==0) {print def} }' | egrep -v "ID | no available" | awk 'END{print}') != ${{CF_BUILD_ID}} ]; do echo "Another build is in progress..."; done
+
+  main_clone:
+    title: Clone Git Repository
+    type: git-clone
+    repo: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    git: CF-default
+    revision: ${{CF_REVISION}}
+
+  UnitTest:
+    title: Unit Test Application
+    image: klickinc/marketing-build-harness@sha256:d396d7dad7e4e7dfe5358827784d30b491c616b84ac91bb3741c65597197a0f9
+    working_directory: ${{main_clone}}
+    commands:
+      - yarn install
+
+  DeployDev:
+    title: Deploy Feature Branch
+    image: klickinc/marketing-build-harness@sha256:d396d7dad7e4e7dfe5358827784d30b491c616b84ac91bb3741c65597197a0f9
+    working_directory: ${{main_clone}}
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=${{SANDBOX_ACCESS_KEY_ID}}
+      - AWS_SECRET_ACCESS_KEY=${{SANDBOX_SECRET_ACCESS_KEY_ID}}
+    commands:
+      - sls deploy -s ${{CF_BRANCH}} -v --stageflag dev
+      - >-
+        cf_export SITE_URL=$(sls info -s ${{CF_BRANCH}} --stageflag dev -v | grep SiteUrl | sed -e 's/.*: \(.*\)/\1/')
+    when:
+      branch:
+        only:
+          - /^feat-/i
+
+  DeployRC:
+    title: Deploy Release Candidate
+    image: klickinc/marketing-build-harness@sha256:d396d7dad7e4e7dfe5358827784d30b491c616b84ac91bb3741c65597197a0f9
+    working_directory: ${{main_clone}}
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=${{PROD_ACCESS_KEY_ID}}
+      - AWS_SECRET_ACCESS_KEY=${{PROD_SECRET_ACCESS_KEY_ID}}
+    commands:
+      - sls deploy -s ${{CF_BRANCH}} -v --stageflag rc
+      - >-
+        cf_export SITE_URL=$(sls info -s ${{CF_BRANCH}} --stageflag rc -v | grep SiteUrl | sed -e 's/.*: \(.*\)/\1/')
+    when:
+      branch:
+        only:
+          - /^rc-/i
+
+  DeployProd:
+    title: Deploy to Production
+    image: klickinc/marketing-build-harness@sha256:d396d7dad7e4e7dfe5358827784d30b491c616b84ac91bb3741c65597197a0f9
+    working_directory: ${{main_clone}}
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=${{PROD_ACCESS_KEY_ID}}
+      - AWS_SECRET_ACCESS_KEY=${{PROD_SECRET_ACCESS_KEY_ID}}
+    commands:
+      - sls deploy -s prod -v --stageflag prod
+      - >-
+        cf_export SITE_URL=$(sls info -s prod --stageflag prod -v | grep SiteUrl | sed -e 's/.*: \(.*\)/\1/')
+    when:
+      branch:
+        only:
+          - master
+
+  LighthouseTest:
+    title: Test with Lighthouse
+    image: klickinc/lighthouse-ci@sha256:cdef4c5b05d1d42f0fc18fb6b82efa65b5909f31149269b555e1a12bbe545963
+    working_directory: ${{main_clone}}
+    commands:
+      - echo ${{SITE_URL}}
+      - lighthouse --chrome-flags="--headless --no-sandbox" ${{SITE_URL}} --quiet --output json > report.json
+      - export LIGHTHOUSE_PERF=$(cat report.json | jqn --color false 'get("categories.performance.score")')
+      - export LIGHTHOUSE_A11Y=$(cat report.json | jqn --color false 'get("categories.accessibility.score")')
+      - export LIGHTHOUSE_BEST=$(cat report.json | jqn --color false 'get("categories.best-practices.score")')
+      - export LIGHTHOUSE_SEO=$(cat report.json | jqn --color false 'get("categories.seo.score")')
+      - export LIGHTHOUSE_PWA=$(cat report.json | jqn --color false 'get("categories.pwa.score")')
+      - cf_export LIGHTHOUSE_PERF
+      - cf_export LIGHTHOUSE_A11Y
+      - cf_export LIGHTHOUSE_BEST
+      - cf_export LIGHTHOUSE_SEO
+      - cf_export LIGHTHOUSE_PWA
+    when:
+      branch:
+        only:
+          - master
+          - /^rc-/i
+          - /^feat-/i
+  # SlackNotification:
+  #   title: Send Slack Notification
+  #   image: cloudposse/slack-notifier@sha256:ff2fb8f7fd7fd04c5f005b90843493ff2bc8f620a9997c1e1a5b8ba8ee04c352
+  #   environment:
+  #     - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+  #     - SLACK_USER_NAME=Codefresh
+  #     - 'SLACK_ICON_EMOJI=:klick:'
+  #     - SLACK_TITLE=Build Completed
+  #     - SLACK_TITLE_LINK=${{CF_BUILD_URL}}
+  #     - SLACK_FIELD1_TITLE=Git Repository Name
+  #     - SLACK_FIELD1_VALUE=${{CF_REPO_NAME}}
+  #     - SLACK_FIELD1_SHORT=true
+  #     - SLACK_FIELD2_TITLE=Git Branch
+  #     - SLACK_FIELD2_VALUE=${{CF_BRANCH}}
+  #     - SLACK_FIELD2_SHORT=true
+  #     - SLACK_FIELD3_TITLE=Git Repository Link
+  #     - SLACK_FIELD3_VALUE=https://github.com/KlickMarketing/${{CF_REPO_NAME}}/tree/${{CF_BRANCH}}
+  #     - SLACK_FIELD3_SHORT=true
+  #     - SLACK_FIELD4_TITLE=Git Version
+  #     - SLACK_FIELD4_VALUE=${{CF_SHORT_REVISION}}
+  #     - SLACK_FIELD4_SHORT=true
+  #     - SLACK_FIELD5_TITLE=Site URL
+  #     - SLACK_FIELD5_VALUE=${{SITE_URL}}
+  #     - SLACK_FIELD5_SHORT=true
+  #     - SLACK_FIELD6_TITLE=Lighthouse Scores
+  #     - "SLACK_FIELD6_VALUE=PERF: ${{LIGHTHOUSE_PERF}}   A11Y: ${{LIGHTHOUSE_A11Y}}\nBEST: ${{LIGHTHOUSE_BEST}}   SEO: ${{LIGHTHOUSE_SEO}}\nPWA: ${{LIGHTHOUSE_PWA}}"
+  #     - SLACK_FIELD6_SHORT=true
+  #   when:
+  #     branch:
+  #       only:
+  #         - master
+  #         - /^rc-/i
+  #         - /^feat-/i

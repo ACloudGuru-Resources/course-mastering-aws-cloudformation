@@ -1,0 +1,28 @@
+{
+  "region": "us-east-1",
+  "accountId": "000000000000",
+  "fragment": {
+      "Description": "CommonTags macro example template",
+      "Resources": {
+          "Bucket1": {
+              "Type": "AWS::S3::Bucket",
+              "Properties": {
+                  "Tags": [
+                      {
+                          "Key": "CostAllocation",
+                          "Value": "override"
+                      }
+                  ]
+              }
+          }
+      }
+  },
+  "transformId": "000000000000::CommonTags",
+  "params": {
+      "CreatedBy": "Me",
+      "CostAllocation": "MySuperCoolApp",
+      "Name": "MySuperCoolApp"
+  },
+  "requestId": "04d681a2-906f-4d25-b0ef-72044ac95035",
+  "templateParameterValues": {}
+}

@@ -1,0 +1,17 @@
+Transform: AWS::Serverless-2016-10-31
+
+Description: Macro CommonTags
+
+Resources:
+  MacroFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: src
+      Handler: index.handler
+
+  Macro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: CommonTags
+      FunctionName: !GetAtt MacroFunction.Arn

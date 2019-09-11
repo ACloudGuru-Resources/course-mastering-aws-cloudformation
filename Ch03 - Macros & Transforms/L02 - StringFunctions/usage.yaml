@@ -1,0 +1,14 @@
+Description: StringFunctions macro example template
+
+Parameters:
+  InputString:
+    Default: This is a test input string
+    Type: String
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+        - Key: Upper
+          Value: !Ref InputString

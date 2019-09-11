@@ -1,0 +1,59 @@
+Parameters:
+  StageParameter:
+    Type: String
+    Default: dev
+    Description: Feature Branch Name
+  ProxyEntryImportParameter:
+    Type: String
+    Default: stack-proxy-dev-proxyentry-lambda-arn
+    Description: ImportValue name for the ProxyEntryArn
+  CloudFrontOAIProxyARNParameter:
+    Type: String
+    Default: stack-proxy-dev-cloudfrontoai
+    Description: ARN for the CloudFront OAI
+  OriginRequestProxyRoleArnParameter:
+    Type: String
+    Default: stack-proxy-dev-originrequestproxy-role-arn
+    Description: ARN for the OriginRequestProxy Role
+Resources:
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: { Ref: WebsiteBucket }
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            CanonicalUser:
+              Fn::ImportValue: !Ref CloudFrontOAIProxyARNParameter
+            AWS:
+              Fn::ImportValue: !Ref OriginRequestProxyRoleArnParameter
+          Action:
+            - s3:ListBucket
+            - s3:GetObject
+          Resource:
+            - !Sub
+              - arn:aws:s3:::${BucketName}
+              - { BucketName: !Ref WebsiteBucket }
+            - !Sub
+              - arn:aws:s3:::${BucketName}/*
+              - { BucketName: !Ref WebsiteBucket }
+  ProxyEntry:
+    Type: Custom::MarketingStackProxyEntry
+    Version: 1.0
+    Properties:
+      ServiceToken:
+        Fn::ImportValue: !Ref ProxyEntryImportParameter
+      Service: !Ref AWS::StackName
+      Stage: !Ref StageParameter
+      Origin: !GetAtt WebsiteBucket.DomainName
+
+Outputs:
+  SiteURL:
+    Description: URL for this site
+    Value: !Sub
+      - https://${Domain}
+      - { Domain: !GetAtt ProxyEntry.Host }

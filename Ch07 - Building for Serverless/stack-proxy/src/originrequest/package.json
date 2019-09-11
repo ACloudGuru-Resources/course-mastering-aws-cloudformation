@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "middy": "^0.22.1",
+    "middy-reroute": "^2.0.8"
+  }
+}

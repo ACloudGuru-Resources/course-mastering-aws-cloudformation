@@ -1,0 +1,20 @@
+{
+  "RequestType": "Delete",
+  "ServiceToken": "arn:aws:lambda:us-east-1:104477223281:function:macro-s3objects-ResourceFunction-1KHRIK0HPKT2M",
+  "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/arn%3Aaws%3Acloudformation%3Aus-east-1%3A104477223281%3Astack/s3objects2/49537040-946a-11e9-9057-0af1b2bb447e%7CObject2%7C7406ab27-5179-4be2-9951-76ec47084801?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190621T213325Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=AKIA6L7Q4OWTSAJFC3R7%2F20190621%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=85c4635904aee08d804d8fe2a8acb92a64d5b54780e28d14a37eef1011b638ec",
+  "StackId": "arn:aws:cloudformation:us-east-1:104477223281:stack/s3objects2/49537040-946a-11e9-9057-0af1b2bb447e",
+  "RequestId": "7406ab27-5179-4be2-9951-76ec47084801",
+  "LogicalResourceId": "Object2",
+  "PhysicalResourceId": "s3objects2-Object2-QDFNQ51R1KY0",
+  "ResourceType": "Custom::S3Object",
+  "ResourceProperties": {
+      "ServiceToken": "arn:aws:lambda:us-east-1:104477223281:function:macro-s3objects-ResourceFunction-1KHRIK0HPKT2M",
+      "Target": {
+          "ContentType": "image/png",
+          "Bucket": "s3objects2-bucket-14eu2k3d8bj56",
+          "ACL": "public-read",
+          "Key": "1-pixel.gif"
+      },
+      "Base64Body": "R0lGODdhAQABAIABAP///0qIbCwAAAAAAQABAAACAkQBADs="
+  }
+}

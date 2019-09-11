@@ -1,0 +1,28 @@
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  # Taking the Bucket reference in as a parameter
+  BucketParam:
+    Type: String
+    Description: Domain to be extended with subdomains
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs8.10
+      InlineCode: |
+        const { BUCKET } = process.env;
+        module.exports.handler = (event, context, callback) => {
+          console.log('BUCKET:', BUCKET);
+          callback(null, 'I GOT THE BUCKET!!!');
+        };
+      Handler: index.handler
+      Environment:
+        Variables:
+          BUCKET: !Ref BucketParam
+
+Outputs:
+  # Passing the Lambda reference back out
+  LambdaARN:
+    Description: So Cool Function
+    Value: !GetAtt LambdaFunction.Arn

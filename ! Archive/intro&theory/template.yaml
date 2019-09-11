@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  EnvParam:
+    Description: Environment
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - prod
+    ConstraintDescription: Please choose one of the options
+  DBNameParam:
+    Type: String
+    Default: amazonrds
+  DBUserParam:
+    Type: String
+    Default: amazonrds
+  DBPassParam:
+    Type: String
+    Default: amaz0nrd5
+    NoEcho: true
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      dev: ami-c481fad3
+      prod: ami-9f4082f6
+    us-west-1:
+      dev: ami-8d1945c8
+      prod: ami-8f1945ca
+  InstanceSize:
+    dev:
+      EC2: t2.micro
+      DB: db.t2.micro
+    prod:
+      EC2: t2.micro
+      DB: db.t2.micro
+
+Conditions:
+  isProd: !Equals [!Ref EnvParam, prod]
+
+Resources:
+  EC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", !Ref EnvParam]
+      InstanceType: !FindInMap [InstanceSize, !Ref EnvParam, EC2]
+  DB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: "5"
+      StorageType: gp2
+      DBInstanceClass: !FindInMap [InstanceSize, !Ref EnvParam, DB]
+      DBName: !Ref DBNameParam
+      Engine: MySQL
+      MasterUsername: !Ref DBUserParam
+      MasterUserPassword: !Ref DBPassParam
+  S3Bucket:
+    Condition: isProd
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+        - Key: ENV
+          Value: !Ref EnvParam
+
+Outputs:
+  EC2InstaceID:
+    Value: !Ref EC2
+    Description: My EC2 Instance ID
+  DBInstanceName:
+    Value: !Ref DB
+    Description: My DB Instance Name
+  S3BucketName:
+    Condition: isProd
+    Value: !Ref S3Bucket

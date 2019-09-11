@@ -1,0 +1,26 @@
+  // Custom tags for the parser to use
+  "yaml.customTags": [
+    "!And sequence",
+    "!If sequence",
+    "!Not sequence",
+    "!Equals sequence",
+    "!Or sequence",
+    "!FindInMap sequence",
+    "!FindInMap scalar",
+    "!Base64",
+    "!Cidr",
+    "!Ref",
+    "!Sub sequence",
+    "!Sub scalar",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!Select",
+    "!Select sequence",
+    "!Split sequence",
+    "!Join sequence",
+    "!Condition",
+    "!Transform sequence"
+  ],
+  // Enable/disable default YAML formatter (requires restart)
+  "yaml.format.enable": true,

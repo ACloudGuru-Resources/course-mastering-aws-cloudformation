@@ -1,0 +1,20 @@
+Transform: AWS::Serverless-2016-10-31
+
+Description: >
+  Count macro
+  A simple iterator for creating multiple identical resources
+
+Resources:
+  CountMacroFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src
+      Handler: index.handler
+      Runtime: nodejs10.x
+      Timeout: 5
+
+  Macro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: Count
+      FunctionName: !GetAtt CountMacroFunction.Arn

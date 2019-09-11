@@ -1,0 +1,19 @@
+{
+   "RequestType": "Update",
+   "RequestId": "unique id for this update request",
+   "ResponseURL": "pre-signed-url-for-update-response",
+   "ResourceType": "Custom::MyCustomResourceType",
+   "LogicalResourceId": "name of resource in template",
+   "StackId": "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
+   "PhysicalResourceId": "feat-sls--projectx.companyx.com",
+   "ResourceProperties": {
+      "Service": "projectx",
+      "Stage": "feat-sls",
+      "Origin": "new-bucket"
+   },
+   "OldResourceProperties": {
+      "Service": "projectx",
+      "Stage": "feat-sls",
+      "Origin": "test-bucket"
+   }
+}

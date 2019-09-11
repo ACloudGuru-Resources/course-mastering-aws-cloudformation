@@ -1,0 +1,16 @@
+Description: CommonTags macro example template
+
+Resources:
+  Bucket1:
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+        - Key: CostAllocation
+          Value: override
+
+  Bucket2:
+    Type: AWS::S3::Bucket
+    Properties:
+      Tags:
+        - Key: SomeOtherThing
+          Value: stuff

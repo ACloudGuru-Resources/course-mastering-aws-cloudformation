@@ -1,0 +1,18 @@
+Transform: AWS::Serverless-2016-10-31
+
+Description: Macro StringFunctions
+
+Resources:
+  StringFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: src
+      Handler: index.handler
+
+  Macro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: String
+      Description: String Processing Functions
+      FunctionName: !GetAtt StringFunction.Arn

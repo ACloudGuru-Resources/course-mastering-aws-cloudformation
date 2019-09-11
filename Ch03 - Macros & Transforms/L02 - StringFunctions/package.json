@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "test:lint": "eslint .",
+    "test:unit": "jest --verbose",
+    "test:unit:watch": "jest --verbose --watch",
+    "test": "npm run test:lint && npm run test:unit",
+    "jest": "jest"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/src/**/*.test.js",
+      "!node_modules"
+    ],
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.521.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0"
+  }
+}

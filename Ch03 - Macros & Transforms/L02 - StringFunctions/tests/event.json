@@ -1,0 +1,16 @@
+{
+  "region": "us-east-1",
+  "accountId": "104477223281",
+  "fragment": {},
+  "transformId": "104477223281::String",
+  "params": {
+      "InputString": "this is a test input String",
+      "Operation": "MaxLength",
+      "Length": "4",
+      "StripFrom": "Left"
+  },
+  "requestId": "617b6d09-32cb-421d-ac8f-1507756e8ecd",
+  "templateParameterValues": {
+      "InputString": "This is a test input string"
+  }
+}
