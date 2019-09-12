@@ -171,16 +171,11 @@ https://amzn.to/32Gkl36
 3. AWS Serverless Application Repository
 https://www.youtube.com/watch?v=AWJk7Ek9oOU
 
-## Chapter 5 - Mastering Deployments
+## Chapter 5 - Mastering Stacks
 
 **Lecture Description:** Learn processes to create fast and reliable CI pipelines for your CloudFormation templates
 
-### Ch05_L01 – Overview
-
-1. What we’re going to Build/Learn
-2. Resources to be used
-
-### Ch05_L02 - CloudFormation Service Roles
+### Ch05_L01 - CloudFormation Service Roles
 http://bit.ly/2YL0yND
 
 1. Why are they needed?
@@ -188,13 +183,13 @@ http://bit.ly/2YL0yND
 3. DEMO: Stack Deploy & Update
 4. Cleanup
 
-### Ch05_L03 - Stack Policies
+### Ch05_L02 - Stack Policies
 
 1. What are they?
 2. DEMO - Creation Policy
 4. DEMO - Deletion Policy
 
-### Ch05_L04 – Change Sets
+### Ch05_L03 – Change Sets
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#organizingstacks
 
 1. What are they

@@ -1,0 +1,77 @@
+Transform: AWS::Serverless-2016-10-31
+
+Mappings:
+  SettingsMap:
+    prod:
+      KMSARN: PROD_KEY_ARN
+      SECRETS: VALUE_ENCRYPTED_W_PROD_KEY
+    dev:
+      KMSARN: arn:aws:kms:us-east-1:645655324390:key/a8945b88-4c6b-4801-abe6-a051cdd518ae
+      SECRETS: AQICAHgNdkmTKqWfq2CdzaGySiAqltHWYNbe2nzg0/xiouSUYgEXzG2SEp8zqcY7I0dDSlMEAAAAzjCBywYJKoZIhvcNAQcGoIG9MIG6AgEAMIG0BgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDH+Hz/Nh+oqTyNPjAIBEICBhrffOHbZVra8IM2rgkaJhaBnkvWMInq09bZLwB2zahbPObK9E+iD8Bo1E1uquwdtVzjStPftvJ57M8DTXwa4fAODxfub5s0mISZ+j5ualMk3B6ccK46mRUiCQvFcQEL+PkZBHU9rqAZbmk85q3JmKPrYOdJoPG0WdyfG7ELQmee0u8gjNHYt
+
+Resources:
+  DecryptFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs8.10
+      InlineCode: |
+        const AWS = require('aws-sdk');
+        const kms = new AWS.KMS();
+
+        const { SECRETS: ENCRYPTED_SECRETS } = process.env;
+        let SECRETS;
+
+        exports.handler = async (event, context, callback) => {
+          try {
+            SECRETS = SECRETS || (await decrypt(ENCRYPTED_SECRETS));
+
+            callback(null, SECRETS);
+          } catch (error) {
+            console.log(error);
+            callback(error);
+          }
+        };
+
+        const decrypt = secretText =>
+          kms
+            .decrypt({ CiphertextBlob: Buffer.from(secretText, 'base64') })
+            .promise()
+            .then(data => {
+              const decryptedText = String(data.Plaintext);
+              return JSON.parse(decryptedText);
+            });
+
+      Handler: index.handler
+      Role: !GetAtt DecryptFunctionRole.Arn
+      Environment:
+        Variables:
+          SECRETS: !FindInMap [SettingsMap, dev, SECRETS]
+
+  DecryptFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      RoleName: !Sub ${AWS::StackName}-DecryptFunction
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-DecryptFunction
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                Resource: !FindInMap [SettingsMap, dev, KMSARN]
