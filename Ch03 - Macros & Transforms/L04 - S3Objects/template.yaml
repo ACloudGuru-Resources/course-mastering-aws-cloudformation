@@ -8,6 +8,9 @@ Resources:
       CodeUri: src
       Handler: resource.handler
       Policies: AmazonS3FullAccess
+      Environment:
+        Variables:
+          REGION: !Ref AWS::Region
 
   MacroFunction:
     Type: AWS::Serverless::Function
@@ -15,12 +18,3 @@ Resources:
       Runtime: nodejs10.x
       CodeUri: src
       Handler: index.handler
-      Environment:
-        Variables:
-          LAMBDA_ARN: !GetAtt ResourceFunction.Arn
-
-  Macro:
-    Type: AWS::CloudFormation::Macro
-    Properties:
-      Name: S3Objects
-      FunctionName: !GetAtt MacroFunction.Arn

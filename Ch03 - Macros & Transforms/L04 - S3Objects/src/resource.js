@@ -1,8 +1,10 @@
 const AWS = require('aws-sdk');
 const axios = require('axios');
+
+const { REGION: region } = process.env;
 const s3 = new AWS.S3({
   apiVersion: '2012–09–25',
-  region: 'us-east-1',
+  region,
 });
 
 exports.handler = async (event, context, callback) => {
@@ -83,7 +85,7 @@ const sendResponse = (event, Status, Reason, cb) => {
 
   const responseBody = JSON.stringify({
     Status,
-    Reason,
+    Reason: Reason.message,
     StackId,
     RequestId,
     LogicalResourceId,

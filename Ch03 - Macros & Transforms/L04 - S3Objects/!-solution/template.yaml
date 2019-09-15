@@ -8,6 +8,9 @@ Resources:
       CodeUri: src
       Handler: resource.handler
       Policies: AmazonS3FullAccess
+      Environment:
+        Variables:
+          REGION: !Ref AWS::Region
 
   MacroFunction:
     Type: AWS::Serverless::Function

@@ -1,10 +1,10 @@
 const AWS = require('aws-sdk');
 const axios = require('axios');
 
-const { ORIGINMAP_TABLE, DOMAIN } = process.env;
+const { ORIGINMAP_TABLE, DOMAIN, REGION: region } = process.env;
 const dynamodb = new AWS.DynamoDB({
   apiVersion: '2012-08-10',
-  region: 'us-east-1',
+  region,
 });
 
 exports.handler = async (event, context, callback) => {
@@ -128,7 +128,7 @@ const sendResponse = (event, Status, Reason, cb) => {
 
   const responseBody = JSON.stringify({
     Status,
-    Reason,
+    Reason: Reason.message,
     StackId,
     RequestId,
     LogicalResourceId,
