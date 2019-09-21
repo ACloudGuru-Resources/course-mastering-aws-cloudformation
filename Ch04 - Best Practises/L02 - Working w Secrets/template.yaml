@@ -3,11 +3,9 @@ Transform: AWS::Serverless-2016-10-31
 Mappings:
   SettingsMap:
     prod:
-      KMSARN: PROD_KEY_ARN
-      SECRETS: VALUE_ENCRYPTED_W_PROD_KEY
+      SSMSECRETS: /acg/master-cfn/secrets
     dev:
-      KMSARN: arn:aws:kms:us-east-1:645655324390:key/a8945b88-4c6b-4801-abe6-a051cdd518ae
-      SECRETS: AQICAHgNdkmTKqWfq2CdzaGySiAqltHWYNbe2nzg0/xiouSUYgEXzG2SEp8zqcY7I0dDSlMEAAAAzjCBywYJKoZIhvcNAQcGoIG9MIG6AgEAMIG0BgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDH+Hz/Nh+oqTyNPjAIBEICBhrffOHbZVra8IM2rgkaJhaBnkvWMInq09bZLwB2zahbPObK9E+iD8Bo1E1uquwdtVzjStPftvJ57M8DTXwa4fAODxfub5s0mISZ+j5ualMk3B6ccK46mRUiCQvFcQEL+PkZBHU9rqAZbmk85q3JmKPrYOdJoPG0WdyfG7ELQmee0u8gjNHYt
+      SSMSECRETS: /acg/master-cfn/secrets
 
 Resources:
   DecryptFunction:
@@ -16,14 +14,14 @@ Resources:
       Runtime: nodejs8.10
       InlineCode: |
         const AWS = require('aws-sdk');
-        const kms = new AWS.KMS();
+        const { AWS_REGION: region, SSMSECRETS } = process.env;
+        const ssm = new AWS.SSM({ apiVersion: '2014-11-06', region });
 
-        const { SECRETS: ENCRYPTED_SECRETS } = process.env;
         let SECRETS;
 
         exports.handler = async (event, context, callback) => {
           try {
-            SECRETS = SECRETS || (await decrypt(ENCRYPTED_SECRETS));
+            SECRETS = SECRETS || (await decrypt(SSMSECRETS));
 
             callback(null, SECRETS);
           } catch (error) {
@@ -32,12 +30,15 @@ Resources:
           }
         };
 
-        const decrypt = secretText =>
-          kms
-            .decrypt({ CiphertextBlob: Buffer.from(secretText, 'base64') })
+        const decrypt = Name =>
+          ssm
+            .getParameter({
+              Name,
+              WithDecryption: true,
+            })
             .promise()
-            .then(data => {
-              const decryptedText = String(data.Plaintext);
+            .then(({ Parameter: { Value } }) => {
+              const decryptedText = String(Value);
               return JSON.parse(decryptedText);
             });
 
@@ -45,7 +46,7 @@ Resources:
       Role: !GetAtt DecryptFunctionRole.Arn
       Environment:
         Variables:
-          SECRETS: !FindInMap [SettingsMap, dev, SECRETS]
+          SSMSECRETS: !FindInMap [SettingsMap, dev, SSMSECRETS]
 
   DecryptFunctionRole:
     Type: AWS::IAM::Role
@@ -53,7 +54,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-DecryptFunction
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -63,15 +64,15 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-DecryptFunction
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:*"
+                Resource: arn:aws:logs:*:*:*
               - Effect: Allow
                 Action:
-                  - kms:Decrypt
-                Resource: !FindInMap [SettingsMap, dev, KMSARN]
+                  - ssm:GetParameter*
+                Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/acg/master-cfn/*

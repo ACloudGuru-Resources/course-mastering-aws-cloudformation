@@ -17,7 +17,6 @@ Resources:
         Variables:
           ORIGINMAP_TABLE: !Ref OriginMapTBL
           DOMAIN: !Ref DomainParameter
-          REGION: !Ref AWS::Region
 
   ProxyEntryRole:
     Type: AWS::IAM::Role

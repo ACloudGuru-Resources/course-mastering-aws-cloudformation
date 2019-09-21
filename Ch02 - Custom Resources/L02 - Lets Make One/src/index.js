@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const axios = require('axios');
 
-const { ORIGINMAP_TABLE, DOMAIN, REGION: region } = process.env;
+const { ORIGINMAP_TABLE, DOMAIN, AWS_REGION: region } = process.env;
 const dynamodb = new AWS.DynamoDB({
   apiVersion: '2012-08-10',
   region,

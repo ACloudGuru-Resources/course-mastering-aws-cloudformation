@@ -1,0 +1,16 @@
+Parameters:
+  LCAmiParam:
+    Type: AWS::EC2::Image::Id
+    Description: HVM compatible AMI-ID for the AutoScaling group
+    Default: ami-0b69ea66ff7391e80
+Resources:
+  LC2: # <-- Caused a NEW LC to be created under new Logicial ID
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref LCAmiParam
+      InstanceType: t2.large # <-- Kept the original change from t2.micro
+
+Outputs:
+  LCName:
+    Description: Launch Configuration Name
+    Value: !Ref LC2 # <-- Updated all (only) reference to the Logical ID

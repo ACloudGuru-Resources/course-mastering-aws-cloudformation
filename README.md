@@ -121,21 +121,7 @@ Eg. feat-blue--projectx.domain.com
 
 ## Chapter 4 – Best Practises
 
-### Ch04_L01 - Overview
-
-1. What we're going to learn
-2. High-level best practises
-  - Do not embed credentials in your templates
-  - Validate Templates before deploying
-  - Deploy all resources using CFN
-  - Do not make changes to resources outside of the stack
-  - Use Stack Policies to protect your resources
-  - Version control your templates
-  - Organize Stacks By Lifecycle and Ownership
-https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#organizingstacks
-
-
-### Ch04_L02 - Nested Stacks
+### Ch04_L01 - Nested Stacks
 
 1. What are they?
 3. Features & Benefits
@@ -145,26 +131,27 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 4. Recover a nested stacks hierarchy with ResourcesToSkip https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-continueupdaterollback.html#nested-stacks
 5. Clean up
 
-### Ch04_L03 - Working with Secrets
+### Ch04_L02 - Working with Secrets
 
 1. Overview
+2. SSM vs Secrets Manager
 2. Intro to KMS
 4. Bundling Secrets
 3. Encrypting in CLI
 4. Decrypting in Lambda
 5. Clean up
 
-### Ch04_L04 - Template Strategies
+### Ch04_L03 - Template Strategies
 
 **Lecture Description:** Learn some of the best practises, workflows and tools for managing your templates
 https://amzn.to/32Gkl36
 
 1. Reuse & Stack Separation
-2. AWS::Include Transform
 3. Organize Stacks By Lifecycle and Ownership
-4. Nested Stacks vs Cross-Stack Referencing
+4. Nested vs Exports vs AWS::Include
+5. Validate Templates before deploying
 
-### Ch04_L05 - Template Storage and Revisions
+### Ch04_L04 - Template Storage and Revisions
 
 1. S3 Bucket Storage
 2. Git Template Repository
@@ -369,23 +356,4 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - Setup of main deploy bucket in overview of course
 - setup yarn shortcut to install all node modules
 - Remove statement about using cfn-lambda as module
-
-
-## Commands
-
-cfn package
-```
-aws cloudformation package \
-  --template-file template.yaml \
-  --s3-bucket acg-deploy-bucket \
-  --output-template-file packaged.yaml --profile cloudguru
-```
-
-cfn deploy
-```
-aws cloudformation deploy \                     
-    --stack-name my-cool-stack \
-    --template-file packaged.yaml \
-    --parameter-overrides $(cat params.toml) \
-    --capabilities CAPABILITY_NAMED_IAM --profile myprofile
-```
+- Add Blue-Green Deployment of CloudFormation Templates (Domains)

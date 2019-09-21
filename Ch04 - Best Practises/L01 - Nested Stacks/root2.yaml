@@ -1,0 +1,29 @@
+Parameters:
+  LCAmiParam:
+    Type: AWS::EC2::Image::Id
+    Description: HVM compatible AMI-ID for the AutoScaling group
+    Default: ami-0b69ea66ff7391e80
+Resources:
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        - !Select
+          - 0
+          - Fn::GetAZs: !Ref AWS::Region
+      DesiredCapacity: "1"
+      LaunchConfigurationName: !Ref LC
+      MaxSize: "1"
+      MinSize: "1"
+  LC:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !Ref LCAmiParam
+      InstanceType: t2.large
+  WaitCondition:
+    Type: "AWS::CloudFormation::WaitCondition"
+    DependsOn: ASG
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT1M

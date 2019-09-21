@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const axios = require('axios');
 
-const { REGION: region } = process.env;
+const { AWS_REGION: region } = process.env;
 const s3 = new AWS.S3({
   apiVersion: '2012–09–25',
   region,

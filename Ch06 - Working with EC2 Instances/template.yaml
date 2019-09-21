@@ -76,9 +76,9 @@ Parameters:
   HostedZoneId:
     Description: HostedZoneId in which Route53 Recordset will be created.
     Type: String
-  SslEmail:
-    Description: e-mail used in LetsEncrypt cert creation
-    Type: String
+  # SslEmail:
+  #   Description: e-mail used in LetsEncrypt cert creation
+  #   Type: String
 Mappings:
   AWSInstanceType2Arch:
     t2.micro:
@@ -421,19 +421,21 @@ Resources:
                 echo ghost present...
                 else
                 echo ghost not present, installing...
-                su - ghostuser -c "cd /var/www/ghost && ghost install --verbose --url https://${DomainName} --ip 0.0.0.0 --dbhost ${GhostDbInstance.Endpoint.Address} --dbuser ${DbUser} --dbpass ${DbPassword} --dbname ${DbName} --mail SMTP --mailuser ${GhostSesUserAccessKey} --mailpass $MAIL_PWD --mailhost ${SesSmtpEndpoint} --mailport 587 --sslemail ${SslEmail} --process systemd --no-prompt --auto"
+                #su - ghostuser -c "cd /var/www/ghost && ghost install --verbose --url https://${DomainName} --ip 0.0.0.0 --dbhost ${GhostDbInstance.Endpoint.Address} --dbuser ${DbUser} --dbpass ${DbPassword} --dbname ${DbName} --mail SMTP --mailuser ${GhostSesUserAccessKey} --mailpass $MAIL_PWD --mailhost ${SesSmtpEndpoint} --mailport 587 --sslemail {SslEmail} --process systemd --no-prompt --auto"
+                su - ghostuser -c "cd /var/www/ghost && ghost install --verbose --url http://${DomainName} --ip 0.0.0.0 --dbhost ${GhostDbInstance.Endpoint.Address} --dbuser ${DbUser} --dbpass ${DbPassword} --dbname ${DbName} --mail SMTP --mailuser ${GhostSesUserAccessKey} --mailpass $MAIL_PWD --mailhost ${SesSmtpEndpoint} --mailport 587 --process systemd --no-prompt --auto"
                 su - ghostuser -c "cd $GHOSTDIR && ghost config mail.from ${FromAddress}"
                 if [ -f $GHOSTDIR/system/files/www.${DomainName}.conf ]; then
                 echo SSL for www configured...
                 else
                 echo generating cert and configuring nginx for www...
-                su - ghostuser -c "cd $GHOSTDIR && ghost config url https://www.${DomainName}"
-                su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx ssl --sslemail ${SslEmail}"
-                su - ghostuser -c "cd $GHOSTDIR && ghost config url https://${DomainName}"
+                su - ghostuser -c "cd $GHOSTDIR && ghost config url http://www.${DomainName}"
+                # su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx ssl --sslemail {SslEmail}"
+                su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx"
+                su - ghostuser -c "cd $GHOSTDIR && ghost config url http://${DomainName}"
                 awk '!/proxy_set_header/' $GHOSTDIR/system/files/www.${DomainName}.conf > /tmp/www.${DomainName}.conf
                 awk '!/proxy_set_header/' $GHOSTDIR/system/files/www.${DomainName}-ssl.conf > /tmp/www.${DomainName}-ssl.conf
-                sed -i 's/proxy_pass.*/return 301 https:\/\/${DomainName}\$request_uri;/' /tmp/www.${DomainName}.conf
-                sed -i 's/proxy_pass.*/return 301 https:\/\/${DomainName}\$request_uri;/' /tmp/www.${DomainName}-ssl.conf
+                sed -i 's/proxy_pass.*/return 301 http:\/\/${DomainName}\$request_uri;/' /tmp/www.${DomainName}.conf
+                sed -i 's/proxy_pass.*/return 301 http:\/\/${DomainName}\$request_uri;/' /tmp/www.${DomainName}-ssl.conf
                 mv /tmp/www.${DomainName}.conf $GHOSTDIR/system/files/www.${DomainName}.conf
                 mv /tmp/www.${DomainName}-ssl.conf $GHOSTDIR/system/files/www.${DomainName}-ssl.conf
                 chown ghostuser:ghostuser $GHOSTDIR/system/files/www.${DomainName}.conf

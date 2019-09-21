@@ -1,0 +1,16 @@
+Parameters:
+  BucketURLParam:
+    Type: String
+    Description: Course bucket path
+Resources:
+  LCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub ${BucketURLParam}/lc.yaml
+
+  ASGStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        LCNameParam: !GetAtt LCStack.Outputs.LCName
+      TemplateURL: !Sub ${BucketURLParam}/asg.yaml
