@@ -48,6 +48,6 @@ steps:
       - AWS_SECRET_ACCESS_KEY=${{CLOUDGURU_SECRET_ACCESS_KEY_ID}}
     commands:
       - aws s3 sync \
-        . s3://$DEPLOY_BUCKET/templates/projectx \
+        . s3://${{CLOUDGURU_DEPLOY_BUCKET}}/templates/projectx \
         --exclude "*" \
         --include "*.yaml"
