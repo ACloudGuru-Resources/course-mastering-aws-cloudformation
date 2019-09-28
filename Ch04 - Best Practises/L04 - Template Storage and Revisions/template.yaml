@@ -1,0 +1,17 @@
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs8.10
+      InlineCode: |
+        const { BUCKET } = process.env;
+        module.exports.handler = (event, context, callback) => {
+          console.log('BUCKET:', BUCKET);
+          callback(null, 'I GOT THE BUCKET!!!');
+        };
+      Handler: index.handler
+      Environment:
+        Variables:
+          BUCKET: SomeBucketName
