@@ -21,7 +21,7 @@ steps:
       - AWS_ACCESS_KEY_ID=${{CLOUDGURU_ACCESS_KEY_ID}}
       - AWS_SECRET_ACCESS_KEY=${{CLOUDGURU_SECRET_ACCESS_KEY_ID}}
     commands:
-      - aws cloudformation validate-template \
+      - aws cloudformation validate-template
         --template-body file://template.yaml
   package:
     stage: package
@@ -33,9 +33,9 @@ steps:
       - AWS_ACCESS_KEY_ID=${{CLOUDGURU_ACCESS_KEY_ID}}
       - AWS_SECRET_ACCESS_KEY=${{CLOUDGURU_SECRET_ACCESS_KEY_ID}}
     commands:
-      - aws cloudformation package \
-        --template-file template.yaml \
-        --s3-bucket ${{CLOUDGURU_DEPLOY_BUCKET}} \
+      - aws cloudformation package
+        --template-file template.yaml
+        --s3-bucket ${{CLOUDGURU_DEPLOY_BUCKET}}
         --output-template-file packaged.yaml
   deploy:
     stage: deploy
@@ -47,7 +47,7 @@ steps:
       - AWS_ACCESS_KEY_ID=${{CLOUDGURU_ACCESS_KEY_ID}}
       - AWS_SECRET_ACCESS_KEY=${{CLOUDGURU_SECRET_ACCESS_KEY_ID}}
     commands:
-      - aws s3 sync \
-        . s3://${{CLOUDGURU_DEPLOY_BUCKET}}/templates/projectx \
-        --exclude "*" \
+      - aws s3 sync
+        . s3://${{CLOUDGURU_DEPLOY_BUCKET}}/templates/projectx
+        --exclude "*"
         --include "*.yaml"
