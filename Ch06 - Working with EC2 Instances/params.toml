@@ -7,3 +7,4 @@ DomainName=ghost.klickstuff.com
 FromAddress=dvanbrunt@klick.com
 HostedZoneId=ZBFSBY8N4M62
 SslEmail=dvanbrunt@klick.com
+WhitelistedIP=24.244.87.185/32

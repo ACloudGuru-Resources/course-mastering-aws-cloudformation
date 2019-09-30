@@ -76,9 +76,11 @@ Parameters:
   HostedZoneId:
     Description: HostedZoneId in which Route53 Recordset will be created.
     Type: String
-  # SslEmail:
-  #   Description: e-mail used in LetsEncrypt cert creation
-  #   Type: String
+  WhitelistedIP:
+    Description: IP to whitelist for access to Ghost Instance
+    Type: String
+    AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 Mappings:
   AWSInstanceType2Arch:
     t2.micro:
@@ -244,54 +246,18 @@ Resources:
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          CidrIp: 0.0.0.0/0
+          CidrIp: !Ref WhitelistedIP
 
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: 0.0.0.0/0
+          CidrIp: !Ref WhitelistedIP
 
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: 0.0.0.0/0
+          CidrIp: !Ref WhitelistedIP
 
-        # - IpProtocol: tcp
-        #   FromPort: 80
-        #   ToPort: 80
-        #   CidrIp: 38.99.136.178/32 # Klick Office
-        # - IpProtocol: tcp
-        #   FromPort: 80
-        #   ToPort: 80
-        #   CidrIp: 72.15.59.210/32 # Klick Office
-        # - IpProtocol: tcp
-        #   FromPort: 80
-        #   ToPort: 80
-        #   CidrIp: 35.182.69.133/32 # vpn.klick.com
-        # - IpProtocol: tcp
-        #   FromPort: 443
-        #   ToPort: 443
-        #   CidrIp: 38.99.136.178/32
-        # - IpProtocol: tcp
-        #   FromPort: 443
-        #   ToPort: 443
-        #   CidrIp: 72.15.59.210/32
-        # - IpProtocol: tcp
-        #   FromPort: 443
-        #   ToPort: 443
-        #   CidrIp: 35.182.69.133/32
-        # - IpProtocol: tcp
-        #   FromPort: 22
-        #   ToPort: 22
-        #   CidrIp: 38.99.136.178/32
-        # - IpProtocol: tcp
-        #   FromPort: 22
-        #   ToPort: 22
-        #   CidrIp: 72.15.59.210/32
-        # - IpProtocol: tcp
-        #   FromPort: 22
-        #   ToPort: 22
-        #   CidrIp: 35.182.69.133/32
       VpcId: !Ref GhostVpc
   GhostDbEc2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -506,12 +472,12 @@ Resources:
 Outputs:
   GhostUrl:
     Description: URL to reach the Ghost Front End
-    Value: !Sub https://${DomainName}
+    Value: !Sub http://${DomainName}
     Export:
       Name: !Sub ${AWS::StackName}-GhostUrl
   GhostAdminUrl:
     Description: URL to reach the Ghost Admin Interface
-    Value: !Sub https://${DomainName}/admin
+    Value: !Sub http://${DomainName}/admin
     Export:
       Name: !Sub ${AWS::StackName}-GhostAdminUrl
   InstanceIPAddress:

@@ -153,10 +153,8 @@ https://amzn.to/32Gkl36
 
 ### Ch04_L04 - Template Storage and Revisions
 
-1. S3 Bucket Storage
-2. Git Template Repository
-3. AWS Serverless Application Repository
-https://www.youtube.com/watch?v=AWJk7Ek9oOU
+1. Storing and Managing Templates
+2. AWS Serverless Application Repository
 
 ## Chapter 5 - Mastering Stacks
 
@@ -170,13 +168,8 @@ http://bit.ly/2YL0yND
 3. DEMO: Stack Deploy & Update
 4. Cleanup
 
-### Ch05_L02 - Stack Policies
 
-1. What are they?
-2. DEMO - Creation Policy
-4. DEMO - Deletion Policy
-
-### Ch05_L03 – Change Sets
+### Ch05_L02 – Change Sets
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#organizingstacks
 
 1. What are they
@@ -185,7 +178,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 4. DEMO - Let's use one
 5. Cleanup
 
-### Ch05_L04 – StackSets
+### Ch05_L03 – StackSets
 
 1. StackSet Concepts
 2. Features & Benefits
@@ -209,6 +202,12 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 1. [UserData (Procedural)](https://acloud.guru/course/aws-advanced-cloudformation/learn/d8067ef9-7840-7c93-e19e-6e1d9a52d756/e72173eb-7bbe-7db7-0d7c-eb486ba6e6f6/watch?backUrl=~2Fcourses)
 2. CloudFormationInit (Desired State)
 3. cfn-init and [cfn-signal](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-signal.html)
+
+### Ch06_L03 - Stack Policies
+
+1. What are they?
+2. DEMO - Creation Policy
+4. DEMO - Deletion Policy
 
 ### Ch06_L04 – Deploy & Review
 
@@ -315,6 +314,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - [New Parameter Types](https://aws.amazon.com/blogs/devops/using-the-new-cloudformation-parameter-types/)
 - [Custom Resource Auto-approve cert](https://www.alexdebrie.com/posts/cloudformation-custom-resources/)
 - [Macro Ideas](https://www.alexdebrie.com/posts/cloudformation-macros/)
+- [Blue/Green Deploys](http://think-devops.com/blogs/blue-green-deployments.html)
 
 
 # Timelines
