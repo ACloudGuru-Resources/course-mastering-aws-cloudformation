@@ -1,0 +1,34 @@
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-s3bucket
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  DynamoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-table
+      AttributeDefinitions:
+        - AttributeName: Host
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Host
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 300
+        WriteCapacityUnits: 5
+  Lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs8.10
+      InlineCode: |
+        exports.handler = (event, context, callback) => {
+          callback(null, 'Hello!');
+        };
+      Handler: index.handler
