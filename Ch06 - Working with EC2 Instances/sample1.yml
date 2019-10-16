@@ -1,0 +1,96 @@
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties: ...
+    Metadata:
+      AWS::CloudFormation::Init:
+      configSets:
+        full_install:
+          - install_thing1
+          - install_thing2
+        partial_install:
+          - install_thing2
+      install_thing1:
+        packages:
+        groups:
+        users:
+        sources:
+        files:
+        commands:
+        services:
+
+
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties: ...
+    Metadata:
+      AWS::CloudFormation::Init:
+      configSets:
+        full_install:
+          - install_thing1
+          - install_thing2
+        partial_install:
+          - install_thing2
+      install_thing1:
+        packages:
+          yum:
+            httpd: []
+            httpd:
+              - "2.4"
+              - "2.0"
+        groups:
+          acggroup: {}
+          serverlessgroup:
+              gid: "67"
+        users:
+          jsmith:
+            groups:
+              - groupA
+              - groupB
+            uid: "666"
+            homeDir: /root
+        sources:
+          /tmp/temp1: https://github.com/idvb/somerepo/tarball/master
+          /tmp/temp2: https://s3.amazonaws.com/somebucket/something.tar.gz
+        files:
+          /tmp/file.tmp:
+            source: https://url/somefile.txt
+            mode: "000644"
+            owner: jsmith
+            group: groupB
+          /tmp/db.config:
+            content: !Sub |
+              db.host=${DB.Endpoint.Address}
+              db.user=${DBUserNameParam}
+              db.pass=${DBPasswordParam}
+            mode: "000644"
+            owner: root
+            group: root
+        commands:
+            greeting:
+              command: !Sub |
+                echo "Hello, $PERSON" > /tmp/tmp
+              env:
+                PERSON: John Smith
+              cwd: ~
+              test: test ! -e /tmp/tmp
+              ignoreErrors: false
+        services:
+          sysvinit:
+            nginx:
+              enabled: true
+              ensuringRunning: true
+              files:
+                - /etc/nginx/nginx.conf
+              sources:
+                - /var/www/html
+
+          windows:
+            cfn-hup:
+              enabled: true
+              ensureRunning: true
+              files:
+                - "c:\\cfn\\cfn-hup.conf"
+                - "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf"

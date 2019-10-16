@@ -306,7 +306,7 @@ Resources:
     #     Count: 1
     #     Timeout: PT5M
     Metadata:
-      "AWS::CloudFormation::Init":
+      AWS::CloudFormation::Init:
         configSets:
           full_install:
             - install_and_enable_cfn_hup

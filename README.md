@@ -188,32 +188,43 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 6. DEMO - Deploying with StackSets
 7. Cleanup
 
+### Ch05_L04 – Stack Policies
+
+1. 
+
 ## Chapter 6 - Working with EC2 Instances (eg. GhostCMS)
 
 **Demo Description:** Build and deploy a Ghost Blogging CMS hosted on EC2. Learn how to provision the instance for required packages with CloudFormation.
 
-### Ch06_L01 – Overview
+### Ch06_L01 – CloudFormationInit
 
-1. What we’re going to Build/Learn
-2. Resources to be used
+1. [UserData (Procedural)](https://acloud.guru/course/aws-advanced-cloudformation/learn/d8067ef9-7840-7c93-e19e-6e1d9a52d756/e72173eb-7bbe-7db7-0d7c-eb486ba6e6f6/watch?backUrl=~2Fcourses) vs CloudFormationInit
+2. How it Works
 
-### Ch06_L02 – Provisioning
+### Ch06_L02 - ConfigSets
 
-1. [UserData (Procedural)](https://acloud.guru/course/aws-advanced-cloudformation/learn/d8067ef9-7840-7c93-e19e-6e1d9a52d756/e72173eb-7bbe-7db7-0d7c-eb486ba6e6f6/watch?backUrl=~2Fcourses)
-2. CloudFormationInit (Desired State)
-3. cfn-init and [cfn-signal](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-signal.html)
+1. Overview
+2. packages
+3. groups
+4. users
+5. sources
+6. files
+7. commands
+8. services
 
-### Ch06_L03 - Stack Policies
+### Ch06_L03 – cfn-hup
+
+1. How it works
+2. Configuring
+3. DEMO
+
+### Ch06_L04 – Resource Policies
 
 1. What are they?
-2. DEMO - Creation Policy
-4. DEMO - Deletion Policy
-
-### Ch06_L04 – Deploy & Review
-
-1. DEMO - Deploying the Stack
-2. DEMO - Reviewing the CloudFormation Console
-3. Cleanup
+2. [Creation Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-creationpolicy.html)
+2. [Update Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-updatepolicy.html)
+2. [Deletion Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)
+3. cfn-signal
 
 ## Chapter 7 - Working with Serverless
 
