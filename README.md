@@ -334,6 +334,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - Replacement update behavior (http://bit.ly/31liOh8)
 - UpdateReplace Policies
 - Stack Policies
+- WaitCondition
 
 
 ## Edits
