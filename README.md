@@ -327,34 +327,12 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - [Macro Ideas](https://www.alexdebrie.com/posts/cloudformation-macros/)
 - [Blue/Green Deploys](http://think-devops.com/blogs/blue-green-deployments.html)
 
-
-# Timelines
-
-- Chapter 1 - Intro and Theory (~56:00)
-  - Ch01_L01 – Introduction (?)
-  - Ch01_L02 – A Quick Refresher (15:24)
-  - Ch01_L03 – Template Anatomy (12:17)
-  - Ch01_L04 – Template Operations (10:15)
-  - Ch01_L05 – Tips & Watchouts (18:45)
-- Chapter 2 - Custom Resources (~59:00)
-  - Ch02_L01 – Overview (10:23)
-  - Ch02_L02 – What We Are Building (07:22)
-  - Ch02_L02 – Let's Make one (19:28)
-  - Ch02_L03 – Let's Use It (10:58)
-- Chapter 3 - Macros & Transforms (?)
-  - Ch03_L01 – Overview (11:22)
-  - Ch03_L02 – Macro: String Operations (?)
-  - Ch03_L03 – Macro: Cloning Resources (?)
-  - Ch03_L04 – Macro: Custom Resource Types (?)
-  - Ch03_L05 – Unit Testing (?)
-
 ## Missing Topics
 - CFN Designer
 - DependsOn
 - Tags
 - Replacement update behavior (http://bit.ly/31liOh8)
 - UpdateReplace Policies
-- DeletionPolicy
 - Stack Policies
 
 
