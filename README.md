@@ -335,9 +335,18 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - UpdateReplace Policies
 - Stack Policies
 - WaitCondition
+- Update Types
+  - Update with No Interruption
+  - Updates with Some Interruption
+  - Replacement
+- Correct all NodeJS to 10.x
+
 
 
 ## Edits
+- cfn-init log locations
+  - /var/log/cfn-init.log
+  
 - Template Operations
   - Conditionals !And is not used in example
   - all code examples need to wipe in

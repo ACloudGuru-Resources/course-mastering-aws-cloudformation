@@ -5,20 +5,14 @@ Parameters:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
-  InstanceType:
-    Description: EC2 instance type
+  EnvironmentSize:
     Type: String
-    Default: t2.micro
+    Default: SMALL
     AllowedValues:
-      - t2.micro
-      - t2.small
-      - t2.medium
-      - t2.large
-    ConstraintDescription: "t2.micro is current free tier instance type, choose a larger one to provide more resources for ghost to consume"
-  DbInstanceClass:
-    Default: db.t2.micro
-    Description: "RDS db instance class, db.t2.micro is current free tier"
-    Type: String
+      - SMALL
+      - MEDIUM
+      - LARGE
+    Description: Select Environment Size (S,M,L)
   DbAllocatedStorage:
     Default: "20"
     Description: RDS Allocated storage in GB. 20GB is free tier limit
@@ -55,43 +49,23 @@ Parameters:
     MaxLength: "41"
     AllowedPattern: "[a-zA-Z0-9]*"
     ConstraintDescription: must contain only alphanumeric characters.
-  FromAddress:
-    NoEcho: "true"
-    Description: the email address from which mail will be sent by the ghost server
-    Type: String
-    AllowedPattern: "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
-    ConstraintDescription: must be a valid email address
-  SesSmtpEndpoint:
-    Description: AWS SES SMPT Endpoint
-    Type: String
-    Default: email-smtp.us-east-1.amazonaws.com
-    AllowedValues:
-      - email-smtp.us-east-1.amazonaws.com
-      - email-smtp.us-west-2.amazonaws.com
-      - email-smtp.eu-west-1.amazonaws.com
-    ConstraintDescription: must be a valid SES SMTP endpoint
-  DomainName:
-    Description: Fully Qualified Domain name to configure ghost to use, e.g. www.example.com
-    Type: String
-  HostedZoneId:
-    Description: HostedZoneId in which Route53 Recordset will be created.
-    Type: String
   WhitelistedIP:
     Description: IP to whitelist for access to Ghost Instance
     Type: String
     AllowedPattern: (\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
 Mappings:
-  AWSInstanceType2Arch:
-    t2.micro:
-      Arch: HVM64
-    t2.small:
-      Arch: HVM64
-    t2.medium:
-      Arch: HVM64
-    t2.large:
-      Arch: HVM64
-  AWSRegionArch2AMI:
+  InstanceSize:
+    SMALL:
+      EC2: t2.micro
+      DB: db.t2.micro
+    MEDIUM:
+      EC2: t2.small
+      DB: db.t2.micro
+    LARGE:
+      EC2: t2.medium
+      DB: db.t2.medium
+  RegionArch2AMI:
     ap-northeast-1:
       HVM64: ami-0f63c02167ca94956
     ap-northeast-2:
@@ -130,114 +104,7 @@ Mappings:
       HVM64: ami-05596fb52c3802012
     cn-northwest-1:
       HVM64: ami-03f7db8b059795736
-  CidrConfig:
-    GhostVpc:
-      Cidr: 10.2.0.0/16
-    PubSubnet:
-      Cidr: 10.2.3.0/24
-    DbSubnet1:
-      Cidr: 10.2.4.0/24
-    DbSubnet2:
-      Cidr: 10.2.5.0/24
-  SubnetAvailabilityZone:
-    PubSubnet:
-      AvailabilityZone: us-east-1a
-    DbSubnet1:
-      AvailabilityZone: us-east-1a
-    DbSubnet2:
-      AvailabilityZone: us-east-1b
 Resources:
-  GhostVpc:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: !FindInMap [CidrConfig, GhostVpc, Cidr]
-      InstanceTenancy: default
-  PubSubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref GhostVpc
-      CidrBlock: !FindInMap [CidrConfig, PubSubnet, Cidr]
-      AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, PubSubnet, AvailabilityZone]
-      Tags:
-        - Key: Application
-          Value: !Ref AWS::StackName
-  PubSubnetDefaultRoute:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PubSubnetRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
-  PubSubnetRouteTable:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref GhostVpc
-  PubSubnetRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref PubSubnet
-      RouteTableId: !Ref PubSubnetRouteTable
-  GhostDbSubnetGroup:
-    Type: AWS::RDS::DBSubnetGroup
-    Properties:
-      DBSubnetGroupDescription: database subnet group
-      DBSubnetGroupName: !Sub ${AWS::StackName}GhostDbSubnetGroup
-      SubnetIds:
-        - !Ref DbSubnet1
-        - !Ref DbSubnet2
-  DbSubnet1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref GhostVpc
-      CidrBlock: !FindInMap [CidrConfig, DbSubnet1, Cidr]
-      AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, DbSubnet1, AvailabilityZone]
-      Tags:
-        - Key: Application
-          Value: !Ref AWS::StackName
-  DbSubnet2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref GhostVpc
-      CidrBlock: !FindInMap [CidrConfig, DbSubnet2, Cidr]
-      AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, DbSubnet2, AvailabilityZone]
-      Tags:
-        - Key: Application
-          Value: !Ref AWS::StackName
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
-  InternetGatewayVPCAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref GhostVpc
-  SESSendPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Action:
-              - ses:SendEmail
-              - ses:SendRawEmail
-            Resource:
-              - "*"
-            Condition:
-              StringEquals:
-                "ses:FromAddress": !Ref FromAddress
-      PolicyName: !Sub ${AWS::StackName}SESSendPolicy
-      Users:
-        - !Ref GhostSesUser
-  GhostSesUser:
-    Type: AWS::IAM::User
-    Properties:
-      UserName: !Sub ${AWS::StackName}-${AWS::Region}-ghost-ses
-  GhostSesUserAccessKey:
-    Type: AWS::IAM::AccessKey
-    Properties:
-      UserName: !Ref GhostSesUser
   GhostServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -257,19 +124,12 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: !Ref WhitelistedIP
-
-      VpcId: !Ref GhostVpc
-  GhostDbEc2SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  DbSecurityByEC2SecurityGroup:
+    Type: AWS::RDS::DBSecurityGroup
     Properties:
-      GroupDescription: Open database for access
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          SourceSecurityGroupId:
-            Ref: GhostServerSecurityGroup
-      VpcId: !Ref GhostVpc
+      GroupDescription: "Ingress for Amazon EC2 security group"
+      DBSecurityGroupIngress:
+        - EC2SecurityGroupName: !Ref GhostServerSecurityGroup
   GhostDbInstance:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -280,75 +140,73 @@ Resources:
       MultiAZ: false
       MasterUsername: root
       MasterUserPassword: !Ref DbRootPassword
-      DBInstanceClass: !Ref DbInstanceClass
+      DBInstanceClass: !FindInMap [InstanceSize, !Ref EnvironmentSize, DB]
       AllocatedStorage: !Ref DbAllocatedStorage
-      VPCSecurityGroups:
-        - !GetAtt GhostDbEc2SecurityGroup.GroupId
-      DBSubnetGroupName: !Ref GhostDbSubnetGroup
-  GhostServerEip:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-  GhostServerEipAssociation:
-    Type: AWS::EC2::EIPAssociation
-    Properties:
-      AllocationId: !GetAtt GhostServerEip.AllocationId
-      InstanceId: !Ref GhostServer
+      DBSecurityGroups:
+        - !Ref DbSecurityByEC2SecurityGroup
   GhostServer:
     Type: AWS::EC2::Instance
     DependsOn:
       - GhostDbInstance
-      - GhostServerWwwRecordSet
-      - GhostServerWwwRecordSet
-      - GhostDbInstance
-    # CreationPolicy:
-    #   ResourceSignal:
-    #     Count: 1
-    #     Timeout: PT5M
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT15M
     Metadata:
       AWS::CloudFormation::Init:
         configSets:
           full_install:
+            - prepare_repositories
             - install_and_enable_cfn_hup
             - prep_ghost
-        install_and_enable_cfn_hup:
+        prepare_repositories:
           files:
-            /etc/cfn/cfn-hup.conf:
-              content: !Sub |
-                [main]
-                stack=${AWS::StackId}
-                region=${AWS::Region}
-                interval=5
-
-              mode: "000400"
+            /usr/local/bin/add_repository:
+              content: |
+                curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash
+              mode: "000700"
               owner: root
               group: root
+          commands:
+            add_repository:
+              command: /usr/local/bin/add_repository
+        install_and_enable_cfn_hup:
+          packages:
+            apt:
+              nginx: []
+              mysql-client: []
+          files:
             /etc/cfn/hooks.d/cfn-auto-reloader.conf:
               content: !Sub |
                 [cfn-auto-reloader-hook]
                 triggers=post.update
                 path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init
-                action=/usr/local/bin/cfn-init -v --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
-                runas=root
-
-            /lib/systemd/system/cfn-hup.service:
-              content: |
-                [Unit]
-                Description=cfn-hup daemon
-
-                [Service]
-                Type=simple
-                ExecStart=/usr/local/bin/cfn-hup
-                Restart=always
-
-                [Install]
-                WantedBy=multi-user.target
-          commands:
-            01enable_cfn_hup:
-              command: systemctl enable cfn-hup.service
-            02start_cfn_hup:
-              command: systemctl start cfn-hup.service
+                action=/usr/local/bin/cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
+              mode: "000400"
+              owner: root
+              group: root
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack=${AWS::StackId}
+                region=${AWS::Region}
+                verbose=true
+                interval=5
+              mode: "000400"
+              owner: root
+              group: root
+          services:
+            sysvinit:
+              cfn-hup:
+                enabled: "true"
+                ensureRunning: "true"
+                files:
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
         prep_ghost:
+          packages:
+            apt:
+              nodejs: []
           files:
             /tmp/setup.mysql:
               content: !Sub |
@@ -356,62 +214,36 @@ Resources:
                 CREATE USER IF NOT EXISTS '${DbUser}'@'%' IDENTIFIED BY '${DbPassword}';
                 GRANT ALL ON ${DbName}.* TO '${DbUser}'@'%';
                 FLUSH PRIVILEGES;
-
               mode: "000644"
               owner: root
               group: root
             /usr/local/bin/run_mysql_setup:
               content: !Sub |
                 #!/bin/bash
-                apt-get upgrade nginx mysql-client-5.7 -y
                 mysql --host=${GhostDbInstance.Endpoint.Address} --user=root --password=${DbRootPassword} < /tmp/setup.mysql > /dev/null 2>&1
-
               mode: "000700"
               owner: root
               group: root
             /usr/local/bin/prep_and_install_ghost:
               content: !Sub |
-                #!/bin/bash
+                !/bin/bash
                 export GHOSTDIR=/var/www/ghost
-                export MAIL_PWD=`(echo -en '\x02'; echo -n 'SendRawEmail' | openssl dgst -sha256 -hmac ${GhostSesUserAccessKey.SecretAccessKey} -binary) | openssl enc -base64`
-                (id ghostuser > /dev/null 2>&1 && echo ghostuser exists...)   || (useradd --user-group --create-home ghostuser && echo creating ghostuser...)
-                ( [[ `groups ghostuser | awk '{print $4}'` == sudo ]] && echo ghostuser has sudo access...)   || (usermod -aG sudo ghostuser && echo giving ghostuser sudo access...)
-                ( [[ -f /etc/sudoers.d/ghostuser ]] && echo ghostuser can execute sudo w/o password)   || (echo 'ghostuser ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/ghostuser && echo allowing ghostuser to execute sudo w/o password as required by cli...)
-                (node -v > /dev/null 2>&1 && echo node installed...)   || (curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash && echo node repo configured)
-                node -v > /dev/null 2>&1   || (sudo apt-get install -y nodejs && echo node installed)
-                (ghost version && echo ghost present...)   || (sudo npm install ghost-cli@latest -g && echo ghost installed...)
-                ( [[ -d $GHOSTDIR ]] && echo $GHOSTDIR directory exists...)   || (sudo mkdir -p $GHOSTDIR && echo ghost app directory created)
-                ( [[ `stat -c %U $GHOSTDIR` == ghostuser ]] && [[ `stat -c %G $GHOSTDIR` == ghostuser ]] && echo $GHOSTDIR ownership correct...)   || (sudo chown ghostuser:ghostuser $GHOSTDIR && echo ghost ownership set...)
-                ( [[ `stat -c %a $GHOSTDIR` == 775 ]] && echo $GHOSTDIR permissions correct...)   || (sudo chmod 775 $GHOSTDIR && echo $GHOSTDIR permissions set...)
-                if [[ -f config.production.json ]]; then
+                export PUBLICDNS=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)
+                (id ghostuser > /dev/null 2>&1 && echo ghostuser exists...) || (useradd --user-group --create-home ghostuser && echo creating ghostuser...)
+                ( [[ `groups ghostuser | awk '{print $4}'` == sudo ]] && echo ghostuser has sudo access...) || (usermod -aG sudo ghostuser && echo giving ghostuser sudo access...)
+                ( [[ -f /etc/sudoers.d/ghostuser ]] && echo ghostuser can execute sudo w/o password) || (echo 'ghostuser ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/ghostuser && echo allowing ghostuser to execute sudo w/o password as required by cli...)
+                (ghost version && echo ghost present...) || (sudo npm install ghost-cli@latest -g && echo ghost installed...)
+                ( [[ -d $GHOSTDIR ]] && echo $GHOSTDIR directory exists...) || (sudo mkdir -p $GHOSTDIR && echo ghost app directory created)
+                ( [[ `stat -c %U $GHOSTDIR` == ghostuser ]] && [[ `stat -c %G $GHOSTDIR` == ghostuser ]] && echo $GHOSTDIR ownership correct...) || (sudo chown ghostuser:ghostuser $GHOSTDIR && echo ghost ownership set...)
+                ( [[ `stat -c %a $GHOSTDIR` == 775 ]] && echo $GHOSTDIR permissions correct...) || (sudo chmod 775 $GHOSTDIR && echo $GHOSTDIR permissions set...)
+                if [[ -f $GHOSTDIR"/config.production.json" ]]; then
                 echo ghost present...
+                su - ghostuser -c "cd $GHOSTDIR && ghost config url http://$PUBLICDNS"
+                su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx"
                 else
                 echo ghost not present, installing...
-                #su - ghostuser -c "cd /var/www/ghost && ghost install --verbose --url https://${DomainName} --ip 0.0.0.0 --dbhost ${GhostDbInstance.Endpoint.Address} --dbuser ${DbUser} --dbpass ${DbPassword} --dbname ${DbName} --mail SMTP --mailuser ${GhostSesUserAccessKey} --mailpass $MAIL_PWD --mailhost ${SesSmtpEndpoint} --mailport 587 --sslemail {SslEmail} --process systemd --no-prompt --auto"
-                su - ghostuser -c "cd /var/www/ghost && ghost install --verbose --url http://${DomainName} --ip 0.0.0.0 --dbhost ${GhostDbInstance.Endpoint.Address} --dbuser ${DbUser} --dbpass ${DbPassword} --dbname ${DbName} --mail SMTP --mailuser ${GhostSesUserAccessKey} --mailpass $MAIL_PWD --mailhost ${SesSmtpEndpoint} --mailport 587 --process systemd --no-prompt --auto"
-                su - ghostuser -c "cd $GHOSTDIR && ghost config mail.from ${FromAddress}"
-                if [ -f $GHOSTDIR/system/files/www.${DomainName}.conf ]; then
-                echo SSL for www configured...
-                else
-                echo generating cert and configuring nginx for www...
-                su - ghostuser -c "cd $GHOSTDIR && ghost config url http://www.${DomainName}"
-                # su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx ssl --sslemail {SslEmail}"
-                su - ghostuser -c "cd $GHOSTDIR && ghost setup nginx"
-                su - ghostuser -c "cd $GHOSTDIR && ghost config url http://${DomainName}"
-                awk '!/proxy_set_header/' $GHOSTDIR/system/files/www.${DomainName}.conf > /tmp/www.${DomainName}.conf
-                awk '!/proxy_set_header/' $GHOSTDIR/system/files/www.${DomainName}-ssl.conf > /tmp/www.${DomainName}-ssl.conf
-                sed -i 's/proxy_pass.*/return 301 http:\/\/${DomainName}\$request_uri;/' /tmp/www.${DomainName}.conf
-                sed -i 's/proxy_pass.*/return 301 http:\/\/${DomainName}\$request_uri;/' /tmp/www.${DomainName}-ssl.conf
-                mv /tmp/www.${DomainName}.conf $GHOSTDIR/system/files/www.${DomainName}.conf
-                mv /tmp/www.${DomainName}-ssl.conf $GHOSTDIR/system/files/www.${DomainName}-ssl.conf
-                chown ghostuser:ghostuser $GHOSTDIR/system/files/www.${DomainName}.conf
-                chown ghostuser:ghostuser $GHOSTDIR/system/files/www.${DomainName}-ssl.conf
-                nginx -t
-                nginx -s reload
+                su - ghostuser -c "cd /var/www/ghost && ghost install --url http://$PUBLICDNS --ip 0.0.0.0 --dbhost ${GhostDbInstance.Endpoint.Address} --dbuser ${DbUser} --dbpass ${DbPassword} --dbname ${DbName} --process systemd --no-prompt --auto"
                 fi
-                su - ghostuser -c "cd $GHOSTDIR && ghost restart"
-                fi
-
               mode: "000700"
               owner: root
               group: root
@@ -420,24 +252,14 @@ Resources:
               command: /usr/local/bin/run_mysql_setup
             02setup_ghost:
               command: /usr/local/bin/prep_and_install_ghost
-            03cleanup:
-              command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost
+        03cleanup:
+          command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost /usr/local/bin/add_repository
     Properties:
-      AvailabilityZone:
-        !FindInMap [SubnetAvailabilityZone, PubSubnet, AvailabilityZone]
-      ImageId:
-        "Fn::FindInMap":
-          - AWSRegionArch2AMI
-          - !Ref AWS::Region
-          - "Fn::FindInMap":
-              - AWSInstanceType2Arch
-              - !Ref InstanceType
-              - Arch
-      InstanceType: !Ref InstanceType
+      ImageId: !FindInMap [RegionArch2AMI, !Ref "AWS::Region", HVM64]
+      InstanceType: !FindInMap [InstanceSize, !Ref EnvironmentSize, EC2]
       SecurityGroupIds:
         - !Ref GhostServerSecurityGroup
       KeyName: !Ref KeyName
-      SubnetId: !Ref PubSubnet
       UserData:
         "Fn::Base64": !Sub |
           #!/bin/bash -xe
@@ -446,53 +268,26 @@ Resources:
           apt-get install python-pip -y
           wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
           pip install aws-cfn-bootstrap-latest.tar.gz
-          cfn-init -v --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
+          cp /usr/local/init/ubuntu/cfn-hup /etc/init.d/cfn-hup
+          chmod +x /etc/init.d/cfn-hup
+          update-rc.d cfn-hup defaults
+          service cfn-hup start
+          cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
           cfn-signal -e $? --stack ${AWS::StackName} --resource GhostServer --region ${AWS::Region}
 
-  GhostServerRootRecordSet:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref HostedZoneId
-      Comment: DNS name for my Ghost Instance.
-      Name: !Ref DomainName
-      Type: A
-      TTL: "60"
-      ResourceRecords:
-        - Ref: GhostServerEip
-  GhostServerWwwRecordSet:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneId: !Ref HostedZoneId
-      Comment: DNS name for my Ghost Instance.
-      Name: !Sub www.${DomainName}
-      Type: A
-      TTL: "60"
-      ResourceRecords:
-        - Ref: GhostServerEip
 Outputs:
   GhostUrl:
     Description: URL to reach the Ghost Front End
-    Value: !Sub http://${DomainName}
-    Export:
-      Name: !Sub ${AWS::StackName}-GhostUrl
+    Value: !Sub http://${GhostServer.PublicDnsName}
   GhostAdminUrl:
     Description: URL to reach the Ghost Admin Interface
-    Value: !Sub http://${DomainName}/admin
-    Export:
-      Name: !Sub ${AWS::StackName}-GhostAdminUrl
+    Value: !Sub http://${GhostServer.PublicDnsName}/ghost
   InstanceIPAddress:
     Description: IP Address to use to SSH to the Ghost instance
-    Value:
-      Ref: GhostServerEip
-    Export:
-      Name: !Sub ${AWS::StackName}-InstanceIPAddress
+    Value: !GetAtt GhostServer.PublicIp
   RDSDBInstanceHostname:
     Description: Hostname of the Ghost Database
     Value: !GetAtt GhostDbInstance.Endpoint.Address
-    Export:
-      Name: !Sub ${AWS::StackName}-RDSDBInstanceHostname
   RDSDBInstancePort:
     Description: Port of the Ghost Database
     Value: !GetAtt GhostDbInstance.Endpoint.Port
-    Export:
-      Name: !Sub ${AWS::StackName}-RDSDBInstancePort
