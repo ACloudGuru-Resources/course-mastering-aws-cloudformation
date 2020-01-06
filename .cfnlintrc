@@ -1,4 +1,4 @@
 templates:
   - "**/*.yaml"
 ignore_templates:
-  - codefresh.yaml
+  - "**/codefresh.yaml"
