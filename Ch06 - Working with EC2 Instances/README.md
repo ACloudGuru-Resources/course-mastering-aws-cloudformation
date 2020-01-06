@@ -17,3 +17,17 @@ aws cloudformation deploy \
   --region $REGION \
   --profile $PROFILE
 ```
+
+### Connect to EC2
+```shell
+ssh -i /path/my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com
+```
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
+
+### Location of Log Files
+`/var/log/cfn-init.log`
+
+### Helpful commands
+
+Get the EC2's Public DNS Name: 
+`curl -s http://169.254.169.254/latest/meta-data/public-hostname`
