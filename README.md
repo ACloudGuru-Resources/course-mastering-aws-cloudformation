@@ -355,4 +355,4 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - Setup of main deploy bucket in overview of course
 - setup yarn shortcut to install all node modules
 - Remove statement about using cfn-lambda as module
-- Add Blue-Green Deployment of CloudFormation Templates (Domains)
+- Add Blue-Green Deployment of CloudFormation Templates (Domains )
