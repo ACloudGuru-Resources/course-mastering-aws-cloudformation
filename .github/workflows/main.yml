@@ -25,16 +25,16 @@ jobs:
     - name: Package to S3
       run: |
         aws cloudformation package \
-          --template-file $TEMPLATE_LOCATION/template.yaml \
+          --template-file "$TEMPLATE_LOCATION/template.yaml" \
           --s3-bucket $DEPLOY_BUCKET \
-          --output-template-file $TEMPLATE_LOCATION/packaged.yaml \
+          --output-template-file "$TEMPLATE_LOCATION/packaged.yaml" \
           --region $AWS_DEFAULT_REGION
-        cat $TEMPLATE_LOCATION/packaged.yaml
+        cat "$TEMPLATE_LOCATION/packaged.yaml"
 
     - name: Deploy Template to S3
       run: |
         aws s3 sync \
           . s3://$DEPLOY_BUCKET/coursefiles/nestedstacks \
           --exclude "*" \
-          --include $TEMPLATE_LOCATION/packaged.yaml \
+          --include "$TEMPLATE_LOCATION/packaged.yaml" \
           --region $AWS_DEFAULT_REGION
