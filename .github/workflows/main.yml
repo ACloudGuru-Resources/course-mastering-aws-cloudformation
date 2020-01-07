@@ -19,11 +19,11 @@ jobs:
     - name: Deploy to S3
       run: |
         aws cloudformation package \
-          --template-file '/Ch04 - Best Practises/L04 - Template Storage and Revisions/template.yaml' \
+          --template-file "./Ch04 - Best Practises/L04 - Template Storage and Revisions/template.yaml" \
           --s3-bucket $DEPLOY_BUCKET \
-          --output-template-file '/Ch04 - Best Practises/L04 - Template Storage and Revisions/packaged.yaml' \
+          --output-template-file "./Ch04 - Best Practises/L04 - Template Storage and Revisions/packaged.yaml" \
           --region $AWS_DEFAULT_REGION
-        cat '/Ch04 - Best Practises/L04 - Template Storage and Revisions/packaged.yaml'
+        cat "./Ch04 - Best Practises/L04 - Template Storage and Revisions/packaged.yaml"
       env:
         DEPLOY_BUCKET: acg-deploy-bucket 
         AWS_DEFAULT_REGION: us-east-1
