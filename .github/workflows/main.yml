@@ -34,7 +34,7 @@ jobs:
       run: |
         cat "$TEMPLATE_LOCATION/packaged.yaml"
         aws s3 sync \
-          . s3://$DEPLOY_BUCKET/coursefiles/nestedstacks \
+          "$TEMPLATE_LOCATION" s3://$DEPLOY_BUCKET/coursefiles/nestedstacks \
           --exclude "*" \
-          --include "$TEMPLATE_LOCATION/packaged.yaml" \
+          --include "packaged.yaml" \
           --region $AWS_DEFAULT_REGION
