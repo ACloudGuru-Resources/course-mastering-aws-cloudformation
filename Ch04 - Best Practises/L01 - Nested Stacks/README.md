@@ -1,8 +1,9 @@
 
 ## DEMO: Nested Stacks
 ### Steps
-1. `Upload Templates` to course bucket
-2. Deploy `START` Template
+1. Follow lecture to create `START` templates and `root.yaml` or use from `!-solution`
+2. `Upload Templates` to course bucket
+3. Deploy `START` Template
 
 ### Upload Templates
 ```shell

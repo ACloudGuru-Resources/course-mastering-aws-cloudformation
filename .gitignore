@@ -69,4 +69,3 @@ examples
 
 # ignore secrets
 secrets.yaml
-params.toml

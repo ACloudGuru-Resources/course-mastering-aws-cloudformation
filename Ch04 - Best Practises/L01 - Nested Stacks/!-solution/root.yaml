@@ -1,0 +1,26 @@
+Parameters:
+  CourseBucketParam:
+    Type: String
+    Description: Course bucket we setup in first chapter
+  BucketPathParam:
+    Type: String
+    Default: /coursefiles/nestedstacks
+    Description: Path to template files
+  ActionParam:
+    Type: String
+    Description: START/FAIL/RECOVER for example
+    AllowedValues:
+      - START
+      - FAIL
+      - RECOVER
+Resources:
+  ComputeStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        BucketURLParam: !Sub https://${CourseBucketParam}.s3.amazonaws.com${BucketPathParam}/${ActionParam}
+      TemplateURL: !Sub https://${CourseBucketParam}.s3.amazonaws.com${BucketPathParam}/${ActionParam}/compute.yaml
+  StorageStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub https://${CourseBucketParam}.s3.amazonaws.com${BucketPathParam}/${ActionParam}/storage.yaml

@@ -1,0 +1,25 @@
+Parameters:
+  LCNameParam:
+    Type: String
+    Description: Launch Configuration Name
+Resources:
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        - !Select
+          - 0
+          - Fn::GetAZs: !Ref AWS::Region
+      DesiredCapacity: "1"
+      LaunchConfigurationName: !Ref LCNameParam
+      MaxSize: "1"
+      MinSize: "1"
+
+  # Added this Wait condition to cause FAIL and ROLLBACK
+  WaitCondition:
+    Type: AWS::CloudFormation::WaitCondition
+    DependsOn: ASG
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT1M

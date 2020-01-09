@@ -2,7 +2,7 @@
 ## DEMO: Working with EC2
 
 ### Steps
-1. Rename `params-example.toml` to `params.toml` and update params
+1. Update params in `params.toml` 
 2. `Deploy Template` to course bucket
 3. Deploy `START` Template
 
