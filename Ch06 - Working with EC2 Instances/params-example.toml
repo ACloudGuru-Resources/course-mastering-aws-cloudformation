@@ -1,0 +1,6 @@
+KeyName=ghostblog
+DbPassword=SomepasswordHere
+DbRootPassword=SomepasswordHere
+DbUser=ghostuser
+WhitelistedIP=00.00.00.00/32
+EnvironmentSize=SMALL

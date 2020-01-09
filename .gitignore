@@ -66,3 +66,7 @@ packaged.yaml
 examples
 
 .vscode
+
+# ignore secrets
+secrets.yaml
+params.toml

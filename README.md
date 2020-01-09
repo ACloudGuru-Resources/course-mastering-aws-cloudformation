@@ -150,6 +150,8 @@ https://amzn.to/32Gkl36
 3. Organize Stacks By Lifecycle and Ownership
 4. Nested vs Exports vs AWS::Include
 5. Validate Templates before deploying
+  - https://github.com/aws-cloudformation/cfn-python-lint#basic-usage
+  - https://github.com/ScottBrenner/cfn-lint-action
 
 ### Ch04_L04 - Template Storage and Revisions
 
@@ -318,6 +320,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 
 ## Links
 
+- [AWS CloudFormation User Guide](https://github.com/awsdocs/aws-cloudformation-user-guide)
 - [aws-cf-templates](https://github.com/widdix/aws-cf-templates)
 - [aws-cloudformation-templates](https://github.com/awslabs/aws-cloudformation-templates)
 - [Limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
@@ -333,7 +336,8 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - Tags
 - Replacement update behavior (http://bit.ly/31liOh8)
 - UpdateReplace Policies
-- Stack Policies
+- Stack Policies (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/protect-stack-resources.html#stack-policy-intro-example)
+- Stack Notifications (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html)
 - WaitCondition
 - Update Types
   - Update with No Interruption
@@ -355,4 +359,4 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 - Setup of main deploy bucket in overview of course
 - setup yarn shortcut to install all node modules
 - Remove statement about using cfn-lambda as module
-- Add Blue-Green Deployment of CloudFormation Templates (Domains )
+- Add Blue-Green Deployment of CloudFormation Templates (Domains)
