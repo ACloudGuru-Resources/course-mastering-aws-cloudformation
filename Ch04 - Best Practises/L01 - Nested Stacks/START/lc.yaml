@@ -1,0 +1,41 @@
+Mappings:
+  RegionArch2AMI:
+    ap-northeast-1:
+      HVM64: ami-0f63c02167ca94956
+    ap-northeast-2:
+      HVM64: ami-069c1055fab7b32e5
+    ap-northeast-3:
+      HVM64: ami-084e4de48dc0834e8
+    ap-south-1:
+      HVM64: ami-092e1fd695ed0e93c
+    ap-southeast-1:
+      HVM64: ami-0393b4f16793f7f12
+    ap-southeast-2:
+      HVM64: ami-0deda1f8bbb52aac7
+    ca-central-1:
+      HVM64: ami-008c2d1a8ad81bc10
+    eu-central-1:
+      HVM64: ami-0cf8fa6a01bb07363
+    eu-north-1:
+      HVM64: ami-73d65f0d
+    eu-west-1:
+      HVM64: ami-0286372f78291e588
+    eu-west-2:
+      HVM64: ami-04b69fa254407c8ee
+    eu-west-3:
+      HVM64: ami-0e82c2554d8492095
+    sa-east-1:
+      HVM64: ami-05a01ab93a59b45de
+    us-east-1:
+      HVM64: ami-012fd5eb46f56731f
+    us-east-2:
+      HVM64: ami-06e2e609dbf389341
+    us-west-1:
+      HVM64: ami-0bf3d63a666665438
+    us-west-2:
+      HVM64: ami-082fd9a18128c9e8c
+    cn-north-1:
+      HVM64: ami-05596fb52c3802012
+    cn-northwest-1:
+      HVM64: ami-03f7db8b059795736
+Resources:
