@@ -1,8 +1,10 @@
-http://www.codeandcompost.com/post/cfn,-utf8-and-two-days-i%E2%80%99ll-never-get-back
 
+## DEMO: Working with EC2
 
-https://github.com/csumpter/ghost-cloudformation/blob/master/master.yaml
-
+### Steps
+1. Rename `params-example.toml` to `params.toml` and update params
+2. `Deploy Template` to course bucket
+3. Deploy `START` Template
 
 ### Deploy Template
 ```shell
@@ -18,16 +20,20 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-### Connect to EC2
-```shell
-ssh -i /path/my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com
-```
-https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html
-
-### Location of Log Files
-`/var/log/cfn-init.log`
+## Helpful Info
 
 ### Helpful commands
 
-Get the EC2's Public DNS Name: 
+*Get the EC2's Public DNS Name:* 
 `curl -s http://169.254.169.254/latest/meta-data/public-hostname`
+
+*Connecting to EC2:*
+```shell
+ssh -i /path/my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com
+```
+
+*Location of Log Files:*
+```
+/var/log/cfn-init.log
+/var/log/cfn-init-cmd.log
+```

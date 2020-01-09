@@ -1,5 +1,5 @@
 
-## Example: Nested Stacks
+## DEMO: Nested Stacks
 ### Steps
 1. `Upload Templates` to course bucket
 2. Deploy `START` Template
@@ -28,7 +28,7 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Example: Recovering Failed Stacks 
+## DEMO: Recovering Failed Stacks 
 ### Steps
 3. Run `Cause Failure` CLI commands
 4. Deploy `FAIL` Template
