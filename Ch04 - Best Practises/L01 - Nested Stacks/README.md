@@ -40,6 +40,9 @@ aws cloudformation deploy \
 
 ### Run *Cause Failure* CLI commands
 ```shell
+STACKNAME=usage-nestedstacks
+PROFILE=cloudguru
+REGION=us-east-1
 ASGSTACK=`aws cloudformation describe-stacks \
   --query "Stacks[?contains(StackName, '$STACKNAME') && contains(StackName, 'ASGStack')].StackName" \
   --output text \
