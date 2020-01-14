@@ -27,3 +27,6 @@ aws s3 sync \
   --region $REGION \
   --profile $PROFILE
 ```
+
+## Helpful Links
+[GitHub Action Variables](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/using-environment-variables)
