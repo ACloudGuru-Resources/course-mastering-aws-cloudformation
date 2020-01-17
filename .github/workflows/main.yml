@@ -30,11 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Lint Templates
-        uses: ScottBrenner/cfn-lint-action@1.3.0
-        with:
-          args: "**/*.yaml"
-
       - name: Package to S3
         run: |
           aws cloudformation package \

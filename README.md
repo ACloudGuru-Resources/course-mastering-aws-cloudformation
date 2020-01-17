@@ -156,7 +156,6 @@ https://amzn.to/32Gkl36
 ### Ch04_L04 - Template Storage and Revisions
 
 1. Storing and Managing Templates
-2. AWS Serverless Application Repository
 
 ## Chapter 5 - Mastering Stacks
 
@@ -202,6 +201,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 
 1. [UserData (Procedural)](https://acloud.guru/course/aws-advanced-cloudformation/learn/d8067ef9-7840-7c93-e19e-6e1d9a52d756/e72173eb-7bbe-7db7-0d7c-eb486ba6e6f6/watch?backUrl=~2Fcourses) vs CloudFormationInit
 2. How it Works
+3. Provisioning Workflow
 
 ### Ch06_L02 - ConfigSets
 
@@ -230,7 +230,16 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 
 ## Chapter 7 - Working with Serverless
 
-### Ch07_L05 – Serverless CI/CD Deployment Pipeline
+### Ch07_L01 – AWS Serverless Application Repository
+
+**Demo Description:** A AWS Serverless Appliaction Repository Walkthru on what it is and how to benefit from it.
+
+1. What is AWS SAR?
+2. Searching for Apps
+3. Publishing Apps
+4. Using Apps
+
+### Ch07_L02 – Serverless CI/CD Deployment Pipeline
 
 **Demo Description:** Build a serverless and real-time voting platform with API Gateway sockets and DynamoDB.
 
@@ -239,7 +248,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 3. Outputs injection
 3. Deleting S3 assets as part of stack delete
 
-### Ch05_L06 – JAMStack Deployment (Voting App)
+### Ch07_L03 – JAMStack Deployment (Voting App)
 
 1. What we’re going to build
 2. Review Template & Code

@@ -12,6 +12,3 @@ Resources:
           callback(null, 'I GOT THE BUCKET!!!');
         };
       Handler: index.handler
-      Environment:
-        Variables:
-          BUCKET: SomeBucketName

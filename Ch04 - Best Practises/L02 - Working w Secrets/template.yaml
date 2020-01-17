@@ -11,7 +11,7 @@ Resources:
   DecryptFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       InlineCode: |
         const AWS = require('aws-sdk');
         const { AWS_REGION: region, SSMSECRETS } = process.env;
@@ -75,4 +75,4 @@ Resources:
               - Effect: Allow
                 Action:
                   - ssm:GetParameter*
-                Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/acg/master-cfn/*
+                Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/acg/master-cfn/secrets
