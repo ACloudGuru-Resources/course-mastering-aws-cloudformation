@@ -1,0 +1,47 @@
+name: Lint CloudFormation Templates
+
+on: [push]
+
+jobs:
+  lint-templates:
+    name: Lint Templates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Lint Templates
+        uses: ScottBrenner/cfn-lint-action@1.3.0
+        with:
+          args: "**/*.yaml"
+
+  upload-templates:
+    needs: lint-templates
+    if: github.ref == 'refs/heads/master'
+    name: Upload Templates to S3
+    runs-on: ubuntu-latest
+    env:
+      TEMPLATE_LOCATION: "."
+      DEPLOY_BUCKET: acg-deploy-bucket
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Package to S3
+        run: |
+          aws cloudformation package \
+            --template-file "$TEMPLATE_LOCATION/template.yaml" \
+            --s3-bucket $DEPLOY_BUCKET \
+            --output-template-file "$TEMPLATE_LOCATION/packaged.yaml" \
+            --region $AWS_DEFAULT_REGION
+
+      - name: Deploy Template to S3
+        run: |
+          aws s3 sync \
+            "$TEMPLATE_LOCATION" s3://$DEPLOY_BUCKET/coursefiles/templatestorage/${GITHUB_SHA::8} \
+            --exclude "*" \
+            --include "packaged.yaml" \
+            --region $AWS_DEFAULT_REGION

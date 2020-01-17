@@ -1,32 +1,20 @@
 
-## Package Templates
-```shell
-REGION=us-east-1
+## Deploy Setup Template
+```bash
 PROFILE=cloudguru
-DEPLOY_BUCKET=acg-deploy-bucket
-aws cloudformation package \
-  --template-file template.yaml \
-  --s3-bucket $DEPLOY_BUCKET \
-  --output-template-file packaged.yaml \
+REGION=us-east-1
+CourseBucketParam=acg-deploy-bucket
+STACKNAME=template-storage-setup
+aws cloudformation deploy \
+  --stack-name $STACKNAME \
+  --template-file setup.yaml \
+  --parameter-overrides CourseBucketParam=$CourseBucketParam \
   --region $REGION \
-  --profile $PROFILE
-```
-
-## Test Templates
-```shell
-aws cloudformation validate-template \
-  --template-body file://template.yaml
-```
-
-## Deploy Templates to S3
-```shell
-aws s3 sync \
-  . s3://$DEPLOY_BUCKET/templates/projectx \
-  --exclude "*" \
-  --include "*.yaml" \
-  --region $REGION \
-  --profile $PROFILE
+  --profile $PROFILE \
+  --capabilities CAPABILITY_NAMED_IAM
 ```
 
 ## Helpful Links
 [GitHub Action Variables](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/using-environment-variables)
+[GitHub Action Workflows](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions)
+[Awesome Actions](https://github.com/sdras/awesome-actions)
