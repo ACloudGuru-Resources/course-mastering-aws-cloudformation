@@ -1,8 +1,9 @@
 
-## Example: Nested Stacks
+## DEMO: Nested Stacks
 ### Steps
-1. `Upload Templates` to course bucket
-2. Deploy `START` Template
+1. Follow lecture to create `START` templates and `root.yaml` or use from `!-solution`
+2. `Upload Templates` to course bucket
+3. Deploy `START` Template
 
 ### Upload Templates
 ```shell
@@ -28,17 +29,20 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Example: Recovering Failed Stacks 
+## DEMO: Recovering Failed Stacks 
 ### Steps
-3. Run `Cause Failure` CLI commands
-4. Deploy `FAIL` Template
-5. Wait for all stacks to settle (no "in progess")
-6. Run `ContinueUpdateRollback` skipping ASG
-7. Templates should now be in the green
-8. Manually Delete manualy created LC
+1. Run `Cause Failure` CLI commands
+2. Deploy `FAIL` Template
+3. Wait for all stacks to settle
+4. Run `ContinueUpdateRollback` skipping ASG
+5. Templates should now be in the green
+6. Manually Delete manualy created LC
 
 ### Run *Cause Failure* CLI commands
 ```shell
+STACKNAME=usage-nestedstacks
+PROFILE=cloudguru
+REGION=us-east-1
 ASGSTACK=`aws cloudformation describe-stacks \
   --query "Stacks[?contains(StackName, '$STACKNAME') && contains(StackName, 'ASGStack')].StackName" \
   --output text \
@@ -92,6 +96,14 @@ aws cloudformation deploy \
 
 ### Run *ContinueUpdateRollback*
 ```shell
+STACKNAME=usage-nestedstacks
+PROFILE=cloudguru
+REGION=us-east-1
+ASGSTACK=`aws cloudformation describe-stacks \
+  --query "Stacks[?contains(StackName, '$STACKNAME') && contains(StackName, 'ASGStack')].StackName" \
+  --output text \
+  --region $REGION \
+  --profile $PROFILE`
 aws cloudformation continue-update-rollback \
   --stack-name $STACKNAME \
   --resources-to-skip "$ASGSTACK.ASG" \

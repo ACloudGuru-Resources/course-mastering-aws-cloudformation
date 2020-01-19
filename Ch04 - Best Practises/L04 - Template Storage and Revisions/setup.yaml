@@ -1,0 +1,33 @@
+Parameters:
+  CourseBucketParam:
+    Type: String
+    Description: Course bucket we setup in first chapter
+    Default: acg-deploy-bucket
+Resources:
+  iamUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Sub acg-template-editor-${AWS::Region}
+      Policies:
+        - PolicyName: acg-template-editor-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:DeleteObject
+                Resource:
+                  - !Sub arn:aws:s3:::${CourseBucketParam}
+                  - !Sub arn:aws:s3:::${CourseBucketParam}/*
+  iamKeys:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref iamUser
+Outputs:
+  AccessKeyID:
+    Value: !Ref iamKeys
+  AccessKeySecret:
+    Value: !GetAtt iamKeys.SecretAccessKey

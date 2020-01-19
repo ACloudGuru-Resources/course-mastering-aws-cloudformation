@@ -21,7 +21,7 @@ jobs:
     name: Upload Templates to S3
     runs-on: ubuntu-latest
     env:
-      TEMPLATE_LOCATION: ./Ch04 - Best Practises/L04 - Template Storage and Revisions
+      TEMPLATE_LOCATION: "."
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

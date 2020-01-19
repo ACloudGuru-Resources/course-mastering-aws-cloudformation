@@ -39,3 +39,12 @@ Mappings:
     cn-northwest-1:
       HVM64: ami-03f7db8b059795736
 Resources:
+  LC:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: !FindInMap [RegionArch2AMI, !Ref "AWS::Region", HVM64]
+      InstanceType: t2.micro
+Outputs:
+  LCName:
+    Description: Launch Configuration Name
+    Value: !Ref LC
