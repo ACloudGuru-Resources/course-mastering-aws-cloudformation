@@ -159,6 +159,11 @@ Resources:
             - prepare_repositories
             - install_and_enable_cfn_hup
             - prep_ghost
+            - extra_stuff
+          updates_install:
+            - prepare_repositories
+            - install_and_enable_cfn_hup
+            - extra_stuff
         prepare_repositories:
           files:
             /usr/local/bin/add_repository:
@@ -168,7 +173,7 @@ Resources:
               owner: root
               group: root
           commands:
-            add_repository:
+            01_add_repository:
               command: /usr/local/bin/add_repository
         install_and_enable_cfn_hup:
           packages:
@@ -181,7 +186,7 @@ Resources:
                 [cfn-auto-reloader-hook]
                 triggers=post.update
                 path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init
-                action=/usr/local/bin/cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
+                action=/usr/local/bin/cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets updates_install --region ${AWS::Region}
               mode: "000400"
               owner: root
               group: root
@@ -252,8 +257,12 @@ Resources:
               command: /usr/local/bin/run_mysql_setup
             02setup_ghost:
               command: /usr/local/bin/prep_and_install_ghost
-        03cleanup:
-          command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost /usr/local/bin/add_repository
+            03cleanup:
+              command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost /usr/local/bin/add_repository
+        extra_stuff:
+          packages:
+            apt:
+              php: []
     Properties:
       ImageId: !FindInMap [RegionArch2AMI, !Ref "AWS::Region", HVM64]
       InstanceType: !FindInMap [InstanceSize, !Ref EnvironmentSize, EC2]
