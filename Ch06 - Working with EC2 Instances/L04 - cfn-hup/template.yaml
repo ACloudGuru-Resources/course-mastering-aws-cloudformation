@@ -157,7 +157,6 @@ Resources:
         configSets:
           full_install:
             - prepare_repositories
-            - install_and_enable_cfn_hup
             - prep_ghost
         prepare_repositories:
           files:
