@@ -176,10 +176,6 @@ Resources:
             01_add_repository:
               command: /usr/local/bin/add_repository
         install_and_enable_cfn_hup:
-          packages:
-            apt:
-              nginx: []
-              mysql-client: []
           files:
             /etc/cfn/hooks.d/cfn-auto-reloader.conf:
               content: !Sub |
@@ -211,6 +207,8 @@ Resources:
         prep_ghost:
           packages:
             apt:
+              nginx: []
+              mysql-client: []
               nodejs: []
           files:
             /tmp/setup.mysql:
