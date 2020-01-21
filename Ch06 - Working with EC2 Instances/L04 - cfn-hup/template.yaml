@@ -159,7 +159,6 @@ Resources:
             - prepare_repositories
             - install_and_enable_cfn_hup
             - prep_ghost
-            - extra_stuff
         prepare_repositories:
           files:
             /usr/local/bin/add_repository:

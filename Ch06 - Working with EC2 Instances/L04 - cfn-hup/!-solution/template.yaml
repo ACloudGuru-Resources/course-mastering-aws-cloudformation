@@ -257,8 +257,8 @@ Resources:
               command: /usr/local/bin/run_mysql_setup
             02setup_ghost:
               command: /usr/local/bin/prep_and_install_ghost
-            03cleanup:
-              command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost /usr/local/bin/add_repository
+            # 03cleanup:
+            #   command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost /usr/local/bin/add_repository
         extra_stuff:
           packages:
             apt:
