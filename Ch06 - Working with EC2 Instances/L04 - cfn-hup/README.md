@@ -2,9 +2,9 @@
 ## DEMO: Working with EC2
 
 ### Steps
-1. Update params in `params.toml` 
-2. `Deploy Template` to course bucket
-3. Deploy `START` Template
+1. Update params in `params.toml`
+2. Edit `template.yaml` to include cfn-hup code
+3. `Deploy Template` to course bucket
 
 ### Deploy Template
 ```shell
@@ -21,8 +21,6 @@ aws cloudformation deploy \
 ```
 
 ## Helpful Info
-
-### Helpful commands
 
 *Get the EC2's Public DNS Name:* 
 `curl -s http://169.254.169.254/latest/meta-data/public-hostname`
