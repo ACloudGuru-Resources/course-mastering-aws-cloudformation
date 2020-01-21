@@ -27,7 +27,7 @@ aws cloudformation deploy \
 
 *Connecting to EC2:*
 ```shell
-ssh -i /path/my-key-pair.pem ec2-user@ec2-198-51-100-1.compute-1.amazonaws.com
+ssh -i /path/my-key-pair.pem ec2-user@ec2-123-123-123-1.compute-1.amazonaws.com
 ```
 
 *List all services:*
@@ -40,3 +40,6 @@ service --status-all
 /var/log/cfn-init.log
 /var/log/cfn-init-cmd.log
 ```
+
+*Live tail changes to cfn-hup.log*
+`tail -f /var/log/cfn-init.log`
