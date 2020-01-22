@@ -144,6 +144,8 @@ Resources:
       AllocatedStorage: !Ref DbAllocatedStorage
       DBSecurityGroups:
         - !Ref DbSecurityByEC2SecurityGroup
+    UpdateReplacePolicy: Snapshot
+    DeletionPolicy: Snapshot
   GhostServer:
     Type: AWS::EC2::Instance
     DependsOn:
