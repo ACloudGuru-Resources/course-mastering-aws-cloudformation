@@ -278,7 +278,6 @@ Resources:
           cp /usr/local/init/ubuntu/cfn-hup /etc/init.d/cfn-hup
           chmod +x /etc/init.d/cfn-hup
           update-rc.d cfn-hup defaults
-          service cfn-hup start
           cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
           cfn-signal -e $? --stack ${AWS::StackName} --resource GhostServer --region ${AWS::Region}
 
