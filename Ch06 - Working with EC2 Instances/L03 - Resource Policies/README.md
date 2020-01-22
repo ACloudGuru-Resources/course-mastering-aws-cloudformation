@@ -25,7 +25,13 @@ aws cloudformation deploy \
 ### Helpful commands
 
 *Create Default VPC*
-`aws ec2 create-default-vpc`
+```shell
+REGION=us-east-1
+PROFILE=cloudguru
+aws ec2 create-default-vpc \
+  --region $REGION \
+  --profile $PROFILE
+```
 
 *Get the EC2's Public DNS Name:* 
 `curl -s http://169.254.169.254/latest/meta-data/public-hostname`
