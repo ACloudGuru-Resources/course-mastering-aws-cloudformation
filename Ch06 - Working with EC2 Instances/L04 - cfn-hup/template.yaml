@@ -172,6 +172,8 @@ Resources:
         prep_ghost:
           packages:
             apt:
+              nginx: []
+              mysql-client: []
               nodejs: []
           files:
             /tmp/setup.mysql:
