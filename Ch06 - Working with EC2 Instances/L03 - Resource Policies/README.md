@@ -3,8 +3,8 @@
 
 ### Steps
 1. Update params in `params.toml` 
-2. `Deploy Template` to course bucket
-3. Deploy `START` Template
+2. Update template with cfn-signal
+3. Deploy `template.yaml`
 
 ### Deploy Template
 ```shell
