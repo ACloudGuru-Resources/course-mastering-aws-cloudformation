@@ -157,13 +157,7 @@ Resources:
         configSets:
           full_install:
             - prepare_repositories
-            - install_and_enable_cfn_hup
             - prep_ghost
-            - extra_gear
-          updates_install:
-            - prepare_repositories
-            - install_and_enable_cfn_hup
-            - extra_gear
         prepare_repositories:
           files:
             /usr/local/bin/add_repository:
@@ -172,53 +166,14 @@ Resources:
               mode: "000700"
               owner: root
               group: root
-            /etc/apt/sources.list.d/mongodb-org-4.2.list:
-              content: |
-                deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse
-              mode: "000644"
-              owner: root
-              group: root
           commands:
-            01_import_apt_key:
-              command: wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
-            02_add_repository:
+            01_add_repository:
               command: /usr/local/bin/add_repository
-        install_and_enable_cfn_hup:
+        prep_ghost:
           packages:
             apt:
               nginx: []
               mysql-client: []
-          files:
-            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
-              content: !Sub |
-                [cfn-auto-reloader-hook]
-                triggers=post.update
-                path=Resources.GhostServer.Metadata.AWS::CloudFormation::Init
-                action=/usr/local/bin/cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets updates_install --region ${AWS::Region}
-              mode: "000400"
-              owner: root
-              group: root
-            /etc/cfn/cfn-hup.conf:
-              content: !Sub |
-                [main]
-                stack=${AWS::StackId}
-                region=${AWS::Region}
-                verbose=true
-                interval=5
-              mode: "000400"
-              owner: root
-              group: root
-          services:
-            sysvinit:
-              cfn-hup:
-                enabled: "true"
-                ensureRunning: "true"
-                files:
-                  - /etc/cfn/cfn-hup.conf
-                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
-        prep_ghost:
-          packages:
-            apt:
               nodejs: []
           files:
             /tmp/setup.mysql:
@@ -267,15 +222,6 @@ Resources:
               command: /usr/local/bin/prep_and_install_ghost
             03cleanup:
               command: rm /usr/local/bin/run_mysql_setup /usr/local/bin/prep_and_install_ghost /usr/local/bin/add_repository
-        extra_gear:
-          packages:
-            apt:
-              mongodb-org: []
-          services:
-            sysvinit:
-              mongod:
-                enabled: "true"
-                ensureRunning: "true"
     Properties:
       ImageId: !FindInMap [RegionArch2AMI, !Ref "AWS::Region", HVM64]
       InstanceType: !FindInMap [InstanceSize, !Ref EnvironmentSize, EC2]
@@ -290,10 +236,6 @@ Resources:
           apt-get install python-pip -y
           wget https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
           pip install aws-cfn-bootstrap-latest.tar.gz
-          cp /usr/local/init/ubuntu/cfn-hup /etc/init.d/cfn-hup
-          chmod +x /etc/init.d/cfn-hup
-          update-rc.d cfn-hup defaults
-          service cfn-hup start
           cfn-init --stack ${AWS::StackName} --resource GhostServer --configsets full_install --region ${AWS::Region}
           cfn-signal -e $? --stack ${AWS::StackName} --resource GhostServer --region ${AWS::Region}
 
