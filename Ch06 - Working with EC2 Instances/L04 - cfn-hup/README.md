@@ -6,6 +6,13 @@
 2. Edit `template.yaml` to include cfn-hup code
 3. `Deploy Template` to course bucket
 
+### CMDs for UserData cfn-hup Setup
+```bash
+cp /usr/local/init/ubuntu/cfn-hup /etc/init.d/cfn-hup
+chmod +x /etc/init.d/cfn-hup
+update-rc.d cfn-hup defaults
+```
+
 ### Deploy Template
 ```shell
 STACKNAME=acg-ghostblog
