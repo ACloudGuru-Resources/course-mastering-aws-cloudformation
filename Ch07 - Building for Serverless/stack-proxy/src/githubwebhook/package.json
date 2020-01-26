@@ -9,7 +9,7 @@
     "debug": "^4.1.1",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^3.13.1",
     "lodash.chunk": "^4.2.0",
     "lodash.filter": "^4.6.0",
     "lodash.map": "^4.6.0",
