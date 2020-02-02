@@ -1,8 +1,3 @@
-# Parameters:
-#   CourseBucketParam:
-#     Type: String
-#     Description: Course bucket we setup in first chapter
-#     Default: acg-deploy-bucket
 Resources:
   CFStackRole:
     Type: AWS::IAM::Role
@@ -33,20 +28,10 @@ Resources:
           PolicyDocument:
             Version: 2012-10-17
             Statement:
-              # - Effect: Allow
-              #   Action:
-              #     - s3:PutObject
-              #     - s3:GetObject
-              #     - s3:ListBucket
-              #     - s3:DeleteObject
-              #   Resource:
-              #     - !Sub arn:aws:s3:::${CourseBucketParam}
-              #     - !Sub arn:aws:s3:::${CourseBucketParam}/*
               - Effect: Allow
                 Action:
                   - cloudformation:CreateUploadBucket
                   - cloudformation:GetTemplateSummary
-                  # - cloudformation:CreateStack
                   - cloudformation:DeleteStack
                   - cloudformation:DescribeStacks
                   - cloudformation:UpdateStack
