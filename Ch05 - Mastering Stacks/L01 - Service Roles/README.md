@@ -17,7 +17,6 @@ STACKNAME=service-roles-setup
 aws cloudformation deploy \
   --stack-name $STACKNAME \
   --template-file setup.yaml \
-  --parameter-overrides CourseBucketParam=$CourseBucketParam \
   --region $REGION \
   --profile $PROFILE \
   --capabilities CAPABILITY_NAMED_IAM
@@ -39,7 +38,6 @@ STACKNAME=service-roles-no-role
 aws cloudformation deploy \
   --stack-name $STACKNAME \
   --template-file template.yaml \
-  --parameter-overrides CourseBucketParam=$CourseBucketParam \
   --region $REGION \
   --profile $PROFILE \
   --capabilities CAPABILITY_NAMED_IAM
@@ -54,7 +52,6 @@ STACKNAME=service-roles-with-role
 aws cloudformation deploy \
   --stack-name $STACKNAME \
   --template-file template.yaml \
-  --parameter-overrides CourseBucketParam=$CourseBucketParam \
   --role-arn $ROLEARN \
   --region $REGION \
   --profile $PROFILE \
