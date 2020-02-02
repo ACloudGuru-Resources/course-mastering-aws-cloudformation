@@ -10,7 +10,7 @@ Resources:
               Service:
                 - cloudformation.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              - sts:AssumeRole
       Policies:
         - PolicyName: acg-cfstack-role
           PolicyDocument:
