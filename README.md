@@ -357,9 +357,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 
 
 ## Edits
-- cfn-init log locations
-  - /var/log/cfn-init.log
-  
+- StackSets and OUs in console vs CLI
 - Template Operations
   - Conditionals !And is not used in example
   - all code examples need to wipe in
