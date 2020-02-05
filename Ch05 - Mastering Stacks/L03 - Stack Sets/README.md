@@ -6,21 +6,21 @@
 ## Environment Vars
 ```shell
 PROFILE=cloudguru
-PROFILE_TARGET_1=cloudguru1
-PROFILE_TARGET_2=cloudguru2
+PROFILE_1=cloudguru1
+PROFILE_2=cloudguru2
 STACKSET_NAME=asg-stackset
 REGION=us-east-1
 REGION_2=us-west-1
-AWS_ACCOUNT_ID=AAAAAAAAAAAA
-AWS_ACCOUNT_ID_1=XXXXXXXXXXXX
-AWS_ACCOUNT_ID_2=YYYYYYYYYYYY
+AWS_ACCOUNT_ID=645655324390
+AWS_ACCOUNT_ID_1=528491906536
+AWS_ACCOUNT_ID_2=610785837702
 ```
 
 ## Deploy Permission Stack to Admin Account
 ```shell
 aws cloudformation create-stack \
   --stack-name acg-stackset-permissions \
-  --template-url https://s3.amazonaws.com/cloudformation-stackset-sample-templates-us-east-1/AWSCloudFormationStackSetAdministrationRole.yml \
+  --template-body file://./AWSCloudFormationStackSetAdministrationRole.yml \
   --capabilities CAPABILITY_NAMED_IAM \
   --region $REGION \
   --profile $PROFILE
@@ -30,26 +30,26 @@ aws cloudformation create-stack \
 ```shell
 aws cloudformation create-stack \
   --stack-name acg-stackset-permissions \
-  --template-url https://s3.amazonaws.com/cloudformation-stackset-sample-templates-us-east-1/AWSCloudFormationStackSetExecutionRole.yml \
+  --template-body file://./AWSCloudFormationStackSetExecutionRole.yml \
   --parameters ParameterKey=AdministratorAccountId,ParameterValue=$AWS_ACCOUNT_ID,UsePreviousValue=true,ResolvedValue=string \
   --capabilities CAPABILITY_NAMED_IAM \
   --region $REGION \
-  --profile $PROFILE_TARGET_1
+  --profile $PROFILE_1
 
 aws cloudformation create-stack \
   --stack-name acg-stackset-permissions \
-  --template-url https://s3.amazonaws.com/cloudformation-stackset-sample-templates-us-east-1/AWSCloudFormationStackSetExecutionRole.yml \
+  --template-body file://./AWSCloudFormationStackSetExecutionRole.yml \
   --parameters ParameterKey=AdministratorAccountId,ParameterValue=$AWS_ACCOUNT_ID,UsePreviousValue=true,ResolvedValue=string \
   --capabilities CAPABILITY_NAMED_IAM \
   --region $REGION \
-  --profile $PROFILE_TARGET_2
+  --profile $PROFILE_2
 ```
 
 ## Create StackSet
 ```shell
 aws cloudformation create-stack-set \
   --stack-set-name $STACKSET_NAME \
-  --template-body template.yaml \
+  --template-body file://./template.yaml \
   --profile $PROFILE
 ```
 
@@ -63,9 +63,36 @@ aws cloudformation list-stack-sets \
 ```shell
 aws cloudformation create-stack-instances \
   --stack-set-name $STACKSET_NAME \
-  --accounts "['$AWS_ACCOUNT_ID_1','$AWS_ACCOUNT_ID_2']" \
-  --regions "['$REGION','$REGION_2']" \
-  --operation-preferences \
-    FailureToleranceCount=0,\
-    MaxConcurrentCount=1
+  --accounts $AWS_ACCOUNT_ID_1 $AWS_ACCOUNT_ID_2 \
+  --regions $REGION $REGION_2 \
+  --profile $PROFILE \
+  --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
+```
+
+## Update StackSet
+Update Stacks-Set
+```shell
+aws cloudformation update-stack-set \
+  --stack-set-name $STACKSET_NAME \
+  --template-body file://./template.yaml \
+  --region $REGION \
+  --profile $PROFILE
+```
+
+
+## Helpful Commands
+
+List Stacks
+```shell
+aws cloudformation list-stacks \
+  --region $REGION \
+  --profile $PROFILE
+```
+
+Delete Stack
+```shell
+aws cloudformation delete-stack \
+  --stack-name acg-stackset-permissions \
+  --region $REGION \
+  --profile $PROFILE_1
 ```
