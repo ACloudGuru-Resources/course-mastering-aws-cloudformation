@@ -1,0 +1,28 @@
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  TestBucket:
+    Type: AWS::S3::Bucket
+  TestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      MemorySize: 128
+      InlineCode: |
+        exports.handler = (event, context, callback) => {
+          callback(null, 'SUCCESS!');
+        };
+      Handler: index.handler
+  TestTBL:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-testtable
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 10
+        WriteCapacityUnits: 5

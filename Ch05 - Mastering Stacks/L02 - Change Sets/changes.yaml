@@ -26,7 +26,7 @@ Resources:
   Lambda:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       InlineCode: |
         exports.handler = (event, context, callback) => {
           callback(null, 'Hello!');

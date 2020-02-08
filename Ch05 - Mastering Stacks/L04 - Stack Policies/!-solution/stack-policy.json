@@ -1,0 +1,24 @@
+{
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : "Update:*",
+      "Principal": "*",
+      "Resource" : "*"
+    },
+    {
+      "Effect" : "Deny",
+      "Action" : "Update:*",
+      "Principal": "*",
+      "Resource" : "*",
+      "Condition" : {
+        "StringEquals" : {
+          "ResourceType" : [
+            "AWS::DynamoDB::Table",
+            "AWS::S3::Bucket"
+          ]
+        }
+      }
+    }
+  ]
+}
