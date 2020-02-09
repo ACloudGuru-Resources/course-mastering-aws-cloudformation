@@ -19,7 +19,7 @@ Resources:
       Bucket:
         Ref: DefaultBucket
       PolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           Effect: Allow
           Principal:
@@ -29,16 +29,12 @@ Resources:
             - s3:ListBucket
             - s3:GetObject
           Resource:
-            - !Sub
-              - arn:aws:s3:::${BucketName}
-              - { BucketName: !Ref DefaultBucket }
-            - !Sub
-              - arn:aws:s3:::${BucketName}/*
-              - { BucketName: !Ref DefaultBucket }
+            - !Sub arn:aws:s3:::${DefaultBucket}
+            - !Sub arn:aws:s3:::${DefaultBucket}/*
   ProxyEntryLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       CodeUri: src/proxyentry
       Handler: index.handler
       Role: !GetAtt ProxyEntryRole.Arn
@@ -52,7 +48,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-proxyentry-rolespo
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -62,7 +58,7 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-proxyentry-role
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -80,7 +76,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-originrequestproxy
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       CodeUri: src/originrequestproxy
       Handler: index.handler
       MemorySize: 512
@@ -92,7 +88,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-originrequestproxy-role
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -103,7 +99,7 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-originrequestproxy-role
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -117,12 +113,8 @@ Resources:
                   - s3:GetObject
                   - s3:ListBucket
                 Resource:
-                  - !Sub
-                    - arn:aws:s3:::${BucketName}
-                    - { BucketName: !Ref DefaultBucket }
-                  - !Sub
-                    - arn:aws:s3:::${BucketName}/*
-                    - { BucketName: !Ref DefaultBucket }
+                  - !Sub arn:aws:s3:::${DefaultBucket}
+                  - !Sub arn:aws:s3:::${DefaultBucket}/*
                   - arn:aws:s3:::*
               - Effect: Allow
                 Action:
@@ -139,7 +131,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-originrequest
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       CodeUri: src/originrequest
       Handler: index.handler
       MemorySize: 512
@@ -151,7 +143,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-originrequest-role
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -162,7 +154,7 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-originrequest-role
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -175,7 +167,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-originresponse
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       CodeUri: src/originresponse
       Handler: index.handler
       MemorySize: 128
@@ -187,7 +179,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-originresponse-role
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -198,7 +190,7 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-originresponse-role
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -211,7 +203,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub ${AWS::StackName}-githubwebhook
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       CodeUri: src/githubwebhook
       Handler: index.handler
       MemorySize: 256
@@ -235,7 +227,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-githubwebhookrole
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -245,7 +237,7 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-githubwebhookrole
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -290,7 +282,7 @@ Resources:
       Path: /
       RoleName: !Sub ${AWS::StackName}-deployer-role
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: 2012-10-17
         Statement:
           - Effect: Allow
             Principal:
@@ -299,7 +291,7 @@ Resources:
       Policies:
         - PolicyName: !Sub ${AWS::StackName}-deployer-role
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -326,17 +318,13 @@ Resources:
   SSLCert:
     Type: AWS::CertificateManager::Certificate
     Properties:
-      DomainName: !Sub
-        - "*.${Domain}"
-        - { Domain: !Ref DomainParam }
+      DomainName: !Sub "*.${DomainParam}"
   CDN:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Aliases:
-          - !Sub
-            - "*.${Domain}"
-            - { Domain: !Ref DomainParam }
+          - !Sub "*.${DomainParam}"
         ViewerCertificate:
           AcmCertificateArn: !Ref SSLCert
           SslSupportMethod: sni-only
@@ -380,20 +368,14 @@ Resources:
           - DomainName: !GetAtt DefaultBucket.DomainName
             Id: WebsiteBucketOrigin
             S3OriginConfig:
-              OriginAccessIdentity: !Sub
-                - origin-access-identity/cloudfront/${OAI}
-                - { OAI: !Ref CloudfrontOAI }
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudfrontOAI}
   DnsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
-      HostedZoneName: !Sub
-        - "${Domain}."
-        - { Domain: !Ref DomainParam }
+      HostedZoneName: !Sub ${DomainParam}.
       Comment: !Sub DNS records associated with ${AWS::StackName}
       RecordSets:
-        - Name: !Sub
-            - "*.${Domain}."
-            - { Domain: !Ref DomainParam }
+        - Name: !Sub "*.${DomainParam}."
           Type: A
           AliasTarget:
             DNSName: !GetAtt CDN.DomainName
