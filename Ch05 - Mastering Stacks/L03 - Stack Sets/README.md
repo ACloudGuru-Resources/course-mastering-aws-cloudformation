@@ -69,6 +69,15 @@ aws cloudformation create-stack-instances \
   --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
 ```
 
+## Update StackSet Prefs
+```shell
+aws cloudformation update-stack-set \
+  --stack-set-name $STACKSET_NAME \
+  --template-body file://./template.yaml \
+  --profile $PROFILE \
+  --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=4
+```
+
 ## Update StackSet
 Update Stacks-Set
 ```shell
