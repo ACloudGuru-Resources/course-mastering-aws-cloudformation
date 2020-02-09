@@ -8,7 +8,7 @@
 PROFILE=cloudguru
 PROFILE_1=cloudguru1
 PROFILE_2=cloudguru2
-STACKSET_NAME=asg-stackset
+STACKSET_NAME=acg-stackset
 REGION=us-east-1
 REGION_2=us-west-1
 AWS_ACCOUNT_ID=XXXXXXXXXXXXX

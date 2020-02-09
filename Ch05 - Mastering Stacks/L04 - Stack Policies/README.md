@@ -7,7 +7,7 @@
 # Create Stack
 ```shell
 PROFILE=cloudguru
-STACKNAME=asg-stackpolicies
+STACKNAME=acg-stackpolicies
 REGION=us-east-1
 aws cloudformation create-stack \
   --stack-name $STACKNAME \
