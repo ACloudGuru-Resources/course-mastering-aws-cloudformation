@@ -69,7 +69,7 @@ aws cloudformation create-stack-instances \
   --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
 ```
 
-## Update StackSet
+## Update StackSet Changing BucketName
 ```shell
 aws cloudformation update-stack-set \
   --stack-set-name $STACKSET_NAME \
@@ -96,4 +96,5 @@ aws cloudformation delete-stack \
 ```
 
 ## Helpful Links
+
 - [Custom StackSetsResource](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/solutions/StackSetsResource/Templates/stack-set-template.yaml)
