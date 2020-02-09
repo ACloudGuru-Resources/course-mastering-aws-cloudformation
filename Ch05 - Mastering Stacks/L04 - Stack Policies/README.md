@@ -4,15 +4,11 @@
 - Deploy Template Deleting DDB Table
 - Deploy Template Deleting Lambda Function
 
-## Environment Vars
+# Create Stack
 ```shell
 PROFILE=cloudguru
 STACKNAME=asg-stackpolicies
 REGION=us-east-1
-```
-
-# Create Stack
-```shell
 aws cloudformation create-stack \
   --stack-name $STACKNAME \
   --template-body file://./template.yaml \
