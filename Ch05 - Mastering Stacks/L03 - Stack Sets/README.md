@@ -69,17 +69,7 @@ aws cloudformation create-stack-instances \
   --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=1
 ```
 
-## Update StackSet Prefs
-```shell
-aws cloudformation update-stack-set \
-  --stack-set-name $STACKSET_NAME \
-  --template-body file://./template.yaml \
-  --profile $PROFILE \
-  --operation-preferences FailureToleranceCount=0,MaxConcurrentCount=4
-```
-
 ## Update StackSet
-Update Stacks-Set
 ```shell
 aws cloudformation update-stack-set \
   --stack-set-name $STACKSET_NAME \
@@ -87,7 +77,6 @@ aws cloudformation update-stack-set \
   --region $REGION \
   --profile $PROFILE
 ```
-
 
 ## Helpful Commands
 
@@ -105,3 +94,6 @@ aws cloudformation delete-stack \
   --region $REGION \
   --profile $PROFILE_1
 ```
+
+## Helpful Links
+- [Custom StackSetsResource](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/solutions/StackSetsResource/Templates/stack-set-template.yaml)
