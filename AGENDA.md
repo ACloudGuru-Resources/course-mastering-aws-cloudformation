@@ -27,7 +27,7 @@ Chapter 4 - Best Practises (67:08)
   - Ch04_L05 – Template Storage and Revisions (15:50)
 
 Chapter 5 - Mastering Stacks ()
-  - Ch05_L01 – CloudFormation Service Roles ()
+  - Ch05_L01 – Service Roles ()
   - Ch05_L02 – Change Sets ()
   - Ch05_L03 – StackSets ()
   - Ch05_L04 – Stack Policies ()

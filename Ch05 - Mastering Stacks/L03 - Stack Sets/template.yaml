@@ -1,0 +1,5 @@
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    # Properties:
+    #   BucketName: !Sub acg-stackset-bucket-${AWS::AccountId}-${AWS::Region}

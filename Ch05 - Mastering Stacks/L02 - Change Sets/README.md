@@ -1,4 +1,9 @@
-# Change Sets
+# Steps:
+- Deploy Base Template
+- Create ChangeSet A
+- Create ChangeSet B
+- Describe ChangeSet A
+- Execute ChangeSet A
 
 # Deploy Base Template
 ```shell
@@ -13,31 +18,41 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Create Change Set
+## Create ChangeSet A
 ```shell
 aws cloudformation create-change-set \
   --stack-name $STACKNAME \
-  --change-set-name changesA \
-  --template-body file://changes.yaml \
+  --change-set-name changeSetA \
+  --template-body file://changesetA.yaml \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region $REGION \
+  --profile $PROFILE
+```
+## Create ChangeSet B
+```shell
+aws cloudformation create-change-set \
+  --stack-name $STACKNAME \
+  --change-set-name changeSetB \
+  --template-body file://changesetB.yaml \
   --capabilities CAPABILITY_NAMED_IAM \
   --region $REGION \
   --profile $PROFILE
 ```
 
-## Describe Change Set
+## Describe ChangeSet A
 ```shell
 aws cloudformation describe-change-set \
   --stack-name $STACKNAME \
-  --change-set-name changesA \
+  --change-set-name changeSetA \
   --region $REGION \
   --profile $PROFILE
 ```
 
-## Execute Change Set
+## Execute ChangeSet A
 ```shell
 aws cloudformation execute-change-set \
   --stack-name $STACKNAME \
-  --change-set-name changesA \
+  --change-set-name changeSetA \
   --region $REGION \
   --profile $PROFILE
 ```

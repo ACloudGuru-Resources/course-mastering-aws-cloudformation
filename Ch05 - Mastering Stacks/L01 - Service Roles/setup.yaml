@@ -1,0 +1,58 @@
+Resources:
+  CFStackRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - cloudformation.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: acg-cfstack-role
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
+  SupportUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Sub acg-support-team-${AWS::Region}
+      Policies:
+        - PolicyName: acg-support-team-policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudformation:CreateUploadBucket
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:DeleteStack
+                  - cloudformation:DescribeStacks
+                  - cloudformation:UpdateStack
+                  - cloudformation:ListStacks
+                  - cloudformation:ListStackResources
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:CreateChangeSet
+                  - cloudformation:GetTemplate
+                  - cloudformation:GetStackPolicy
+                  - cloudformation:ListChangeSets
+                  - cloudformation:DescribeChangeSet
+                Resource:
+                  - "*"
+  SupportUserKeys:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref SupportUser
+Outputs:
+  CFStackRoleArn:
+    Value: !GetAtt CFStackRole.Arn
+  SupportUserKeyID:
+    Value: !Ref SupportUserKeys
+  SupportUserKeySecret:
+    Value: !GetAtt SupportUserKeys.SecretAccessKey
