@@ -23,15 +23,5 @@ Resources:
             Action:
               - sts:AssumeRole
       Path: /
-      Policies:
-        - PolicyName: GateLambda-AWSCloudFormationStackSetExecutionRole
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - sts:AssumeRole
-                Resource:
-                  - arn:aws:iam::*:role/AWSCloudFormationStackSetExecutionRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess

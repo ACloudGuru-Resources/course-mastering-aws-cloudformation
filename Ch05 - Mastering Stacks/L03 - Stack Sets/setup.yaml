@@ -4,12 +4,11 @@ Resources:
   AccountGateFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: AWSCloudFormationStackSetsAccountGate
+      FunctionName: AWSCloudFormationStackSetAccountGate
       Runtime: nodejs12.x
       InlineCode: |
         exports.handler = (event, context, callback) => {
-            callback(null, {
-                'Status': 'FAIL'
-            });
+          const Status = 'FAILED';
+          callback(null, { Status });
         };
       Handler: index.handler
