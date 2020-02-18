@@ -1,5 +1,10 @@
 Transform: AWS::Serverless-2016-10-31
 
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    Handler: index.handler
+
 Parameters:
   DomainParam:
     Type: String
@@ -10,6 +15,10 @@ Parameters:
   GitHubAccessTokenParam:
     Type: String
     Description: GitHub Access Token
+  SSLCertARN:
+    Type: String
+    Description: WildCard SSL Certificate ARN
+
 Resources:
   DefaultBucket:
     Type: AWS::S3::Bucket
@@ -31,17 +40,39 @@ Resources:
           Resource:
             - !Sub arn:aws:s3:::${DefaultBucket}
             - !Sub arn:aws:s3:::${DefaultBucket}/*
-  ProxyEntryLambdaFunction:
+  ProxyEntryFunction:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs12.x
       CodeUri: src/proxyentry
-      Handler: index.handler
       Role: !GetAtt ProxyEntryRole.Arn
       Environment:
         Variables:
           ORIGINMAP_TABLE: !Ref OriginMapTBL
           DOMAIN: !Ref DomainParam
+          ORIGINREQUEST_LAMBDA_ARN: !GetAtt OriginRequestLambdaFunction.Arn
+          ORIGINREQUEST_ROLE_ARN: !GetAtt OriginRequestRole.Arn
+          OriginRequestProxyRoleARN: !GetAtt OriginRequestProxyRole.Arn
+          OriginResponseLambdaARN: !GetAtt OriginResponseLambdaFunction.Arn
+          CloudfrontOAI: !GetAtt CloudfrontOAI.S3CanonicalUserId
+  StackProxyMacroFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs12.x
+      CodeUri: src/macro-proxyentry
+      Environment:
+        Variables:
+          PROXYENTRY_ARN: !GetAtt ProxyEntryFunction.Arn
+  StackProxyMacroLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${StackProxyMacroFunction}
+      RetentionInDays: 3
+  StackProxyMacro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: DVB-StackProxy-2020-02-16
+      FunctionName: !GetAtt StackProxyMacroFunction.Arn
   ProxyEntryRole:
     Type: AWS::IAM::Role
     Properties:
@@ -75,8 +106,6 @@ Resources:
   OriginRequestProxyLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-originrequestproxy
-      Runtime: nodejs12.x
       CodeUri: src/originrequestproxy
       Handler: index.handler
       MemorySize: 512
@@ -130,10 +159,7 @@ Resources:
   OriginRequestLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-originrequest
-      Runtime: nodejs12.x
       CodeUri: src/originrequest
-      Handler: index.handler
       MemorySize: 512
       AutoPublishAlias: live
       Role: !GetAtt OriginRequestRole.Arn
@@ -166,10 +192,7 @@ Resources:
   OriginResponseLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-originresponse
-      Runtime: nodejs12.x
       CodeUri: src/originresponse
-      Handler: index.handler
       MemorySize: 128
       AutoPublishAlias: live
       Role: !GetAtt OriginResponseRole.Arn
@@ -199,13 +222,11 @@ Resources:
                   - logs:PutLogEvents
                   - logs:DescribeLogStreams
                 Resource: arn:aws:logs:*:*:*
-  GithubWebhookLambdaFunction:
+  GithubWebhookFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub ${AWS::StackName}-githubwebhook
       Runtime: nodejs12.x
       CodeUri: src/githubwebhook
-      Handler: index.handler
       MemorySize: 256
       AutoPublishAlias: live
       Role: !GetAtt GithubWebhookRole.Arn
@@ -221,6 +242,11 @@ Resources:
           GITHUB_WEBHOOK_SECRET: !Ref GitHubWebhookSecretParam
           GITHUB_ACCESS_TOKEN: !Ref GitHubAccessTokenParam
           PROD_CI_ROLE_ARN: !GetAtt DeployerRole.Arn
+  GithubWebhookLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${GithubWebhookFunction}
+      RetentionInDays: 3
   GithubWebhookRole:
     Type: AWS::IAM::Role
     Properties:
@@ -315,10 +341,6 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: !Sub Created for ${AWS::StackName}
-  SSLCert:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: !Sub "*.${DomainParam}"
   CDN:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -326,7 +348,7 @@ Resources:
         Aliases:
           - !Sub "*.${DomainParam}"
         ViewerCertificate:
-          AcmCertificateArn: !Ref SSLCert
+          AcmCertificateArn: !Ref SSLCertARN
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2018
         Enabled: true
@@ -384,7 +406,7 @@ Resources:
 Outputs:
   ProxyEntryLambdaARN:
     Description: ProxyEntry Lambda ARN
-    Value: !GetAtt ProxyEntryLambdaFunction.Arn
+    Value: !GetAtt ProxyEntryFunction.Arn
     Export:
       Name: !Sub ${AWS::StackName}-proxyentry-lambda-arn
   OriginRequestLambdaARN:
