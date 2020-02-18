@@ -166,7 +166,7 @@ https://amzn.to/32Gkl36
 
 **Lecture Description:** Learn processes to create fast and reliable CI pipelines for your CloudFormation templates
 
-### Ch05_L01 - CloudFormation Service Roles
+### Ch05_L01 - Service Roles
 http://bit.ly/2YL0yND
 
 1. Why are they needed?
