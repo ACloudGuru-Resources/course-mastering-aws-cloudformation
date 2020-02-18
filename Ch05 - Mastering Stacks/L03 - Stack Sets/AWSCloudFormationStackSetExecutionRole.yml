@@ -12,7 +12,7 @@ Resources:
   ExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: AWSCloudFormationStackSetExecutionRole
+      RoleName: !Sub ${AWS::StackName}-AWSCloudFormationStackSetExecutionRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
