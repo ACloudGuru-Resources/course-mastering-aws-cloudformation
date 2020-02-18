@@ -67,5 +67,8 @@ examples
 
 .vscode
 
+# SAM
+.aws-sam
+
 # ignore secrets
 secrets.yaml

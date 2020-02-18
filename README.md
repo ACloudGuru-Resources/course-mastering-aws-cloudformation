@@ -2,13 +2,13 @@
 
 A Cloud Guru Course: Mastering CloudFormation
 
-## Chapter 1 - Intro and Theory (~56:00)
+## Chapter 1 - Intro and Theory
 
-### Ch01_L01 – Introduction (?)
+### Ch01_L01 – Introduction
 
 *Lecture Description:* Gain a high-level look at what this course has to offer. We’ll also give some tips for how to work thru it.
 
-### Ch01_L02 – A Quick Refresher (15:24)
+### Ch01_L02 – A Quick Refresher
 
 1. DEMO: Working with the AWS CLI
 2. How CloudFormation works
@@ -18,7 +18,7 @@ A Cloud Guru Course: Mastering CloudFormation
 4. DEMO: Finding Resource documentation
 
 
-### Ch01_L03 – Template Anatomy (12:17)
+### Ch01_L03 – Template Anatomy
 
 1. Parameters
    - [Constraints](http://bit.ly/2YyuvjE)
@@ -29,14 +29,14 @@ A Cloud Guru Course: Mastering CloudFormation
 5. Resources
 6. Outputs
 
-### Ch01_L04 – Template Operations (10:15)
+### Ch01_L04 – Template Operations
 
 1. Intrinsic Functions
    - Ref, GetAtt
 2. Export/Imports Outputs
 
 
-### Ch01_L05 – Tips & Watchouts (18:45)
+### Ch01_L05 – Tips & Watchouts
 
 1. Trick-out your IDE
 2. Lambda@Edge Deletion Times
@@ -48,13 +48,13 @@ A Cloud Guru Course: Mastering CloudFormation
 https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html
 
 
-## Chapter 2 - Custom Resources (~59:00)
+## Chapter 2 - Custom Resources
 
 **Lecture Description:** Learn to create, deploy and implement custom resources that can help extend native CloudFormation resources.
 **Demo Description:** Create and use a custom resource that provisions unique subdomains and routing based on application version.
 Eg. feat-blue--projectx.domain.com
 
-### Ch02_L01 – Overview (10:23)
+### Ch02_L01 – Overview
 
 1. What they are
    - Lambda: Create, Update, Delete
@@ -62,7 +62,7 @@ Eg. feat-blue--projectx.domain.com
 2. Features & Use Cases
 3. Limits
 
-### Ch02_L02 – What We Are Building (07:22) 
+### Ch02_L02 – What We Are Building 
 
 1. Important Notes
    - Timeouts & Catching Errors
@@ -71,30 +71,30 @@ Eg. feat-blue--projectx.domain.com
 2. Helper Libraries
 3. Diagram: What We Are Building
 
-### Ch02_L02 – Let's Make one (19:28)
+### Ch02_L02 – Let's Make one
 
 1. DEMO: Create/Deploy Custom Resource
 2. DEMO: Review Custom Resource Function
 3. DEMO: Review Exports in Console
 
-### Ch02_L03 – Let's Use It (10:58)
+### Ch02_L03 – Let's Use It
 
 1. Using in another Template
 2. DEMO: Create, Update and Delete
 3. DEMO: Cleanup
 
-## Chapter 3 - Macros & Transforms (?)
+## Chapter 3 - Macros & Transforms
 
 **Lecture Description:** Amplify your template functionality with Macros and Transforms. Learn to create and use custom template functions.
 
-### Ch03_L01 – Overview (11:22)
+### Ch03_L01 – Overview
 
 1. What they are
 2. Snippet vs Template-Level
 3. Features & Use Cases
 4. Limits
 
-### Ch03_L02 – Macro: String Operations (09:35)
+### Ch03_L02 – Macro: String Operations
 
 1. What We're Building
   - String Operations (Capitalize, Replace, Max Length)
@@ -102,19 +102,20 @@ Eg. feat-blue--projectx.domain.com
   - Show CFN console view processed template http://bit.ly/32GrwIn
 3. DEMO: Use Macro
 
-### Ch03_L03 – Macro: Common Tags (08:21)
+### Ch03_L03 – Macro: Common Tags
 
 1. What We're Building
 2. DEMO: Create/Deploy CommonTags Macro
 3. DEMO: Use Macro
 
-### Ch03_L04 – Macro: Custom Resource Types (17:01)
+### Ch03_L04 – Macro: Custom Resource Types
 
 1. What We're Building
 2. DEMO: Create/Deploy S3Objects Macro
 3. DEMO: Use Macro
 
-### Ch03_L05 – Unit Testing (?)
+### Ch03_L05 – Unit Testing
+
 1. Unit Testing
 2. DEMO: Setting up Macro Unit Tests
   - validate-template
@@ -155,20 +156,23 @@ https://amzn.to/32Gkl36
 
 ### Ch04_L04 - Template Storage and Revisions
 
-1. Storing and Managing Templates
+1. Versioning
+2. Linting
+3. Packaging
+4. Storing
+5. Automated CI/CD Pipeline
 
 ## Chapter 5 - Mastering Stacks
 
 **Lecture Description:** Learn processes to create fast and reliable CI pipelines for your CloudFormation templates
 
-### Ch05_L01 - CloudFormation Service Roles
+### Ch05_L01 - Service Roles
 http://bit.ly/2YL0yND
 
 1. Why are they needed?
 2. DEMO: User & Role Setup
 3. DEMO: Stack Deploy & Update
 4. Cleanup
-
 
 ### Ch05_L02 – Change Sets
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#organizingstacks
@@ -191,7 +195,9 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 
 ### Ch05_L04 – Stack Policies
 
-1. 
+1. What are they?
+2. DEMO: Using Stack Policies
+3. Cleanup
 
 ## Chapter 6 - Working with EC2 Instances (eg. GhostCMS)
 
@@ -241,14 +247,10 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 
 ### Ch07_L02 – Serverless CI/CD Deployment Pipeline
 
-**Demo Description:** Build a serverless and real-time voting platform with API Gateway sockets and DynamoDB.
-
-1. What we’re going to build
-2. Review Template & Code
-3. Outputs injection
-3. Deleting S3 assets as part of stack delete
 
 ### Ch07_L03 – JAMStack Deployment (Voting App)
+
+**Demo Description:** Build a serverless and real-time voting platform with API Gateway sockets and DynamoDB.
 
 1. What we’re going to build
 2. Review Template & Code

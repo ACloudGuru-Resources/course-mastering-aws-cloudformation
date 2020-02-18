@@ -78,6 +78,23 @@ aws cloudformation update-stack-set \
   --profile $PROFILE
 ```
 
+## Deploy Account Gate Functions for Target Accounts
+```shell
+aws cloudformation deploy \
+  --stack-name acg-account-gate \
+  --template-file setup.yaml \
+  --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+  --region $REGION \
+  --profile $PROFILE_1
+
+aws cloudformation deploy \
+  --stack-name acg-account-gate \
+  --template-file setup.yaml \
+  --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+  --region $REGION_2 \
+  --profile $PROFILE_2
+```
+
 ## Helpful Commands
 
 List Stacks

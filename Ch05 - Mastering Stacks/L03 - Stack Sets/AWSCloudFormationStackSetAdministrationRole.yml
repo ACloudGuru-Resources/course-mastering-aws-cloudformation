@@ -5,7 +5,7 @@ Resources:
   AdministrationRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: AWSCloudFormationStackSetAdministrationRole
+      RoleName: !Sub ${AWS::StackName}-AWSCloudFormationStackSetAdministrationRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -16,7 +16,7 @@ Resources:
               - sts:AssumeRole
       Path: /
       Policies:
-        - PolicyName: AssumeRole-AWSCloudFormationStackSetExecutionRole
+        - PolicyName: !Sub ${AWS::StackName}-AssumeRole-AWSCloudFormationStackSetExecutionRole
           PolicyDocument:
             Version: 2012-10-17
             Statement:

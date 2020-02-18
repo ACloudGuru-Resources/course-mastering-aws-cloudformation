@@ -1,0 +1,45 @@
+Transform: DVB-StackProxy-2020-02-16
+
+Parameters:
+  StageParameter:
+    Type: String
+    Default: dev
+    Description: Feature Branch Name
+Resources:
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+  # BucketPolicy:
+  #   Type: AWS::S3::BucketPolicy
+  #   Properties:
+  #     Bucket: { Ref: WebsiteBucket }
+  #     PolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         Effect: Allow
+  #         Principal:
+  #           CanonicalUser:
+  #             Fn::ImportValue: !Ref CloudFrontOAIProxyARNParameter
+  #           AWS:
+  #             Fn::ImportValue: !Ref OriginRequestProxyRoleArnParameter
+  #         Action:
+  #           - s3:ListBucket
+  #           - s3:GetObject
+  #         Resource:
+  #           - !Sub
+  #             - arn:aws:s3:::${BucketName}
+  #             - { BucketName: !Ref WebsiteBucket }
+  #           - !Sub
+  #             - arn:aws:s3:::${BucketName}/*
+  #             - { BucketName: !Ref WebsiteBucket }
+  ProxyEntry:
+    Type: DVB::StackProxy::ProxyEntry
+    Version: 1.0
+    Properties:
+      Service: !Ref AWS::StackName
+      Stage: !Ref StageParameter
+      Origin: !GetAtt WebsiteBucket.DomainName
+
+Outputs:
+  SiteURL:
+    Description: URL for this site
+    Value: !Sub https://${ProxyEntry.Host}

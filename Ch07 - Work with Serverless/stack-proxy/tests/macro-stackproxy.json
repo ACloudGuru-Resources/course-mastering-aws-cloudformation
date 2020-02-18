@@ -1,0 +1,23 @@
+{
+  "region": "us-east-1",
+  "accountId": "104477223281",
+  "fragment": {
+      "Resources": {
+          "Bucket": {
+              "Type": "AWS::S3::Bucket"
+          },
+          "ProxyEntry": {
+              "Type": "DVB::StackProxy::ProxyEntry",
+              "Properties": {
+                  "Service": "someproject",
+                  "Stage": "feat-thing",
+                  "Origin": "bucketname-something-something"
+              }
+          }
+      }
+  },
+  "transformId": "104477223281::S3Objects",
+  "params": {},
+  "requestId": "8f5e08f3-6431-4bb6-970f-dd625a1efa12",
+  "templateParameterValues": {}
+}
