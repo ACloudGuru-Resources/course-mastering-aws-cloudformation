@@ -14,4 +14,4 @@ Resources:
       LaunchConfigurationName: !Ref LCNameParam
       MaxSize: "1"
       MinSize: "1"
-  # Wait Condition Revoved
+  # Wait Condition Removed
