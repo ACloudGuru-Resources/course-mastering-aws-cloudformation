@@ -120,7 +120,7 @@ Eg. feat-blue--projectx.domain.com
 2. DEMO: Setting up Macro Unit Tests
   - validate-template
 
-## Chapter 4 – Best Practises
+## Chapter 4 – Best Practices
 
 ### Ch04_L01 - Nested Stacks
 
@@ -144,7 +144,7 @@ Eg. feat-blue--projectx.domain.com
 
 ### Ch04_L03 - Template Strategies
 
-**Lecture Description:** Learn some of the best practises, workflows and tools for managing your templates
+**Lecture Description:** Learn some of the best Practices, workflows and tools for managing your templates
 https://amzn.to/32Gkl36
 
 1. Reuse & Stack Separation

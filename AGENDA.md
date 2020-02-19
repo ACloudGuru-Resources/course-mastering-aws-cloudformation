@@ -19,7 +19,7 @@ Chapter 3 - Macros & Transforms (~52:00)
   - Ch03_L04 – Macro: Custom Resource Types (17:01)
   - Ch03_L05 – Unit Testing (06:38)
 
-Chapter 4 - Best Practises (67:08)
+Chapter 4 - Best Practices (67:08)
   - Ch04_L01 – Nested Stacks - Create (15:35)
   - Ch04_L02 – Nested Stacks - Recover (17:51)
   - Ch04_L03 – Working with Secrets (12:02)
