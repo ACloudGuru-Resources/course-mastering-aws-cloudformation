@@ -5,6 +5,7 @@
     "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
     "aws-sdk": "^2.619.0",
+    "axios": "^0.19.2",
     "bluebird": "^3.5.4",
     "cfn-lambda": "^4.0.0",
     "clone": "^2.1.2",
@@ -25,18 +26,15 @@
     "clean": "rimraf .aws-sam .vscode",
     "prebuild": "rimraf .aws-sam .vscode",
     "prewatch": "rimraf .aws-sam .vscode",
-    "watch": "webpack-cli -w"
+    "watch": "webpack-cli -w",
+    "deploy": "make deploy"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
-    "@babel/preset-typescript": "^7.8.3",
     "aws-sam-webpack-plugin": "^0.5.1",
     "babel-loader": "^8.0.6",
     "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.16",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   }

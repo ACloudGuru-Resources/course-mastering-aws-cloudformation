@@ -8,7 +8,7 @@ Globals:
 Parameters:
   DomainParam:
     Type: String
-    Description: Domain to be extended with subdomains
+    Description: Domain to be extended with subdomains Eg. domain.com or sub.domain.com
   GitHubWebhookSecretParam:
     Type: String
     Description: GitHub Webhook Secret
@@ -50,10 +50,10 @@ Resources:
         Variables:
           ORIGINMAP_TABLE: !Ref OriginMapTBL
           DOMAIN: !Ref DomainParam
-          ORIGINREQUEST_LAMBDA_ARN: !GetAtt OriginRequestLambdaFunction.Arn
+          ORIGINREQUEST_LAMBDA_ARN: !GetAtt OriginRequestFunction.Arn
           ORIGINREQUEST_ROLE_ARN: !GetAtt OriginRequestRole.Arn
           OriginRequestProxyRoleARN: !GetAtt OriginRequestProxyRole.Arn
-          OriginResponseLambdaARN: !GetAtt OriginResponseLambdaFunction.Arn
+          OriginResponseLambdaARN: !GetAtt OriginResponseFunction.Arn
           CloudfrontOAI: !GetAtt CloudfrontOAI.S3CanonicalUserId
   StackProxyMacroFunction:
     Type: AWS::Serverless::Function
@@ -71,7 +71,7 @@ Resources:
   StackProxyMacro:
     Type: AWS::CloudFormation::Macro
     Properties:
-      Name: DVB-StackProxy-2020-02-16
+      Name: ACG-StackProxy-2020-02-16
       FunctionName: !GetAtt StackProxyMacroFunction.Arn
   ProxyEntryRole:
     Type: AWS::IAM::Role
@@ -103,14 +103,20 @@ Resources:
                 Resource:
                   - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/stack-proxy-*"
                   - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/stack-proxy-*/index/*"
-  OriginRequestProxyLambdaFunction:
+  OriginRequestProxyFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub ${AWS::StackName}-originrequestproxy
       CodeUri: src/originrequestproxy
       Handler: index.handler
       MemorySize: 512
       AutoPublishAlias: live
       Role: !GetAtt OriginRequestProxyRole.Arn
+  OriginRequestProxyLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${OriginRequestProxyFunction}
+      RetentionInDays: 3
   OriginRequestProxyRole:
     Type: AWS::IAM::Role
     Properties:
@@ -156,13 +162,18 @@ Resources:
                 Resource:
                   - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AWS::StackName}-*
                   - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AWS::StackName}-*/index/*
-  OriginRequestLambdaFunction:
+  OriginRequestFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/originrequest
       MemorySize: 512
       AutoPublishAlias: live
       Role: !GetAtt OriginRequestRole.Arn
+  OriginRequestLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${OriginRequestFunction}
+      RetentionInDays: 3
   OriginRequestRole:
     Type: AWS::IAM::Role
     Properties:
@@ -189,13 +200,18 @@ Resources:
                   - logs:PutLogEvents
                   - logs:DescribeLogStreams
                 Resource: arn:aws:logs:*:*:*
-  OriginResponseLambdaFunction:
+  OriginResponseFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/originresponse
       MemorySize: 128
       AutoPublishAlias: live
       Role: !GetAtt OriginResponseRole.Arn
+  OriginResponseLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${OriginResponseFunction}
+      RetentionInDays: 3
   OriginResponseRole:
     Type: AWS::IAM::Role
     Properties:
@@ -383,9 +399,9 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           LambdaFunctionAssociations:
             - EventType: origin-request
-              LambdaFunctionARN: !Ref OriginRequestProxyLambdaFunction.Version
+              LambdaFunctionARN: !Ref OriginRequestProxyFunction.Version
             - EventType: origin-response
-              LambdaFunctionARN: !Ref OriginResponseLambdaFunction.Version
+              LambdaFunctionARN: !Ref OriginResponseFunction.Version
         Origins:
           - DomainName: !GetAtt DefaultBucket.DomainName
             Id: WebsiteBucketOrigin
@@ -411,7 +427,7 @@ Outputs:
       Name: !Sub ${AWS::StackName}-proxyentry-lambda-arn
   OriginRequestLambdaARN:
     Description: OriginRequest Lambda ARN
-    Value: !GetAtt OriginRequestLambdaFunction.Arn
+    Value: !GetAtt OriginRequestFunction.Arn
     Export:
       Name: !Sub ${AWS::StackName}-originrequest-lambda-arn
   OriginRequestRoleARN:
@@ -426,7 +442,7 @@ Outputs:
       Name: !Sub ${AWS::StackName}-originrequestproxy-role-arn
   OriginResponseLambdaARN:
     Description: OriginResponse Lambda ARN
-    Value: !GetAtt OriginResponseLambdaFunction.Arn
+    Value: !GetAtt OriginResponseFunction.Arn
     Export:
       Name: !Sub ${AWS::StackName}-originresponse-lambda-arn
   CloudfrontOAI:

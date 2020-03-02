@@ -33,11 +33,17 @@ module.exports = {
   // Set the webpack mode
   mode: process.env.NODE_ENV || 'production',
 
-  // Add the TypeScript loader
   module: {
     rules: [
-      { test: /\.jsx?$/, loader: 'babel-loader' },
-      { test: /\.tsx?$/, loader: 'babel-loader' },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
+      },
     ],
   },
 

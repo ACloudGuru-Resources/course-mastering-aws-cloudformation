@@ -244,6 +244,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 2. Searching for Apps
 3. Publishing Apps
 4. Using Apps
+https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource-based-policy-examples.html
 
 ### Ch07_L02 – Serverless CI/CD Deployment Pipeline
 

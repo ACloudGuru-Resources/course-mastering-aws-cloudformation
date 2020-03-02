@@ -11,6 +11,7 @@ const processTemplate = template => {
   for (let name in resources) {
     const resource = resources[name];
     if (resource['Type'] === 'DVB::StackProxy::ProxyEntry') {
+      const { Version } = resource;
       const { Service, Stage, Origin } = resource['Properties'];
 
       if (!(Service && Stage && Origin))
@@ -18,7 +19,7 @@ const processTemplate = template => {
 
       newResources[name] = {
         Type: 'Custom::StackProxyEntry',
-        Version: '1.0',
+        Version,
         Properties: {
           ServiceToken: PROXYENTRY_ARN,
           Service,

@@ -1,0 +1,31 @@
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  ApplicationId:
+    Type: String
+    Description: StackProxy Application ID
+  DomainParam:
+    Type: String
+    Description: Domain to be extended with subdomains Eg. domain.com or sub.domain.com
+  GitHubWebhookSecretParam:
+    Type: String
+    Description: GitHub Webhook Secret
+  GitHubAccessTokenParam:
+    Type: String
+    Description: GitHub Access Token
+  SSLCertARN:
+    Type: String
+    Description: WildCard SSL Certificate ARN
+
+Resources:
+  StackProxy:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: !Ref ApplicationId
+        SemanticVersion: 0.1.0
+      Parameters:
+        DomainParam: !Ref DomainParam
+        GitHubWebhookSecretParam: !Ref GitHubWebhookSecretParam
+        GitHubAccessTokenParam: !Ref GitHubAccessTokenParam
+        SSLCertARN: !Ref SSLCertARN
