@@ -41,19 +41,17 @@ Chapter 6 - Working with EC2 Instances
 
 Chapter 7 - Working with Serverless
   - Ch07_L01 – AWS Serverless Application Repository
-  - Ch07_L02 – Serverless CI/CD Deployment Pipeline
-  - Ch07_L03 – JAMStack Deployment
+  - Ch07_L02 – JAMStack Deployment
 
 Chapter 8 - Putting it all together
   - Ch08_L01 – Overview
-  - Ch08_L02 – Deploy & Review
   - Ch08_L03 – Demo the Portal
   - Ch08_L04 – Clean up
-  - Ch08_L05 – Other Tools
 
 Chapter 9 - Other Tools
-  - Ch09_L01 – Serverless Framework / Components
-  - Ch09_L02 – AWS SAM
-  - Ch09_L03 – Troposphere
-  - Ch09_L04 – AWS CDK
-  - Ch09_L05 – Conclusion
+  - Ch09_L01 - Frameworks
+    - Serverless Framework
+    - AWS SAM
+    - AWS CDK
+  - Ch09_L02 – CloudFormation Registry
+  - Ch09_L03 – Conclusion

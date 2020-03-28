@@ -1,0 +1,23 @@
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /
+            Method: get
+Outputs:
+  HelloWorldUrl:
+    Description: HelloWorldFunction Prod stage URL
+    Value: !Sub https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/

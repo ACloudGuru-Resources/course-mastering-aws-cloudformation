@@ -38,3 +38,6 @@ Outputs:
   SiteURL:
     Description: URL for this site
     Value: !Sub https://${ProxyEntry.Host}
+  WebsiteBucket:
+    Description: S3 Bucket for this site
+    Value: !Ref WebsiteBucket

@@ -56,24 +56,11 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Deploy StackProxy
+## Deploy Hello World
 ```bash
+STACKNAME2=acg-helloworld
 aws cloudformation deploy \
-  --stack-name $STACKNAME \
-  --template .aws-sam/build/packaged.yaml \
-  --parameter-overrides \
-      DomainParam=$DOMAIN \
-      GitHubWebhookSecretParam=$GITHUB_WEBHOOK_SECRET \
-      GitHubAccessTokenParam=$GITHUB_ACCESS_TOKEN \
-      SSLCertARN=$SSLCERT_ARN \
-  --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-  --region $REGION \
-  --profile $PROFILE
-```
-
-```bash
-aws cloudformation deploy \
-  --stack-name helloworld \
+  --stack-name $STACKNAME2 \
   --template template.yaml \
   --parameter-overrides \
       StageParameter=feat-test \
@@ -82,26 +69,20 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Helpful Commands
-
+## Deploy HTML to S3
 ```bash
-sam deploy \
-  --template-file .aws-sam/build/template.yaml \
-  --stack-name $STACKNAME \
-  --s3-bucket $DEPLOY_BUCKET \
-  --parameter-overrides "\
-    ParameterKey=DomainParam,ParameterValue=$DOMAIN \
-    ParameterKey=GitHubWebhookSecretParam,ParameterValue=$GITHUB_WEBHOOK_SECRET \
-    ParameterKey=GitHubAccessTokenParam,ParameterValue=$GITHUB_ACCESS_TOKEN \
-    ParameterKey=SSLCertARN,ParameterValue=$SSLCERT_ARN" \
-  --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
+BUCKET_NAME=$(aws \
+  cloudformation describe-stacks \
+  --stack-name $STACKNAME2 \
+  --query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
+  --region $REGION \
+  --profile $PROFILE \
+  --output text)
+aws s3 sync \
+  . "s3://${BUCKET_NAME}/" \
+  --exclude "*" --include "*.html" \
+  --cache-control 'max-age=0, no-cache, no-store, must-revalidate' \
+  --content-type text/html --delete \
   --region $REGION \
   --profile $PROFILE
-```
-
-```bash
-sam local invoke \
-  -e tests/macro-stackproxy.json \
-  -t .aws-sam/build/template.yaml \
-  ProxyEntryFunction
 ```

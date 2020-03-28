@@ -65,6 +65,9 @@ packaged.yaml
 
 examples
 
+.serverless
+build/
+
 .vscode
 
 # SAM

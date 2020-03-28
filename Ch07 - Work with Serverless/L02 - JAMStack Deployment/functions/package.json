@@ -1,0 +1,12 @@
+{
+  "name": "websocketapp",
+  "version": "1.0.0",
+  "dependencies": {
+    "aws-sdk": "^2.382.0",
+    "bluebird": "^3.5.3",
+    "lodash.omit": "^4.5.0",
+    "lodash.reduce": "^4.6.0",
+    "node-fetch": "^2.3.0",
+    "node-jose": "^1.1.0"
+  }
+}
