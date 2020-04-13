@@ -1,0 +1,6 @@
+{
+  "field": "getStack",
+  "arguments": {
+    "id": "arn:aws:cloudformation:us-east-1:645655324390:stack/acg-votingapp-backend-feat-demo/e868ea20-7c27-11ea-9099-0e58925d1f8e"
+  }
+}

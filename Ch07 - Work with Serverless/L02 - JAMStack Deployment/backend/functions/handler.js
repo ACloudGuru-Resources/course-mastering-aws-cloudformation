@@ -13,7 +13,7 @@ const STATS_FIELD_NAME = 'THIS_IS_FOR_STATS';
 
 const successfullResponse = {
   statusCode: 200,
-  body: 'Connected'
+  body: 'Connected',
 };
 
 const jose = require('node-jose');
@@ -37,7 +37,7 @@ module.exports.connectionManager = (event, context, callback) => {
       .catch(err => {
         callback(null, {
           statusCode: 500,
-          body: 'Failed to connect: ' + JSON.stringify(err)
+          body: 'Failed to connect: ' + JSON.stringify(err),
         });
       });
   }
@@ -51,8 +51,8 @@ module.exports.sendMessage = async (event, context, callback) => {
   let connectionData;
   try {
     connectionData = await DDB.scan({
-      TableName: process.env.CHATCONNECTION_TABLE,
-      ProjectionExpression: 'connectionId'
+      TableName: process.env.DEMOCONNECTION_TABLE,
+      ProjectionExpression: 'connectionId',
     }).promise();
   } catch (err) {
     console.log(err);
@@ -67,7 +67,7 @@ module.exports.sendMessage = async (event, context, callback) => {
   console.log({ votes });
 
   const postCalls = connectionData.Items.filter(
-    ({ connectionId }) => connectionId.S !== STATS_FIELD_NAME
+    ({ connectionId }) => connectionId.S !== STATS_FIELD_NAME,
   ).map(async ({ connectionId }) => {
     try {
       return await send(event, connectionId.S, votes);
@@ -94,29 +94,30 @@ const cleanData = vote => {
   return _reduce(
     _omit(vote[rootKey], ['connectionId']),
     (result, value, key) => ({ ...result, ...{ [key]: parseInt(value.N) } }),
-    {}
+    {},
   );
 };
 
 const send = async (event, connectionId, votes) => {
   const apigwManagementApi = new AWS.ApiGatewayManagementApi({
     apiVersion: '2018-11-29',
-    endpoint: event.requestContext.domainName + '/' + event.requestContext.stage
+    endpoint:
+      event.requestContext.domainName + '/' + event.requestContext.stage,
   });
   return await apigwManagementApi
     .postToConnection({
       ConnectionId: connectionId,
-      Data: JSON.stringify(votes)
+      Data: JSON.stringify(votes),
     })
     .promise();
 };
 
 const addConnection = connectionId => {
   const putParams = {
-    TableName: process.env.CHATCONNECTION_TABLE,
+    TableName: process.env.DEMOCONNECTION_TABLE,
     Item: {
-      connectionId: { S: connectionId }
-    }
+      connectionId: { S: connectionId },
+    },
   };
 
   return DDB.putItem(putParams).promise();
@@ -124,14 +125,14 @@ const addConnection = connectionId => {
 
 const addVote = house => {
   const updateParams = {
-    TableName: process.env.CHATCONNECTION_TABLE,
+    TableName: process.env.DEMOCONNECTION_TABLE,
     Key: {
-      connectionId: { S: STATS_FIELD_NAME }
+      connectionId: { S: STATS_FIELD_NAME },
     },
     UpdateExpression: 'add #vote :x',
     ExpressionAttributeNames: { '#vote': house },
     ExpressionAttributeValues: { ':x': { N: '1' } },
-    ReturnValues: 'ALL_NEW'
+    ReturnValues: 'ALL_NEW',
   };
 
   return DDB.updateItem(updateParams)
@@ -142,9 +143,9 @@ const addVote = house => {
 const getVotes = () => {
   const params = {
     Key: {
-      connectionId: { S: STATS_FIELD_NAME }
+      connectionId: { S: STATS_FIELD_NAME },
     },
-    TableName: process.env.CHATCONNECTION_TABLE
+    TableName: process.env.DEMOCONNECTION_TABLE,
   };
 
   return DDB.getItem(params)
@@ -158,10 +159,10 @@ const getVotes = () => {
 
 const deleteConnection = connectionId => {
   const deleteParams = {
-    TableName: process.env.CHATCONNECTION_TABLE,
+    TableName: process.env.DEMOCONNECTION_TABLE,
     Key: {
-      connectionId: { S: connectionId }
-    }
+      connectionId: { S: connectionId },
+    },
   };
 
   return DDB.deleteItem(deleteParams).promise();
@@ -172,7 +173,7 @@ module.exports.authorizerFunc = async (event, context, callback) => {
     'https://cognito-idp.ap-southeast-2.amazonaws.com/USER_POOL_ID/.well-known/jwks.json';
   const {
     queryStringParameters: { token },
-    methodArn
+    methodArn,
   } = event;
 
   const app_client_id = APP_CLIENT_ID;

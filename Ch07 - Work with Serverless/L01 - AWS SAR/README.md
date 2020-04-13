@@ -1,8 +1,10 @@
 
-## Add SAR Policy to Deploy Bucket
+## Deploy Stack Proxy as AWS SAR App 
+
+### Add SAR Policy to Deploy Bucket
 `sar-bucket-policy.json`
 
-## Package Template
+### Package Template
 ```bash
 DEPLOY_BUCKET=acg-deploy-bucket
 REGION=us-east-1
@@ -11,12 +13,12 @@ yarn build
 aws cloudformation package \
   --template-file .aws-sam/build/template.yaml \
   --s3-bucket $DEPLOY_BUCKET \
-  --output-template-file .aws-sam/build/packaged.yaml \
+  --output-template-file .aws-sam/build/template.yaml \
   --region $REGION \
   --profile $PROFILE
 ```
 
-## Create AWS SAR Application
+### Create AWS SAR Application
 ```bash
 SAR_VERSION="0.1.0"
 SAR_NAME="StackProxy"
@@ -27,12 +29,26 @@ aws serverlessrepo create-application \
   --description $SAR_DESC \
   --name $SAR_NAME \
   --semantic-version $SAR_VERSION \
-  --template-body file://.aws-sam/build/packaged.yaml \
+  --template-body file://.aws-sam/build/template.yaml \
   --region $REGION \
   --profile $PROFILE
 ```
 
-## Deploy Instance of Application
+### Create AWS SAR Application Version
+```bash
+SAR_APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
+SAR_VERSION="0.2.0"
+aws serverlessrepo create-application-version \
+  --application-id $SAR_APP_ID \
+  --semantic-version $SAR_VERSION \
+  --template-body file://.aws-sam/build/template.yaml \
+  --region $REGION \
+  --profile $PROFILE
+```
+
+## Deploy Stack Proxy
+
+### Deploy Instance of Application
 ```bash
 APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
 STACKNAME=stack-proxy
@@ -56,7 +72,10 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Deploy Hello World
+
+## Deploy Hello World App
+
+### Deploy Hello World Infra
 ```bash
 STACKNAME2=acg-helloworld
 aws cloudformation deploy \
@@ -69,7 +88,7 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-## Deploy HTML to S3
+### Deploy Hello World HTML to S3
 ```bash
 BUCKET_NAME=$(aws \
   cloudformation describe-stacks \
@@ -86,3 +105,4 @@ aws s3 sync \
   --region $REGION \
   --profile $PROFILE
 ```
+

@@ -23,7 +23,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: !Ref ApplicationId
-        SemanticVersion: 0.1.0
+        SemanticVersion: 0.2.0
       Parameters:
         DomainParam: !Ref DomainParam
         GitHubWebhookSecretParam: !Ref GitHubWebhookSecretParam

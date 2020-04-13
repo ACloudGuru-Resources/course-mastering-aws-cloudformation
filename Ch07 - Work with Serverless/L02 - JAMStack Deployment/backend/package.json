@@ -1,0 +1,32 @@
+{
+  "name": "acg-votingapp-backend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "lodash.omit": "^4.5.0",
+    "lodash.reduce": "^4.6.0",
+    "node-fetch": "^2.3.0",
+    "node-jose": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "aws-sam-webpack-plugin": "^0.6.0",
+    "aws-sdk": "^2.648.0",
+    "babel-loader": "^8.1.0",
+    "commander": "^5.0.0",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "build": "webpack-cli",
+    "clean": "rimraf .aws-sam .vscode",
+    "prebuild": "rimraf .aws-sam .vscode",
+    "prewatch": "rimraf .aws-sam .vscode",
+    "watch": "webpack-cli -w",
+    "getenv": "make getenv",
+    "deploy": "make deploy getenv"
+  }
+}
