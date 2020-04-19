@@ -6,12 +6,12 @@ const cfn = new AWS.CloudFormation({ apiVersion: '2010-05-15' });
 const rgt = new AWS.ResourceGroupsTaggingAPI({ apiVersion: '2017-01-26' });
 
 const CacheService = require('../_common/utils/cache-service');
-const ttl = 300; // default TTL of 30 seconds
+const ttl = 1; // seconds
 const cache = new CacheService(ttl);
 
 const TAGKEY_REPOSITORY_NAME = 'GIT_REPOSITORY';
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
   try {
     console.log('Received event {}', JSON.stringify(event, 3));
 
@@ -28,6 +28,7 @@ exports.handler = async (event, context, callback) => {
         const stacks = await getAllStacks();
         return stacks;
       }
+
       case 'stacks': {
         const repos = event;
         const { Stacks: stacks } = await getAllStacks();
@@ -36,7 +37,6 @@ exports.handler = async (event, context, callback) => {
           groupStacksByTag(stacks),
         );
 
-        console.log({ stacksGrouped: JSON.stringify(stacksGrouped) });
         return stacksGrouped;
       }
       // case 'stack': {
@@ -59,6 +59,34 @@ exports.handler = async (event, context, callback) => {
   }
 };
 
+const getOutputValue = (outputs, key) => {
+  const { outputValue } = _find(outputs, ['outputKey', key]) || {};
+  return outputValue;
+};
+const getTagValue = (tags, key) => {
+  const { value } = _find(tags, ['key', key]) || {};
+  return value;
+};
+const addFields = (stacks) =>
+  stacks.map((stack) => {
+    const fields = {
+      service: getTagValue(stack.tags, 'SERVICE'),
+      stage: getTagValue(stack.tags, 'STAGE'),
+      stageFlag: getTagValue(stack.tags, 'STAGE_FLAG'),
+      siteUrl: getOutputValue(stack.outputs, 'SiteUrl'),
+      serviceEndpoint: getOutputValue(stack.outputs, 'ServiceEndpoint'),
+      serviceEndpointWebsocket: getOutputValue(
+        stack.outputs,
+        'ServiceEndpointWebsocket',
+      ),
+      websiteBucket: getOutputValue(stack.outputs, 'WebsiteBucket'),
+    };
+
+    return {
+      ...stack,
+      ...fields,
+    };
+  });
 const groupStacksByTag = (stacks) =>
   _groupBy(stacks, (s) => {
     const repo = _find(s.Tags, (t) => t.Key === TAGKEY_REPOSITORY_NAME);
@@ -66,7 +94,7 @@ const groupStacksByTag = (stacks) =>
   });
 
 const orderStacksByRepo = (repos, groupedStacks) =>
-  repos.map((r) => groupedStacks[r.source.name] || null);
+  repos.map((r) => groupedStacks[r.source.name] || []);
 
 const jsonToBase64 = (json) =>
   Buffer.from(JSON.stringify(json)).toString('base64');
@@ -91,15 +119,21 @@ const isFilterMatch = (tags, tagFilter) =>
         tagFilter.Values.includes(tag.Value)),
   );
 
-const getStack = async (StackName) => {
-  const { Stacks } = await cfn.describeStacks({ StackName }).promise();
-  const stack = camelcaseKeys(Stacks[0], { deep: true });
-  return stack;
-};
-const getAllStacks = async () => {
-  const { Stacks } = await cache.get(`getAllStacks`, () =>
-    cfn.describeStacks().promise(),
+const getStack = async (StackName) =>
+  await cfn
+    .describeStacks({ StackName })
+    .promise()
+    .then(({ Stacks }) => {
+      const stack = camelcaseKeys(Stacks[0], { deep: true });
+      return addFields([stack])[0];
+    });
+const getAllStacks = async () =>
+  await cache.get(`getAllStacks`, () =>
+    cfn
+      .describeStacks()
+      .promise()
+      .then(({ Stacks }) => {
+        const stacks = camelcaseKeys(Stacks, { deep: true });
+        return addFields(stacks);
+      }),
   );
-  const stacks = camelcaseKeys(Stacks, { deep: true });
-  return stacks;
-};

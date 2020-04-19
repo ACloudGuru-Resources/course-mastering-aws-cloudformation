@@ -156,13 +156,13 @@ Resources:
           getStack(id:ID!): Stack
           allStacks: [Stack]
 
-          createBranch(repository:String!, name:String!, sha:String!): RepoBranch
           getRepo(owner:String!, name:String!): Repository
           allRepos: [Repository]
         }
 
         type Mutation {
           addPost(id: ID!, author: String!, title: String, content: String, url: String): Post!
+          createBranch(repository:String!, name:String!, sha:String!): RepoBranch
         }
 
         type Post {
@@ -178,8 +178,17 @@ Resources:
         type Stack {
           stackId: String!
           stackName: String!
-          creationTime: String!
-          lastUpdatedTime: String!
+          description: String
+          stackStatus: String!
+          service: String
+          siteUrl: String
+          serviceEndpoint: String
+          serviceEndpointWebsocket: String
+          websiteBucket: String
+          stage: String
+          stageFlag: String
+          creationTime: String
+          lastUpdatedTime: String
           outputs: [StackOutput]
           repository: Repository
           tags: [StackTag]
@@ -199,8 +208,8 @@ Resources:
           owner: RepoOwner!
           name: String!
           html_url: String!
-          branches: [RepoBranch]
-          stacks: [Stack]
+          branches: [RepoBranch]!
+          stacks: [Stack]!
         }
         type RepoOwner {
           login: String!
@@ -254,7 +263,15 @@ Resources:
       TypeName: Query
       FieldName: getPost
       DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: '{ "version": "2017-02-28", "operation": "Invoke", "payload": { "field": "getPost", "arguments":  $utils.toJson($context.arguments) } }'
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Invoke",
+          "payload": {
+            "field": "getPost",
+            "arguments":  $utils.toJson($context.arguments)
+          }
+        }
       ResponseMappingTemplate: $util.toJson($context.result)
   AppSyncResolverAddPost:
     Type: AWS::AppSync::Resolver
@@ -263,7 +280,15 @@ Resources:
       TypeName: Mutation
       FieldName: addPost
       DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: '{ "version": "2017-02-28", "operation": "Invoke", "payload": { "field": "addPost", "arguments":  $utils.toJson($context.arguments) } }'
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Invoke",
+          "payload": {
+            "field": "addPost",
+            "arguments":  $utils.toJson($context.arguments)
+          }
+        }
       ResponseMappingTemplate: $util.toJson($context.result)
   AppSyncResolverAllPosts:
     Type: AWS::AppSync::Resolver
@@ -272,7 +297,14 @@ Resources:
       TypeName: Query
       FieldName: allPosts
       DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: '{ "version": "2017-02-28", "operation": "Invoke", "payload": { "field": "allPosts" } }'
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Invoke",
+          "payload": {
+            "field": "allPosts"
+          }
+        }
       ResponseMappingTemplate: $util.toJson($context.result)
   AppSyncResolverRelatedPosts:
     Type: AWS::AppSync::Resolver
@@ -281,7 +313,15 @@ Resources:
       TypeName: Post
       FieldName: relatedPosts
       DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: '{ "version": "2017-02-28", "operation": "Invoke", "payload": { "field": "relatedPosts", "source":  $utils.toJson($context.source) } }'
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Invoke",
+          "payload": {
+            "field": "relatedPosts",
+            "source":  $utils.toJson($context.source)
+          }
+        }
       ResponseMappingTemplate: $util.toJson($context.result)
 
   # CFN RESOLVERS
@@ -292,7 +332,15 @@ Resources:
       TypeName: Query
       FieldName: getStack
       DataSourceName: !GetAtt AppSyncDataSourceCFN.Name
-      RequestMappingTemplate: '{ "version": "2017-02-28", "operation": "Invoke", "payload": { "field": "getStack", "arguments":  $utils.toJson($context.arguments) } }'
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Invoke",
+          "payload": {
+            "field": "getStack",
+            "arguments":  $utils.toJson($context.arguments)
+          }
+        }
       ResponseMappingTemplate: $util.toJson($context.result)
   AppSyncResolverAllStacks:
     Type: AWS::AppSync::Resolver
@@ -367,7 +415,7 @@ Resources:
     Type: AWS::AppSync::Resolver
     Properties:
       ApiId: !GetAtt AppSyncAPI.ApiId
-      TypeName: Query
+      TypeName: Mutation
       FieldName: createBranch
       DataSourceName: !GetAtt AppSyncDataSourceGithub.Name
       RequestMappingTemplate: |

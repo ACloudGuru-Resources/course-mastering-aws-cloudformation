@@ -37,11 +37,10 @@ exports.handler = async (event) => {
       case 'getRepo': {
         const { owner, name } = event.arguments;
         const repo = await getRepo(owner, name);
-        console.log({ owner, name, repo });
         return repo;
       }
       case 'allRepos': {
-        const repos = await allRepos();
+        const repos = (await allRepos()) || [];
         return repos;
       }
       case 'createBranch': {
@@ -60,7 +59,7 @@ exports.handler = async (event) => {
           owner: { login: owner },
           name: repo,
         } = event.source;
-        const branches = await getBranches(owner, repo);
+        const branches = (await getBranches(owner, repo)) || [];
         console.log({ branches });
         return branches;
       }

@@ -24,8 +24,12 @@ deploy: check-env
 				StageFlag=${STAGE_FLAG} \
 		--tags \
 				SERVICE=${SERVICE} \
+				STAGE=${STAGE} \
+				STAGE_FLAG=${STAGE_FLAG} \
 				GIT_BRANCH=${GIT_BRANCH} \
 				GIT_REPOSITORY=${GIT_REPO}
+				
+	# https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
 	# sam deploy \
 	# 	--template-file .aws-sam/build/template.yaml \
 	# 	--stack-name '${STACK_NAME}' \
