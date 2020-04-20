@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import IconButton from '@material-ui/core/IconButton'
@@ -12,7 +12,6 @@ const StackRowHeader = ({
   onToggleExpand,
   isExpanded,
 }) => {
-  console.log(stackGroup)
   const group = stackGroup[itemKey]
   const repoUrl = group[0].repository && group[0].repository.html_url
 

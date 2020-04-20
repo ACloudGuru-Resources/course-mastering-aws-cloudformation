@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import _find from 'lodash.find'
 
-import { STACK_STATUSES_SETTLED, STACK_STATUSES } from '../config/config'
+import { STACK_STATUSES_SETTLED } from '../config/config'
 import { makeStyles } from '@material-ui/core/styles'
 
 import TableContainer from '@material-ui/core/TableContainer'

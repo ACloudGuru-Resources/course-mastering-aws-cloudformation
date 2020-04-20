@@ -50,9 +50,15 @@ exports.handler = async (event) => {
       }
       case 'repository': {
         const { tags } = event.source;
-        const name = getTag(tags, 'GIT_REPOSITORY');
-        const repo = (name && (await getRepo(GITHUB_USER, name))) || null;
-        return repo;
+        const repoName = getTag(tags, 'GIT_REPOSITORY');
+        const short = getTag(tags, 'GIT_SHORT');
+
+        if (!repoName) return null;
+        const commitUrl =
+          (short && getCommitUrl({ repoName, short, owner: GITHUB_USER })) ||
+          null;
+        const repo = (await getRepo(GITHUB_USER, repoName)) || null;
+        return { ...repo, commitUrl };
       }
       case 'branches': {
         const {
@@ -71,6 +77,9 @@ exports.handler = async (event) => {
     throw err;
   }
 };
+
+const getCommitUrl = ({ owner, repoName, short }) =>
+  `https://github.com/${owner}/${repoName}/commit/${short}`;
 
 const allRepos = () =>
   cache.get(`allRepos`, () =>

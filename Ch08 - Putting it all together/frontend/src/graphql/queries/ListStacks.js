@@ -17,6 +17,7 @@ export default gql`
       repository {
         id
         name
+        commitUrl
         html_url
         branches {
           name

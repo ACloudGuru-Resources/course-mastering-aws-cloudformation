@@ -207,6 +207,7 @@ Resources:
           id: Int!
           owner: RepoOwner!
           name: String!
+          commitUrl: String
           html_url: String!
           branches: [RepoBranch]!
           stacks: [Stack]!

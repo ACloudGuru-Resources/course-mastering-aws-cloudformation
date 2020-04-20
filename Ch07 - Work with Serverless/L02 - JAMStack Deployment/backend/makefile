@@ -2,7 +2,7 @@
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell npm run env | grep "npm_package_name")))$(SERVICE)
 GIT_REPO = $(eval GIT_REPO := $(shell basename `git rev-parse --show-toplevel`))$(GIT_REPO)
 GIT_BRANCH = $(eval GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD))$(GIT_BRANCH)
-GIT_VERSION = $(eval GIT_VERSION := $(shell git rev-parse --short HEAD))$(GIT_VERSION)
+GIT_SHORT = $(eval GIT_SHORT := $(shell git rev-parse --short HEAD))$(GIT_SHORT)
 DEPLOY_BUCKET := acg-deploy-bucket
 
 ifndef_any_of = $(filter undefined,$(foreach v,$(1),$(origin $(v))))
@@ -27,8 +27,9 @@ deploy: check-env
 				STAGE=${STAGE} \
 				STAGE_FLAG=${STAGE_FLAG} \
 				GIT_BRANCH=${GIT_BRANCH} \
-				GIT_REPOSITORY=${GIT_REPO}
-				
+				GIT_REPOSITORY=${GIT_REPO} \
+				GIT_SHORT=${GIT_SHORT}
+
 	# https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
 	# sam deploy \
 	# 	--template-file .aws-sam/build/template.yaml \
@@ -52,7 +53,7 @@ getenv: check-env
 		-i Service=${SERVICE} \
 		-i Stage=${STAGE} \
 		-i StageFlag=${STAGE_FLAG} \
-		-i GitVersion=${SERVICE} \
+		-i GitVersion=${GIT_SHORT} \
 		-i SiteUrl \
 		-i ServiceEndpointWebsocket \
 		-o ../frontend/.env
