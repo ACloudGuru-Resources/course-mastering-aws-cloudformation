@@ -43,7 +43,6 @@ jobs:
             STAGE=${GITHUB_REF##*/} \
             STAGE_FLAG=dev \
             REGION=$AWS_DEFAULT_REGION \
-            PROFILE=$AWS_PROFILE \
             DEPLOY_BUCKET=$DEPLOY_BUCKET \
             GITHUB_USER=$GITHUB_USER
           yarn build:frontend
@@ -51,7 +50,6 @@ jobs:
             STAGE=${GITHUB_REF##*/} \
             STAGE_FLAG=dev \
             REGION=$AWS_DEFAULT_REGION \
-            PROFILE=$AWS_PROFILE
   # Lighthouse jakejarvis/lighthouse-action@master
   # actions/upload-artifact@master
   # Slack  https://github.com/marketplace/actions/slack-notify
