@@ -356,4 +356,4 @@ Outputs:
     Description: ID of the CloudFront distribution
   ServiceEndpointWebsocket:
     Description: URL of the service endpoint
-    Value: !Sub wss://${WebsocketsApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/feat-demo
+    Value: !Sub wss://${WebsocketsApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${Stage}

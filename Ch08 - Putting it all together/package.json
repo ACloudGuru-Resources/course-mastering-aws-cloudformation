@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build:backend": "cd backend && yarn build",
-    "deploy:backend": "cd backend && yarn deploy"
+    "deploy:backend": "cd backend && yarn deploy",
+    "start": "cd frontend && yarn start"
   }
 }

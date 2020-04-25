@@ -4,17 +4,14 @@ const path = require('path');
 const tomlify = require('tomlify-j0.4');
 const program = require('commander');
 
-// Set credentials from profile
-// var credentials = new AWS.SharedIniFileCredentials({profile: 'work-account'});
-// AWS.config.credentials = credentials;
-
 const main = async () => {
   try {
     program
       .option('-s, --stackname <stackname>', 'stack name')
+      .option('-p, --profile <profile>', 'profile')
       .option('-r, --region <region>', 'region', 'us-east-1')
       .option('-o, --output-file <outputFile>', 'output file', '.env')
-      .option('-p, --prefix <prefix>', 'app prefix', 'GATSBY_')
+      .option('-x, --prefix <prefix>', 'app prefix', 'GATSBY_')
       .option('-i, --include <include>', 'include', processIncludes, {})
       .action(run);
 
@@ -24,8 +21,16 @@ const main = async () => {
   }
 };
 
-const run = async ({ stackname, region, outputFile, prefix, include }) => {
+const run = async ({
+  stackname,
+  region,
+  profile,
+  outputFile,
+  prefix,
+  include,
+}) => {
   try {
+    profile && loadCredientials(profile);
     const includeOutputs = filterUndefined(include);
     const outputs = await getOutputs({ stackname, region });
     const outputsObj = outputsToObj(outputs, includeOutputs);
@@ -37,6 +42,9 @@ const run = async ({ stackname, region, outputFile, prefix, include }) => {
   }
 };
 
+const loadCredientials = profile => {
+  process.env.AWS_PROFILE = profile;
+};
 const processIncludes = (value, previous) => {
   const i = value.split(/=(.+)/);
   const obj = { [i[0]]: i[1] };

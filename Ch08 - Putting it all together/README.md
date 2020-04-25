@@ -11,3 +11,21 @@ aws ssm put-parameter \
     --region $REGION \
     --profile $PROFILE
 ```
+
+## Deploy Backend
+```bash
+yarn install
+yarn build:backend
+yarn deploy:backend \
+  STAGE=prod \
+  STAGE_FLAG=prod \
+  REGION=us-east-1 \
+  PROFILE=cloudguru \
+  DEPLOY_BUCKET=acg-deploy-bucket \
+  GITHUB_USER=iDVB
+```
+
+## Build & Run Local Frontend
+```bash
+yarn start
+```
