@@ -35,6 +35,7 @@ jobs:
       - name: Build & Deploy
         run: |
           cd "$PROJECT_ROOT"
+          npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           yarn install
           yarn build:backend
           yarn deploy:backend \
