@@ -43,7 +43,7 @@ const run = async ({
 };
 
 const loadCredientials = profile => {
-  process.env.AWS_PROFILE = profile;
+  if (profile) process.env.AWS_PROFILE = profile;
 };
 const processIncludes = (value, previous) => {
   const i = value.split(/=(.+)/);

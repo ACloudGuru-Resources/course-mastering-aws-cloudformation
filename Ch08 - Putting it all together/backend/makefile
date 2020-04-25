@@ -30,17 +30,17 @@ deploy: check-env
 				GIT_REPOSITORY=${GIT_REPO} \
 				GIT_SHORT=${GIT_SHORT}
 
-	# https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
-	# sam deploy \
-	# 	--template-file .aws-sam/build/template.yaml \
-	# 	--stack-name '${STACK_NAME}' \
-	# 	--s3-bucket '${DEPLOY_BUCKET}' \
-	# 	--capabilities CAPABILITY_NAMED_IAM \
-	# 	--no-fail-on-empty-changeset \
-	# 	--parameter-overrides '\
-	# 		ParameterKey=GitHubUser,ParameterValue=${GITHUB_USER}'
-	# 	--region '${REGION}' \
-	# 	--profile '${PROFILE}'
+# https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
+# sam deploy \
+# 	--template-file .aws-sam/build/template.yaml \
+# 	--stack-name '${STACK_NAME}' \
+# 	--s3-bucket '${DEPLOY_BUCKET}' \
+# 	--capabilities CAPABILITY_NAMED_IAM \
+# 	--no-fail-on-empty-changeset \
+# 	--parameter-overrides '\
+# 		ParameterKey=GitHubUser,ParameterValue=${GITHUB_USER}'
+# 	--region '${REGION}' \
+# 	--profile '${PROFILE}'
 
 getenv: check-env
 	@echo "Getting Stack Outputs..."

@@ -8,8 +8,7 @@ yarn deploy:backend \
   STAGE_FLAG=dev \
   REGION=us-east-1 \
   PROFILE=cloudguru \
-  DEPLOY_BUCKET=acg-deploy-bucket \
-  GITHUB_USER=iDVB
+  DEPLOY_BUCKET=acg-deploy-bucket
 yarn build:frontend
 yarn deploy:frontend \
   STAGE=feat-test \
