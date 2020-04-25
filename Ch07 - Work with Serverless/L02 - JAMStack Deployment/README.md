@@ -4,7 +4,7 @@
 yarn install
 yarn build:backend
 yarn deploy:backend \
-  STAGE=feat-test \
+  STAGE=feat-other \
   STAGE_FLAG=dev \
   REGION=us-east-1 \
   PROFILE=cloudguru \

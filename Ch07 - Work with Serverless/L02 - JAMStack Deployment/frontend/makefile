@@ -2,23 +2,26 @@ SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend &&
 WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
 DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
 
+profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
+
 deploy: check-env syncS3 invalidate
 
 syncS3:
+	@echo "Deploying Frontend for Stack $(STACK_NAME)"
 	@echo "Syncing to S3 Bucket: $(WEBSITE_BUCKET) ..."
 	aws s3 sync ./build/ "s3://$(WEBSITE_BUCKET)/" \
 		--exclude "*.html" \
 		--cache-control 'max-age=31536000, public' \
 		--delete \
 		--region '${REGION}' \
-		--profile '${PROFILE}'
+		$(profile)
 	aws s3 sync ./build/ "s3://$(WEBSITE_BUCKET)/" \
 		--exclude "*" --include "*.html" \
 		--cache-control 'max-age=0, no-cache, no-store, must-revalidate' \
 		--content-type text/html \
 		--delete \
 		--region '${REGION}' \
-		--profile '${PROFILE}'
+		$(profile)
 
 invalidate:
 ifeq (${DISTRIBUTION_ID},"None")
@@ -28,7 +31,7 @@ ifeq (${DISTRIBUTION_ID},"None")
 		--distribution-id $(DISTRIBUTION_ID) \
 		--paths "/*" \
 		--region '${REGION}' \
-		--profile '${PROFILE}'
+		$(profile)
 else
 	@echo "No Cloudfront Distro to invalidate."
 endif
@@ -48,14 +51,14 @@ getBucket = $(shell aws cloudformation describe-stacks \
 		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
 		--output text \
 		--region '${REGION}' \
-		--profile '${PROFILE}')
+		$(profile))
 
 getDistroID = $(shell aws cloudformation describe-stacks \
 		--stack-name $(STACK_NAME) \
 		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
 		--output text \
 		--region '${REGION}' \
-		--profile '${PROFILE}')
+		$(profile))
 
 
 

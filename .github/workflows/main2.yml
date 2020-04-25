@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-deploy:
-    name: Build & Deploy
+    name: Backend and Frontend Setup
     runs-on: ubuntu-latest
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
@@ -32,10 +32,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Thing Here
+      - name: Build & Deploy
         run: |
-          echo Branch is $GITHUB_USER
-          echo Branch is ${GITHUB_REF##*/}
           cd "$PROJECT_ROOT"
           yarn install
           yarn build:backend

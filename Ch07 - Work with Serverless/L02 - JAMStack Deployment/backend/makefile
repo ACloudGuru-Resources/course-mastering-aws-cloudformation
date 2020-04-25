@@ -9,7 +9,7 @@ ifdef_any_of = $(filter-out undefined,$(foreach v,$(1),$(origin $(v))))
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
 deploy: check-env
-	@echo "Deploying Service..."
+	@echo "Deploying Service ${STACK_NAME} ..."
 	aws cloudformation package \
 		--template-file .aws-sam/build/template.yaml \
 		--s3-bucket ${DEPLOY_BUCKET} \
