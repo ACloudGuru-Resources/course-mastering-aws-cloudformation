@@ -10,6 +10,7 @@ jobs:
     name: Backend and Frontend Setup
     runs-on: ubuntu-latest
     env:
+      working-directory: ./repo
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
       AWS_PROFILE: ""
@@ -18,6 +19,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v1
+        working-directory: ${{env.working-directory}}
 
       # https://stackoverflow.com/questions/58033366/how-to-get-current-branch-within-github-actions
       # - name: Extract branch name
@@ -33,6 +35,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Build & Deploy
+        working-directory: ${{env.working-directory}}
         run: |
           cd "$PROJECT_ROOT"
           npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
@@ -48,7 +51,7 @@ jobs:
           yarn deploy:frontend \
             STAGE=${GITHUB_REF##*/} \
             STAGE_FLAG=dev \
-            REGION=$AWS_DEFAULT_REGION \
+            REGION=$AWS_DEFAULT_REGION
   # Lighthouse jakejarvis/lighthouse-action@master
   # actions/upload-artifact@master
   # Slack  https://github.com/marketplace/actions/slack-notify
