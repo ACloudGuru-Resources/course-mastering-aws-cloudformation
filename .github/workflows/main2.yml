@@ -32,7 +32,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Build & Deploy
+      - name: Thing Here
         run: |
           # echo 'Branch is ${GITHUB_REF##*/}'
           cd '$PROJECT_ROOT'
