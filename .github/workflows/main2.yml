@@ -53,4 +53,4 @@ jobs:
             PROFILE=$AWS_PROFILE
   # Lighthouse jakejarvis/lighthouse-action@master
   # actions/upload-artifact@master
-  # Slack https://github.com/marketplace/actions/slack-notify
+  # Slack  https://github.com/marketplace/actions/slack-notify
