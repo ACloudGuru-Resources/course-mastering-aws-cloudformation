@@ -34,8 +34,9 @@ jobs:
 
       - name: Thing Here
         run: |
-          # echo 'Branch is ${GITHUB_REF##*/}'
-          cd '$PROJECT_ROOT'
+          echo Branch is $GITHUB_USER
+          echo Branch is ${GITHUB_REF##*/}
+          cd "$PROJECT_ROOT"
           yarn install
           yarn build:backend
           yarn deploy:backend \
