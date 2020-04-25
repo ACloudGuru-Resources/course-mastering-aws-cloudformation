@@ -12,9 +12,7 @@ jobs:
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
-      AWS_PROFILE: cloudguru
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_PROFILE: ""
       PROJECT_ROOT: ./Ch07 - Work with Serverless/L02 - JAMStack Deployment
       GITHUB_USER: iDVB
     steps:
@@ -27,8 +25,14 @@ jobs:
       #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       #   id: extract_branch
 
-      - name: Build & Deploy
+      - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: $AWS_DEFAULT_REGION
+
+      - name: Build & Deploy
         run: |
           echo 'Branch is ${GITHUB_REF##*/}'
           cd '$PROJECT_ROOT'
