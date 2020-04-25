@@ -10,29 +10,28 @@ profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
 deploy: check-env
 	@echo "Deploying Stack ${STACK_NAME}..."
-	npm run env | grep "npm_package_name"
-	# aws cloudformation package \
-	# 	--template-file .aws-sam/build/template.yaml \
-	# 	--s3-bucket ${DEPLOY_BUCKET} \
-	# 	--output-template-file .aws-sam/build/packaged.yaml
-	# aws cloudformation deploy \
-	# 	--template .aws-sam/build/packaged.yaml \
-	# 	--stack-name ${STACK_NAME} \
-	# 	--capabilities CAPABILITY_NAMED_IAM \
-	# 	--no-fail-on-empty-changeset \
-	# 	--parameter-overrides \
-	# 			Service=${SERVICE} \
-	# 			Stage=${STAGE} \
-	# 			StageFlag=${STAGE_FLAG} \
-	# 	--region '${REGION}' \
-	# 	$(profile) \
-	# 	--tags \
-	# 			SERVICE=${SERVICE} \
-	# 			STAGE=${STAGE} \
-	# 			STAGE_FLAG=${STAGE_FLAG} \
-	# 			GIT_BRANCH=${GIT_BRANCH} \
-	# 			GIT_REPOSITORY=${GIT_REPO} \
-	# 			GIT_SHORT=${GIT_SHORT}
+	aws cloudformation package \
+		--template-file .aws-sam/build/template.yaml \
+		--s3-bucket ${DEPLOY_BUCKET} \
+		--output-template-file .aws-sam/build/packaged.yaml
+	aws cloudformation deploy \
+		--template .aws-sam/build/packaged.yaml \
+		--stack-name ${STACK_NAME} \
+		--capabilities CAPABILITY_NAMED_IAM \
+		--no-fail-on-empty-changeset \
+		--parameter-overrides \
+				Service=${SERVICE} \
+				Stage=${STAGE} \
+				StageFlag=${STAGE_FLAG} \
+		--region '${REGION}' \
+		$(profile) \
+		--tags \
+				SERVICE=${SERVICE} \
+				STAGE=${STAGE} \
+				STAGE_FLAG=${STAGE_FLAG} \
+				GIT_BRANCH=${GIT_BRANCH} \
+				GIT_REPOSITORY=${GIT_REPO} \
+				GIT_SHORT=${GIT_SHORT}
 
 # https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
 # sam deploy \
