@@ -34,7 +34,7 @@ jobs:
 
       - name: Build & Deploy
         run: |
-          echo 'Branch is ${GITHUB_REF##*/}'
+          # echo 'Branch is ${GITHUB_REF##*/}'
           cd '$PROJECT_ROOT'
           yarn install
           yarn build:backend
