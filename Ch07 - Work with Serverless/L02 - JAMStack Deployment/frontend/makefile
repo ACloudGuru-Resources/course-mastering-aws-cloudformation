@@ -2,12 +2,16 @@
 SHELL := /bin/bash
 
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
-WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
-DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
+# WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
+# DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
 
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
-deploy: check-env syncS3 invalidate
+# deploy: check-env syncS3 invalidate
+deploy: check-env test
+
+test:
+	echo "SERVICE $(SERVICE)"
 
 syncS3:
 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
