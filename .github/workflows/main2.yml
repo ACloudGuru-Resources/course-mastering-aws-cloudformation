@@ -37,7 +37,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Build & Deploy
-        working-directory: $PROJECT_ROOT
+        working-directory: "$PROJECT_ROOT"
         run: |
           ls
           # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
