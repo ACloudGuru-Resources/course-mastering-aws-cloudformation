@@ -45,14 +45,12 @@ test:
 # 	@echo "No Cloudfront Distro to invalidate."
 # endif
 
+# set-env:
+# 	$(eval STACK_NAME=$(shell echo $(SERVICE)-$(STAGE)))
+
 check-env:
 ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION),)
 	$(eval STACK_NAME=$(shell echo $(SERVICE)-$(STAGE)))
-	$(eval WEBSITE_BUCKET=$(shell aws cloudformation describe-stacks \
-		--stack-name $(STACK_NAME) \
-		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
-		--output text \
-		--region '${REGION}'))
 else
 	$(error STAGE, STAGE_FLAG, and REGION must be defined)
 endif
