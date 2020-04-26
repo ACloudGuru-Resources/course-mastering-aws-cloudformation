@@ -38,6 +38,7 @@ jobs:
         working-directory: "${{ github.workspace }}/Ch07 - Work with Serverless/L02 - JAMStack Deployment"
         run: |
           ls
+          cd frontend
           cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")
           # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           # yarn install
