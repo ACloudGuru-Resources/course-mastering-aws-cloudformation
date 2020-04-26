@@ -9,10 +9,6 @@ jobs:
   build-deploy:
     name: Backend and Frontend Setup
     runs-on: ubuntu-latest
-    #     defaults:
-    #       run:
-    #         shell: bash
-    #         working-directory: repo
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
@@ -20,12 +16,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v1
-
-      # https://stackoverflow.com/questions/58033366/how-to-get-current-branch-within-github-actions
-      # - name: Extract branch name
-      #   shell: bash
-      #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      #   id: extract_branch
 
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
@@ -38,14 +28,14 @@ jobs:
         working-directory: "${{ github.workspace }}/Ch07 - Work with Serverless/L02 - JAMStack Deployment"
         run: |
           npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
-          # yarn install
-          # yarn build:backend
-          # yarn deploy:backend \
-          #   STAGE=${GITHUB_REF##*/} \
-          #   STAGE_FLAG=dev \
-          #   REGION=$AWS_DEFAULT_REGION \
-          #   DEPLOY_BUCKET=$DEPLOY_BUCKET
-          # yarn build:frontend
+          yarn install
+          yarn build:backend
+          yarn deploy:backend \
+            STAGE=${GITHUB_REF##*/} \
+            STAGE_FLAG=dev \
+            REGION=$AWS_DEFAULT_REGION \
+            DEPLOY_BUCKET=$DEPLOY_BUCKET
+          yarn build:frontend
           yarn deploy:frontend \
             STAGE=${GITHUB_REF##*/} \
             STAGE_FLAG=dev \

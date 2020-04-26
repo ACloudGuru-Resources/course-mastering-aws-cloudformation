@@ -7,15 +7,7 @@ DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_I
 
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
-# deploy: check-env syncS3 invalidate
-deploy: check-env test
-
-
-test:
-	echo "SERVICE: $(SERVICE)"
-	echo "STACK_NAME: $(STACK_NAME)"
-	echo "WEBSITE_BUCKET: $(WEBSITE_BUCKET)"
-
+deploy: check-env syncS3 invalidate
 
 syncS3:
 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
@@ -62,48 +54,11 @@ getBucket = $(shell aws cloudformation describe-stacks \
 		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
 		--output text \
 		--region '${REGION}' \
-		$(profile))
+		$(call profile))
 
 getDistroID = $(shell aws cloudformation describe-stacks \
 		--stack-name $(STACK_NAME) \
 		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
 		--output text \
 		--region '${REGION}' \
-		$(profile))
-
-
-
-
-
-
-
-
-# STACK="${1}"
-# echo "Querying Stack: ${STACK}..."
-
-# WEBSITE_BUCKET=$(aws \
-#   cloudformation describe-stacks \
-#   --stack-name "${STACK}" \
-#   --query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
-#   --output text)
-
-# DISTRIBUTION_ID=$(aws \
-#   cloudformation describe-stacks \
-#   --stack-name "${STACK}" \
-#   --query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
-#   --output text)
-
-# echo "Deploying static assets to Bucket: ${WEBSITE_BUCKET}..."
-
-# aws s3 sync ./public/ "s3://${WEBSITE_BUCKET}/" --exclude "*.html" --cache-control 'max-age=31536000, public' --delete 
-# aws s3 sync ./public/ "s3://${WEBSITE_BUCKET}/" --exclude "*" --include "*.html" --cache-control 'max-age=0, no-cache, no-store, must-revalidate' --content-type text/html --delete
-
-# echo "Deploy COMPLETE"
-
-# if [ "${DISTRIBUTION_ID}" != "None" ]; then
-# echo "Invalidating Cloudfront Distro: ${DISTRIBUTION_ID}..."
-# aws configure set preview.cloudfront true
-# aws cloudfront create-invalidation --distribution-id ${DISTRIBUTION_ID} --paths "/*"
-# else
-# echo "No Cloudfront Distro to invalidate."
-# fi
+		$(call profile))
