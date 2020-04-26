@@ -10,10 +10,10 @@ profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 deploy: check-env test
 
 test:
-	echo "SERVICE $(SERVICE)"
-	echo "STACK $(STACK)"
-	echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
-	# echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
+	@echo "SERVICE $(SERVICE)"
+	@echo "STACK_NAME $(STACK_NAME)"
+	@echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
+# echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
 syncS3:
 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
@@ -46,10 +46,10 @@ else
 endif
 
 check-env:
-ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION PROFILE),)
+ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION),)
 	$(eval STACK_NAME=$(shell echo $(SERVICE)-$(STAGE)))
 else
-	$(error STAGE, STAGE_FLAG, REGION and PROFILE must be defined)
+	$(error STAGE, STAGE_FLAG, and REGION must be defined)
 endif
 
 ifndef_any_of = $(filter undefined,$(foreach v,$(1),$(origin $(v))))
