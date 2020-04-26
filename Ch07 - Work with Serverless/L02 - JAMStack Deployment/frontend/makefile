@@ -1,3 +1,6 @@
+
+SHELL := /bin/bash
+
 # SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
 # SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
 
