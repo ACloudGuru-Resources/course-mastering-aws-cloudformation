@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
 WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
-# DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
+DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
 
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
@@ -14,7 +14,7 @@ test:
 	@echo "SERVICE $(SERVICE)"
 	@echo "STACK_NAME $(STACK_NAME)"
 	@echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
-# echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
+	@echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
 # syncS3:
 # 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
@@ -66,9 +66,9 @@ getBucket = $(shell aws cloudformation describe-stacks \
 		--region '${REGION}' \
 		$(profile))
 
-# getDistroID = $(shell aws cloudformation describe-stacks \
-# 		--stack-name $(STACK_NAME) \
-# 		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
-# 		--output text \
-# 		--region '${REGION}' \
-# 		$(profile))
+getDistroID = $(shell aws cloudformation describe-stacks \
+		--stack-name $(STACK_NAME) \
+		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
+		--output text \
+		--region '${REGION}' \
+		$(profile))
