@@ -8,13 +8,6 @@ DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_I
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
 deploy: check-env syncS3 invalidate
-# deploy: check-env test
-
-# test:
-# 	@echo "SERVICE $(SERVICE)"
-# 	@echo "STACK_NAME $(STACK_NAME)"
-# 	@echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
-# 	@echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
 syncS3:
 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
