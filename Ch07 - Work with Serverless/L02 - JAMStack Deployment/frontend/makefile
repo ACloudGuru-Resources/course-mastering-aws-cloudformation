@@ -7,47 +7,44 @@ DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_I
 
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
-# deploy: check-env syncS3 invalidate
-deploy: check-env test
+deploy: check-env syncS3 invalidate
+# deploy: check-env test
 
-test:
-	@echo "SERVICE $(SERVICE)"
-	@echo "STACK_NAME $(STACK_NAME)"
-	@echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
-	@echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
+# test:
+# 	@echo "SERVICE $(SERVICE)"
+# 	@echo "STACK_NAME $(STACK_NAME)"
+# 	@echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
+# 	@echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
-# syncS3:
-# 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
-# 	@echo "Syncing to S3 Bucket: $(WEBSITE_BUCKET) ..."
-# 	aws s3 sync ./build/ "s3://$(WEBSITE_BUCKET)/" \
-# 		--exclude "*.html" \
-# 		--cache-control 'max-age=31536000, public' \
-# 		--delete \
-# 		--region '${REGION}' \
-# 		$(profile)
-# 	aws s3 sync ./build/ "s3://$(WEBSITE_BUCKET)/" \
-# 		--exclude "*" --include "*.html" \
-# 		--cache-control 'max-age=0, no-cache, no-store, must-revalidate' \
-# 		--content-type text/html \
-# 		--delete \
-# 		--region '${REGION}' \
-# 		$(profile)
+syncS3:
+	@echo "Deploying Frontend for Stack $(STACK_NAME)"
+	@echo "Syncing to S3 Bucket: $(WEBSITE_BUCKET) ..."
+	aws s3 sync ./build/ "s3://$(WEBSITE_BUCKET)/" \
+		--exclude "*.html" \
+		--cache-control 'max-age=31536000, public' \
+		--delete \
+		--region '${REGION}' \
+		$(profile)
+	aws s3 sync ./build/ "s3://$(WEBSITE_BUCKET)/" \
+		--exclude "*" --include "*.html" \
+		--cache-control 'max-age=0, no-cache, no-store, must-revalidate' \
+		--content-type text/html \
+		--delete \
+		--region '${REGION}' \
+		$(profile)
 
-# invalidate:
-# ifeq (${DISTRIBUTION_ID},"None")
-# 	@echo "Invalidating Cloudfront Distro: ${DISTRIBUTION_ID}..."
-# 	aws configure set preview.cloudfront true
-# 	aws cloudfront create-invalidation \
-# 		--distribution-id $(DISTRIBUTION_ID) \
-# 		--paths "/*" \
-# 		--region '${REGION}' \
-# 		$(profile)
-# else
-# 	@echo "No Cloudfront Distro to invalidate."
-# endif
-
-set-env:
-	
+invalidate:
+ifeq (${DISTRIBUTION_ID},"None")
+	@echo "Invalidating Cloudfront Distro: ${DISTRIBUTION_ID}..."
+	aws configure set preview.cloudfront true
+	aws cloudfront create-invalidation \
+		--distribution-id $(DISTRIBUTION_ID) \
+		--paths "/*" \
+		--region '${REGION}' \
+		$(profile)
+else
+	@echo "No Cloudfront Distro to invalidate."
+endif
 
 check-env:
 ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION),)
