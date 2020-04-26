@@ -15,7 +15,6 @@ jobs:
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
-      AWS_PROFILE: ""
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v1
