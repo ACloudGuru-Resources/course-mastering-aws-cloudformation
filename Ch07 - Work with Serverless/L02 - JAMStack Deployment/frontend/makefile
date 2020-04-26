@@ -2,8 +2,8 @@
 SHELL := /bin/bash
 
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
-# WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
-# DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
+WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
+DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
 
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
@@ -12,6 +12,8 @@ deploy: check-env test
 
 test:
 	echo "SERVICE $(SERVICE)"
+	echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
+	echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
 syncS3:
 	@echo "Deploying Frontend for Stack $(STACK_NAME)"
@@ -34,7 +36,7 @@ invalidate:
 ifeq (${DISTRIBUTION_ID},"None")
 	@echo "Invalidating Cloudfront Distro: ${DISTRIBUTION_ID}..."
 	aws configure set preview.cloudfront true
-	-aws cloudfront create-invalidation \
+	aws cloudfront create-invalidation \
 		--distribution-id $(DISTRIBUTION_ID) \
 		--paths "/*" \
 		--region '${REGION}' \
