@@ -40,7 +40,7 @@ jobs:
           ls
           # cd frontend
           # cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")
-          # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
+          npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           # yarn install
           # yarn build:backend
           # yarn deploy:backend \
