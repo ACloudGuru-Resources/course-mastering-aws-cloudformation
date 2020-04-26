@@ -9,10 +9,10 @@ jobs:
   build-deploy:
     name: Backend and Frontend Setup
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: repo
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: repo
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
@@ -38,6 +38,7 @@ jobs:
 
       - name: Build & Deploy
         run: |
+          ls github/workspace
           ls -a
           # echo $PROJECT_ROOT
           # cd "$PROJECT_ROOT"
