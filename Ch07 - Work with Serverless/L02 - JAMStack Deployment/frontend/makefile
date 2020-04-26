@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+.ONESHELL:
 
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
 # WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
