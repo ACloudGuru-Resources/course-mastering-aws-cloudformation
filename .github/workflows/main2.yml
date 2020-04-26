@@ -9,6 +9,9 @@ jobs:
   build-deploy:
     name: Backend and Frontend Setup
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
