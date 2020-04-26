@@ -38,8 +38,7 @@ jobs:
 
       - name: Build & Deploy
         run: |
-          ls github/workspace
-          ls -a
+          ls
           # echo $PROJECT_ROOT
           # cd "$PROJECT_ROOT"
           # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
