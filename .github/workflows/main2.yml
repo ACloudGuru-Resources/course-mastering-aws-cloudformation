@@ -9,10 +9,10 @@ jobs:
   build-deploy:
     name: Backend and Frontend Setup
     runs-on: ubuntu-latest
-#     defaults:
-#       run:
-#         shell: bash
-#         working-directory: repo
+    #     defaults:
+    #       run:
+    #         shell: bash
+    #         working-directory: repo
     env:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
@@ -39,8 +39,8 @@ jobs:
       - name: Build & Deploy
         run: |
           ls
-          # echo $PROJECT_ROOT
-          # cd "$PROJECT_ROOT"
+          echo $PROJECT_ROOT
+          cd "$PROJECT_ROOT"
           # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           # ls -a
           # cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")
