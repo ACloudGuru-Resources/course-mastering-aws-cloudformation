@@ -17,7 +17,7 @@ jobs:
       DEPLOY_BUCKET: acg-deploy-bucket
       AWS_DEFAULT_REGION: us-east-1
       AWS_PROFILE: ""
-      PROJECT_ROOT: ./Ch07 - Work with Serverless/L02 - JAMStack Deployment
+      PROJECT_ROOT: /Ch07 - Work with Serverless/L02 - JAMStack Deployment
       GITHUB_USER: iDVB
     steps:
       - name: Checkout Repo
@@ -37,12 +37,12 @@ jobs:
           aws-region: us-east-1
 
       - name: Build & Deploy
-        # working-directory: ${{ github.workspace }}"$PROJECT_ROOT"
+        working-directory: ${{ github.workspace }}"$PROJECT_ROOT"
         run: |
           ls
-          cd "$PROJECT_ROOT"
-          ls
-          echo ${{ github.workspace }}"$PROJECT_ROOT"
+          # cd "$PROJECT_ROOT"
+          # ls
+          # echo ${{ github.workspace }}"$PROJECT_ROOT"
           # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           # ls -a
           # cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")
