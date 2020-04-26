@@ -9,6 +9,7 @@ deploy: check-env test
 
 
 test:
+	cd ../backend && npm run env | grep "npm_package_name"
 	echo "SERVICE: $(SERVICE)"
 	echo "STACK_NAME: $(STACK_NAME)"
 	echo "WEBSITE_BUCKET: $(WEBSITE_BUCKET)"
