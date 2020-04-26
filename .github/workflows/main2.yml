@@ -31,17 +31,17 @@ jobs:
         run: |
           npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           yarn install
-          # yarn build:backend
-          # yarn deploy:backend \
-          #   STAGE=${GITHUB_REF##*/} \
-          #   STAGE_FLAG=dev \
-          #   REGION=$AWS_DEFAULT_REGION \
-          #   DEPLOY_BUCKET=$DEPLOY_BUCKET
+          yarn build:backend
+          yarn deploy:backend \
+            STAGE=${GITHUB_REF##*/} \
+            STAGE_FLAG=dev \
+            REGION=$AWS_DEFAULT_REGION \
+            DEPLOY_BUCKET=$DEPLOY_BUCKET
           yarn build:frontend
           yarn deploy:frontend \
             STAGE=${GITHUB_REF##*/} \
             STAGE_FLAG=dev \
             REGION=$AWS_DEFAULT_REGION
+  # Other Ideas:
   # Lighthouse jakejarvis/lighthouse-action@master
-  # actions/upload-artifact@master
   # Slack  https://github.com/marketplace/actions/slack-notify
