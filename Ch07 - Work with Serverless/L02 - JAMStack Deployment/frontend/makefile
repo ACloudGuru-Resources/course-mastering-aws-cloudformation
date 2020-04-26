@@ -11,6 +11,7 @@ deploy: check-env test
 
 test:
 	echo "SERVICE $(SERVICE)"
+	echo "STACK $(STACK)"
 	echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
 	# echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
