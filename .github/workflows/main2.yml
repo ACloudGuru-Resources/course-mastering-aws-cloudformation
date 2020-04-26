@@ -41,6 +41,7 @@ jobs:
           ls
           echo $PROJECT_ROOT
           cd "$PROJECT_ROOT"
+          ls
           # npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           # ls -a
           # cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")
