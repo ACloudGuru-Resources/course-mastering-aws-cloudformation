@@ -11,7 +11,7 @@ deploy: check-env test
 
 
 test:
-	cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")
+	cut -d "=" -f 2 <<< "npm_package_name=acg-votingapp-backend"
 	echo "SERVICE: $(SERVICE)"
 	echo "STACK_NAME: $(STACK_NAME)"
 	echo "WEBSITE_BUCKET: $(WEBSITE_BUCKET)"
