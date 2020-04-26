@@ -58,12 +58,10 @@ getBucket = $(shell aws cloudformation describe-stacks \
 		--stack-name $(STACK_NAME) \
 		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
 		--output text \
-		--region '${REGION}' \
-		$(call profile))
+		--region '${REGION}')
 
 getDistroID = $(shell aws cloudformation describe-stacks \
 		--stack-name $(STACK_NAME) \
 		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
 		--output text \
-		--region '${REGION}' \
-		$(call profile))
+		--region '${REGION}')
