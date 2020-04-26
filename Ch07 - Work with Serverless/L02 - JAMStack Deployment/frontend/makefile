@@ -32,18 +32,18 @@ syncS3:
 		--region '${REGION}' \
 		$(profile)
 
-invalidate:
-ifeq (${DISTRIBUTION_ID},"None")
-	@echo "Invalidating Cloudfront Distro: ${DISTRIBUTION_ID}..."
-	aws configure set preview.cloudfront true
-	aws cloudfront create-invalidation \
-		--distribution-id $(DISTRIBUTION_ID) \
-		--paths "/*" \
-		--region '${REGION}' \
-		$(profile)
-else
-	@echo "No Cloudfront Distro to invalidate."
-endif
+# invalidate:
+# ifeq (${DISTRIBUTION_ID},"None")
+# 	@echo "Invalidating Cloudfront Distro: ${DISTRIBUTION_ID}..."
+# 	aws configure set preview.cloudfront true
+# 	aws cloudfront create-invalidation \
+# 		--distribution-id $(DISTRIBUTION_ID) \
+# 		--paths "/*" \
+# 		--region '${REGION}' \
+# 		$(profile)
+# else
+# 	@echo "No Cloudfront Distro to invalidate."
+# endif
 
 check-env:
 ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION),)
@@ -60,14 +60,14 @@ endif
 ifndef_any_of = $(filter undefined,$(foreach v,$(1),$(origin $(v))))
 ifdef_any_of = $(filter-out undefined,$(foreach v,$(1),$(origin $(v))))
 
-getBucket = $(shell aws cloudformation describe-stacks \
-		--stack-name $(STACK_NAME) \
-		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
-		--output text \
-		--region '${REGION}')
+# getBucket = $(shell aws cloudformation describe-stacks \
+# 		--stack-name $(STACK_NAME) \
+# 		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
+# 		--output text \
+# 		--region '${REGION}')
 
-getDistroID = $(shell aws cloudformation describe-stacks \
-		--stack-name $(STACK_NAME) \
-		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
-		--output text \
-		--region '${REGION}')
+# getDistroID = $(shell aws cloudformation describe-stacks \
+# 		--stack-name $(STACK_NAME) \
+# 		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
+# 		--output text \
+# 		--region '${REGION}')
