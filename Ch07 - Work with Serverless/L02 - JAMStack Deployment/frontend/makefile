@@ -9,9 +9,9 @@ deploy: check-env test
 
 
 test:
-	@echo "SERVICE: $(SERVICE)"
-	@echo "STACK_NAME: $(STACK_NAME)"
-	@echo "WEBSITE_BUCKET: $(WEBSITE_BUCKET)"
+	echo "SERVICE: $(SERVICE)"
+	echo "STACK_NAME: $(STACK_NAME)"
+	echo "WEBSITE_BUCKET: $(WEBSITE_BUCKET)"
 
 
 syncS3:
