@@ -1,11 +1,9 @@
 
 SHELL := /bin/bash
 
-# SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
-# SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
-
-# WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
-# DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
+SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend && npm run env | grep "npm_package_name")))$(SERVICE)
+WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
+DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
 
 profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
@@ -14,7 +12,6 @@ deploy: check-env test
 
 
 test:
-	cut -d "=" -f 2 <<< "npm_package_name=acg-votingapp-backend"
 	echo "SERVICE: $(SERVICE)"
 	echo "STACK_NAME: $(STACK_NAME)"
 	echo "WEBSITE_BUCKET: $(WEBSITE_BUCKET)"
