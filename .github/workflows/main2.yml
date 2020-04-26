@@ -37,7 +37,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Build & Deploy
-        working-directory: ${{ github.workspace }}"$PROJECT_ROOT"
+        working-directory: "${{ github.workspace }}/Ch07 - Work with Serverless/L02 - JAMStack Deployment"
         run: |
           ls
           # cd "$PROJECT_ROOT"
