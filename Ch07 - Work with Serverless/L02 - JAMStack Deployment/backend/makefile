@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+.ONESHELL:
 
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell npm run env | grep "npm_package_name")))$(SERVICE)
 GIT_REPO = $(eval GIT_REPO := $(shell basename `git rev-parse --show-toplevel`))$(GIT_REPO)
@@ -6,9 +8,10 @@ GIT_SHORT = $(eval GIT_SHORT := $(shell git rev-parse --short HEAD))$(GIT_SHORT)
 
 ifndef_any_of = $(filter undefined,$(foreach v,$(1),$(origin $(v))))
 ifdef_any_of = $(filter-out undefined,$(foreach v,$(1),$(origin $(v))))
+profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
 deploy: check-env
-	@echo "Deploying Service..."
+	@echo "Deploying Stack ${STACK_NAME}..."
 	aws cloudformation package \
 		--template-file .aws-sam/build/template.yaml \
 		--s3-bucket ${DEPLOY_BUCKET} \
@@ -23,7 +26,7 @@ deploy: check-env
 				Stage=${STAGE} \
 				StageFlag=${STAGE_FLAG} \
 		--region '${REGION}' \
-		--profile '${PROFILE}' \
+		$(profile) \
 		--tags \
 				SERVICE=${SERVICE} \
 				STAGE=${STAGE} \
@@ -32,25 +35,25 @@ deploy: check-env
 				GIT_REPOSITORY=${GIT_REPO} \
 				GIT_SHORT=${GIT_SHORT}
 
-	# https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
-	# sam deploy \
-	# 	--template-file .aws-sam/build/template.yaml \
-	# 	--stack-name '${STACK_NAME}' \
-	# 	--s3-bucket '${DEPLOY_BUCKET}' \
-	# 	--capabilities CAPABILITY_NAMED_IAM \
-	# 	--no-fail-on-empty-changeset \
-	# 	--parameter-overrides '\
-	# 		ParameterKey=Service,ParameterValue=${SERVICE} \
-	# 		ParameterKey=Stage,ParameterValue=${STAGE} \
-	# 		ParameterKey=StageFlag,ParameterValue=${STAGE_FLAG}' \
-	# 	--tags SERVICE=${SERVICE} GIT_REPOSITORY=${GIT_REPO} GIT_BRANCH=${GIT_BRANCH}
+# https://github.com/awslabs/aws-sam-cli/issues/1845#issuecomment-612512744
+# sam deploy \
+# 	--template-file .aws-sam/build/template.yaml \
+# 	--stack-name '${STACK_NAME}' \
+# 	--s3-bucket '${DEPLOY_BUCKET}' \
+# 	--capabilities CAPABILITY_NAMED_IAM \
+# 	--no-fail-on-empty-changeset \
+# 	--parameter-overrides '\
+# 		ParameterKey=Service,ParameterValue=${SERVICE} \
+# 		ParameterKey=Stage,ParameterValue=${STAGE} \
+# 		ParameterKey=StageFlag,ParameterValue=${STAGE_FLAG}' \
+# 	--tags SERVICE=${SERVICE} GIT_REPOSITORY=${GIT_REPO} GIT_BRANCH=${GIT_BRANCH}
 
 getenv: check-env
 	@echo "Getting Stack Outputs..."
 	node ./scripts/outputs \
 		-s ${STACK_NAME} \
 		-r ${REGION} \
-		-p ${PROFILE} \
+		$(profile) \
 		-x REACT_APP_ \
 		-i Stackname=${STACK_NAME} \
 		-i Service=${SERVICE} \
@@ -62,8 +65,8 @@ getenv: check-env
 		-o ../frontend/.env
 
 check-env:
-ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION PROFILE DEPLOY_BUCKET),)
+ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION DEPLOY_BUCKET),)
 	$(eval STACK_NAME=$(shell echo $(SERVICE)-$(STAGE)))
 else
-	$(error STAGE, STAGE_FLAG, REGION, PROFILE and DEPLOY_BUCKET must be defined)
+	$(error STAGE, STAGE_FLAG, REGION and DEPLOY_BUCKET must be defined)
 endif
