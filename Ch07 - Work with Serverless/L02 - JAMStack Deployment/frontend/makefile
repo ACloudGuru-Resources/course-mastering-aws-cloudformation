@@ -5,7 +5,7 @@ SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell cd ../backend &&
 WEBSITE_BUCKET = $(eval WEBSITE_BUCKET := $(call getBucket))$(WEBSITE_BUCKET)
 # DISTRIBUTION_ID = $(eval DISTRIBUTION_ID := $(call getDistroID))$(DISTRIBUTION_ID)
 
-# profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
+profile = $(if $(PROFILE:-=),--profile $(PROFILE),)
 
 # deploy: check-env syncS3 invalidate
 deploy: check-env test
@@ -63,10 +63,12 @@ getBucket = $(shell aws cloudformation describe-stacks \
 		--stack-name $(STACK_NAME) \
 		--query "Stacks[0].Outputs[?OutputKey=='WebsiteBucket'] | [0].OutputValue" \
 		--output text \
-		--region '${REGION}')
+		--region '${REGION}' \
+		$(profile))
 
 # getDistroID = $(shell aws cloudformation describe-stacks \
 # 		--stack-name $(STACK_NAME) \
 # 		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
 # 		--output text \
-# 		--region '${REGION}')
+# 		--region '${REGION}' \
+# 		$(profile))
