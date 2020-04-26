@@ -12,7 +12,12 @@ deploy: check-env test
 test:
 	@echo "SERVICE $(SERVICE)"
 	@echo "STACK_NAME $(STACK_NAME)"
-	@echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
+	aws cloudformation describe-stacks \
+		--stack-name $(STACK_NAME) \
+		--query "Stacks[0].Outputs[?OutputKey=='DistributionId'] | [0].OutputValue" \
+		--output text \
+		--region ${REGION}
+	# @echo "WEBSITE_BUCKET $(WEBSITE_BUCKET)"
 # echo "DISTRIBUTION_ID $(DISTRIBUTION_ID)"
 
 # syncS3:
@@ -45,8 +50,8 @@ test:
 # 	@echo "No Cloudfront Distro to invalidate."
 # endif
 
-# set-env:
-# 	$(eval STACK_NAME=$(shell echo $(SERVICE)-$(STAGE)))
+set-env:
+	
 
 check-env:
 ifeq ($(call ifndef_any_of,STAGE STAGE_FLAG REGION),)
