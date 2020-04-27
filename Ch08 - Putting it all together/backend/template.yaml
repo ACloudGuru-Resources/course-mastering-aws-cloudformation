@@ -163,6 +163,7 @@ Resources:
         type Mutation {
           addPost(id: ID!, author: String!, title: String, content: String, url: String): Post!
           createBranch(repository:String!, name:String!, sha:String!): RepoBranch
+          deleteBranch(repository:String!, name:String!): RepoBranch
         }
 
         type Post {
@@ -218,8 +219,8 @@ Resources:
 
         type RepoBranch {
           name: String!
-          sha: String!
-          url: String!
+          sha: String
+          url: String
         }
 
   AppSyncAPIKey:
@@ -425,6 +426,23 @@ Resources:
           "operation": "Invoke",
           "payload": {
             "field": "createBranch",
+            "arguments":  $utils.toJson($context.arguments)
+          }
+        }
+      ResponseMappingTemplate: $util.toJson($context.result)
+  AppSyncResolverDeleteBranch:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt AppSyncAPI.ApiId
+      TypeName: Mutation
+      FieldName: deleteBranch
+      DataSourceName: !GetAtt AppSyncDataSourceGithub.Name
+      RequestMappingTemplate: |
+        {
+          "version": "2017-02-28",
+          "operation": "Invoke",
+          "payload": {
+            "field": "deleteBranch",
             "arguments":  $utils.toJson($context.arguments)
           }
         }

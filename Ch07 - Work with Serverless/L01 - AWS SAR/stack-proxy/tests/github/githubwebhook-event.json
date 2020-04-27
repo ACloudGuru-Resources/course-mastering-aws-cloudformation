@@ -1,0 +1,120 @@
+{
+  "resource": "/github/deletebranch",
+  "path": "/1.0/github/deletebranch",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "*/*",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "content-type": "application/json",
+    "Host": "api.klickstack.com",
+    "User-Agent": "GitHub-Hookshot/903858c",
+    "Via": "1.1 f92491812e422470607f365e923929b5.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "-r1r799D1iZGeIspgbhMj9Aoi68ED618_ugCLgLXH5SXnMDUUrF74w==",
+    "X-Amzn-Trace-Id": "Root=1-5c9d28a1-bc63d0c901990d3a7ac58fae",
+    "X-Forwarded-For": "192.30.252.35, 70.132.32.72",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https",
+    "X-GitHub-Delivery": "9795b010-5194-11e9-9255-e17d776b0df4",
+    "X-GitHub-Event": "delete",
+    "X-Hub-Signature": "sha1=e1cec0e9f085d1be67a445edbb4eb1648cbfabf5"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "*/*"
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-Country": [
+      "US"
+    ],
+    "content-type": [
+      "application/json"
+    ],
+    "Host": [
+      "api.klickstack.com"
+    ],
+    "User-Agent": [
+      "GitHub-Hookshot/903858c"
+    ],
+    "Via": [
+      "1.1 f92491812e422470607f365e923929b5.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "-r1r799D1iZGeIspgbhMj9Aoi68ED618_ugCLgLXH5SXnMDUUrF74w=="
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-5c9d28a1-bc63d0c901990d3a7ac58fae"
+    ],
+    "X-Forwarded-For": [
+      "192.30.252.35, 70.132.32.72"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ],
+    "X-GitHub-Delivery": [
+      "9795b010-5194-11e9-9255-e17d776b0df4"
+    ],
+    "X-GitHub-Event": [
+      "delete"
+    ],
+    "X-Hub-Signature": [
+      "sha1=e1cec0e9f085d1be67a445edbb4eb1648cbfabf5"
+    ]
+  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "resourceId": "pja1xk",
+    "resourcePath": "/github/deletebranch",
+    "httpMethod": "POST",
+    "extendedRequestId": "XRNJMGCOIAMFRZA=",
+    "requestTime": "28/Mar/2019:20:03:45 +0000",
+    "path": "/1.0/github/deletebranch",
+    "accountId": "812730701436",
+    "protocol": "HTTP/1.1",
+    "stage": "prod",
+    "domainPrefix": "api",
+    "requestTimeEpoch": 1553803425284,
+    "requestId": "97a73c74-5194-11e9-ad52-737a210d6ddd",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "sourceIp": "192.30.252.35",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "GitHub-Hookshot/903858c",
+      "user": null
+    },
+    "domainName": "api.klickstack.com",
+    "apiId": "6e2irqqy6l"
+  },
+  "body": "{\"ref\":\"feat-another\",\"ref_type\":\"branch\",\"pusher_type\":\"user\",\"repository\":{\"id\":102656943,\"node_id\":\"MDEwOlJlcG9zaXRvcnkxMDI2NTY5NDM=\",\"name\":\"course-mastering-aws-cloudformation\",\"full_name\":\"KlickMarketing/klick-sympulse\",\"private\":true,\"owner\":{\"login\":\"KlickMarketing\",\"id\":43070060,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjQzMDcwMDYw\",\"avatar_url\":\"https://avatars2.githubusercontent.com/u/43070060?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/KlickMarketing\",\"html_url\":\"https://github.com/KlickMarketing\",\"followers_url\":\"https://api.github.com/users/KlickMarketing/followers\",\"following_url\":\"https://api.github.com/users/KlickMarketing/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/KlickMarketing/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/KlickMarketing/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/KlickMarketing/subscriptions\",\"organizations_url\":\"https://api.github.com/users/KlickMarketing/orgs\",\"repos_url\":\"https://api.github.com/users/KlickMarketing/repos\",\"events_url\":\"https://api.github.com/users/KlickMarketing/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/KlickMarketing/received_events\",\"type\":\"Organization\",\"site_admin\":false},\"html_url\":\"https://github.com/KlickMarketing/klick-sympulse\",\"description\":null,\"fork\":false,\"url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse\",\"forks_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/forks\",\"keys_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/teams\",\"hooks_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/hooks\",\"issue_events_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/events\",\"assignees_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/tags\",\"blobs_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/languages\",\"stargazers_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/stargazers\",\"contributors_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/contributors\",\"subscribers_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/subscribers\",\"subscription_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/subscription\",\"commits_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/merges\",\"archive_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/downloads\",\"issues_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/KlickMarketing/klick-sympulse/deployments\",\"created_at\":\"2017-09-06T20:49:19Z\",\"updated_at\":\"2019-01-15T22:35:31Z\",\"pushed_at\":\"2019-05-07T15:31:29Z\",\"git_url\":\"git://github.com/KlickMarketing/klick-sympulse.git\",\"ssh_url\":\"git@github.com:KlickMarketing/klick-sympulse.git\",\"clone_url\":\"https://github.com/KlickMarketing/klick-sympulse.git\",\"svn_url\":\"https://github.com/KlickMarketing/klick-sympulse\",\"homepage\":null,\"size\":99544,\"stargazers_count\":0,\"watchers_count\":0,\"language\":\"JavaScript\",\"has_issues\":true,\"has_projects\":true,\"has_downloads\":true,\"has_wiki\":true,\"has_pages\":false,\"forks_count\":0,\"mirror_url\":null,\"archived\":false,\"disabled\":false,\"open_issues_count\":1,\"license\":null,\"forks\":0,\"open_issues\":1,\"watchers\":0,\"default_branch\":\"master\"},\"organization\":{\"login\":\"KlickMarketing\",\"id\":43070060,\"node_id\":\"MDEyOk9yZ2FuaXphdGlvbjQzMDcwMDYw\",\"url\":\"https://api.github.com/orgs/KlickMarketing\",\"repos_url\":\"https://api.github.com/orgs/KlickMarketing/repos\",\"events_url\":\"https://api.github.com/orgs/KlickMarketing/events\",\"hooks_url\":\"https://api.github.com/orgs/KlickMarketing/hooks\",\"issues_url\":\"https://api.github.com/orgs/KlickMarketing/issues\",\"members_url\":\"https://api.github.com/orgs/KlickMarketing/members{/member}\",\"public_members_url\":\"https://api.github.com/orgs/KlickMarketing/public_members{/member}\",\"avatar_url\":\"https://avatars2.githubusercontent.com/u/43070060?v=4\",\"description\":\"\"},\"sender\":{\"login\":\"iDVB\",\"id\":189506,\"node_id\":\"MDQ6VXNlcjE4OTUwNg==\",\"avatar_url\":\"https://avatars1.githubusercontent.com/u/189506?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/iDVB\",\"html_url\":\"https://github.com/iDVB\",\"followers_url\":\"https://api.github.com/users/iDVB/followers\",\"following_url\":\"https://api.github.com/users/iDVB/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/iDVB/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/iDVB/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/iDVB/subscriptions\",\"organizations_url\":\"https://api.github.com/users/iDVB/orgs\",\"repos_url\":\"https://api.github.com/users/iDVB/repos\",\"events_url\":\"https://api.github.com/users/iDVB/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/iDVB/received_events\",\"type\":\"User\",\"site_admin\":false}}",
+  "isBase64Encoded": false
+}

@@ -12,9 +12,6 @@ Parameters:
   GitHubWebhookSecretParam:
     Type: String
     Description: GitHub Webhook Secret
-  GitHubAccessTokenParam:
-    Type: String
-    Description: GitHub Access Token
   SSLCertARN:
     Type: String
     Description: WildCard SSL Certificate ARN
@@ -40,6 +37,10 @@ Resources:
           Resource:
             - !Sub arn:aws:s3:::${DefaultBucket}
             - !Sub arn:aws:s3:::${DefaultBucket}/*
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
   ProxyEntryFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -252,12 +253,13 @@ Resources:
           Properties:
             Path: /deletebranch
             Method: post
+            RestApiId:
+              Ref: ApiGatewayApi
       Environment:
         Variables:
-          GITHUB_API: https://api.github.com/graphql
           GITHUB_WEBHOOK_SECRET: !Ref GitHubWebhookSecretParam
-          GITHUB_ACCESS_TOKEN: !Ref GitHubAccessTokenParam
           PROD_CI_ROLE_ARN: !GetAtt DeployerRole.Arn
+          DEV_CI_ROLE_ARN: !GetAtt DeployerRole.Arn
   GithubWebhookLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -450,3 +452,6 @@ Outputs:
     Value: !GetAtt CloudfrontOAI.S3CanonicalUserId
     Export:
       Name: !Sub ${AWS::StackName}-cloudfrontoai
+  GitHubWebhook:
+    Description: Endpoint for the GitHub Webhook
+    Value: !Sub https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/prod/deletebranch

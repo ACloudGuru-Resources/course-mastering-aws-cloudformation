@@ -1,8 +1,8 @@
 {
   "field": "createBranch",
   "arguments": {
-    "repository": "middy-reroute",
-    "name": "test-extra",
-    "sha": "283724312a909687af0fbaf8c01b3f91eaff8fa4"
+    "repository": "course-mastering-aws-cloudformation",
+    "name": "feat-grey",
+    "sha": "bfd6f50ddc107dd838b4089a72e81fb2c40d6369"
   }
 }

@@ -17,7 +17,7 @@ const cache = new CacheService(ttl);
 const GITHUB_API = 'https://api.github.com';
 
 let SECRETS;
-exports.handler = async (event) => {
+exports.handler = async event => {
   try {
     console.log('Received event: ', JSON.stringify(event));
 
@@ -46,6 +46,11 @@ exports.handler = async (event) => {
       case 'createBranch': {
         const { repository, name, sha } = event.arguments;
         const branch = await createBranch(repository, name, sha);
+        return branch;
+      }
+      case 'deleteBranch': {
+        const { repository, name } = event.arguments;
+        const branch = await deleteBranch(repository, name);
         return branch;
       }
       case 'repository': {
@@ -96,6 +101,13 @@ const createBranch = (repo, name, sha) =>
       sha,
     })
     .then(({ data: { url } }) => ({ name, sha, url }));
+const deleteBranch = (repo, name) =>
+  axios
+    .delete(`/repos/${GITHUB_USER}/${repo}/git/refs/heads/${name}`)
+    .then(data => {
+      console.log(data);
+      return { name };
+    });
 const getBranches = (owner, repo) =>
   cache.get(`getBranches_${owner}_${repo}`, () =>
     axios.get(`/repos/${owner}/${repo}/branches`).then(({ data }) =>
@@ -107,10 +119,10 @@ const getBranches = (owner, repo) =>
     ),
   );
 const getTag = (outputs, key) => {
-  const result = _find(outputs, (o) => o.key === key);
+  const result = _find(outputs, o => o.key === key);
   return (result && result.value) || null;
 };
-const decrypt = (Name) =>
+const decrypt = Name =>
   ssm
     .getParameter({
       Name,

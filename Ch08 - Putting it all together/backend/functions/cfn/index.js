@@ -11,7 +11,7 @@ const cache = new CacheService(ttl);
 
 const TAGKEY_REPOSITORY_NAME = 'GIT_REPOSITORY';
 
-exports.handler = async (event) => {
+exports.handler = async event => {
   try {
     console.log('Received event {}', JSON.stringify(event, 3));
 
@@ -39,17 +39,6 @@ exports.handler = async (event) => {
 
         return stacksGrouped;
       }
-      // case 'stack': {
-      //   const builds = event;
-      //   const { Stacks: stacks } = await getAllStacks();
-      //   const stacksGrouped = orderStacksByRepo(
-      //     repos,
-      //     groupStacksByTag(stacks),
-      //   );
-
-      //   console.log({ stacksGrouped: JSON.stringify(stacksGrouped) });
-      //   callback(null, stacksGrouped);
-      // }
       default: {
         throw `Unknown field, unable to resolve ${eventField}`;
       }
@@ -67,8 +56,8 @@ const getTagValue = (tags, key) => {
   const { value } = _find(tags, ['key', key]) || {};
   return value;
 };
-const addFields = (stacks) =>
-  stacks.map((stack) => {
+const addFields = stacks =>
+  stacks.map(stack => {
     const fields = {
       service: getTagValue(stack.tags, 'SERVICE'),
       stage: getTagValue(stack.tags, 'STAGE'),
@@ -87,39 +76,16 @@ const addFields = (stacks) =>
       ...fields,
     };
   });
-const groupStacksByTag = (stacks) =>
-  _groupBy(stacks, (s) => {
-    const repo = _find(s.Tags, (t) => t.Key === TAGKEY_REPOSITORY_NAME);
+const groupStacksByTag = stacks =>
+  _groupBy(stacks, s => {
+    const repo = _find(s.Tags, t => t.Key === TAGKEY_REPOSITORY_NAME);
     return repo && repo.Value;
   });
 
 const orderStacksByRepo = (repos, groupedStacks) =>
-  repos.map((r) => groupedStacks[r.source.name] || []);
+  repos.map(r => groupedStacks[r.source.name] || []);
 
-const jsonToBase64 = (json) =>
-  Buffer.from(JSON.stringify(json)).toString('base64');
-
-const tagsToValueArray = (json) =>
-  Object.keys(json).reduce(
-    (prev, o) => [...prev, { Key: o, Values: json[o] }],
-    [],
-  );
-
-const filterStacksByTags = (stacks, filters) =>
-  stacks.filter((stack) => isTagsMatch(stack.Tags, filters));
-const isTagsMatch = (tags, tagFilters) =>
-  tagFilters.every((tagFilter) => isFilterMatch(tags, tagFilter));
-const isFilterMatch = (tags, tagFilter) =>
-  !!_find(
-    tags,
-    (tag) =>
-      tag.Key === tagFilter.Key &&
-      (!tagFilter.Values ||
-        tagFilter.Values.length === 0 ||
-        tagFilter.Values.includes(tag.Value)),
-  );
-
-const getStack = async (StackName) =>
+const getStack = async StackName =>
   await cfn
     .describeStacks({ StackName })
     .promise()
