@@ -1,10 +1,12 @@
 import React from 'react'
+
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import GitHubIcon from '@material-ui/icons/GitHub'
+import BranchCreatorButton from './BranchCreatorButton'
 
 const StackRowHeader = ({
   itemKey,
@@ -13,7 +15,9 @@ const StackRowHeader = ({
   isExpanded,
 }) => {
   const group = stackGroup[itemKey]
-  const repoUrl = group[0].repository && group[0].repository.html_url
+  const repo = group[0].repository
+  const repoUrl = repo && repo.html_url
+  const isOther = itemKey === 'null'
 
   return (
     <TableRow>
@@ -24,9 +28,10 @@ const StackRowHeader = ({
         <IconButton>
           {isExpanded ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
         </IconButton>
-        <span>{itemKey !== 'null' ? itemKey : 'Other'}</span>
+        <span>{!isOther ? itemKey : 'Other'}</span>
       </TableCell>
       <TableCell align="right">
+        {true && !isOther && <BranchCreatorButton repo={repo} />}
         {repoUrl && (
           <a href={repoUrl} target="_blank" rel="noopener noreferrer">
             <IconButton variant="contained">

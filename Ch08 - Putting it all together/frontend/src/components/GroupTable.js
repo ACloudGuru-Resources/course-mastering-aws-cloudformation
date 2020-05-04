@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 
-import useInstance from '../hooks/use-instance'
+import useInstance from '../hooks/useInstance'
 
 const GroupedTable = props => {
   const groups = useInstance({})
@@ -65,10 +65,12 @@ const GroupedTable = props => {
   let columnData = getColumnData(columns)
   let groupedData = getGroupedData(rows)
 
+  const { null: thing, ...filteredGroupedData } = groupedData
+
   return (
     <Table>
       <TableBody>
-        {Object.keys(groupedData).map((key, index) => {
+        {Object.keys(filteredGroupedData).map((key, index) => {
           return (
             <React.Fragment key={index}>
               {RowHeader ? (

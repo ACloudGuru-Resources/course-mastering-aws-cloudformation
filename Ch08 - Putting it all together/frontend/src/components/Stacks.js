@@ -29,6 +29,7 @@ const Stacks = () => {
     }settled. pollInterval: ${pollInterval}`
 
     console.log(msg)
+
     startPolling(pollInterval)
     return stopPolling
   }, [rows, startPolling, stopPolling])

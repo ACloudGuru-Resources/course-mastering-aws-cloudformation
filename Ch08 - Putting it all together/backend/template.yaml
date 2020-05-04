@@ -10,6 +10,8 @@ Globals:
 Parameters:
   GitHubUser:
     Type: String
+  APIKeyExpires:
+    Type: Number
 
 Resources:
   # RESOLVER FUNCTIONS
@@ -227,6 +229,7 @@ Resources:
     Type: AWS::AppSync::ApiKey
     Properties:
       ApiId: !GetAtt AppSyncAPI.ApiId
+      Expires: !Ref APIKeyExpires
 
   # DATASOURCES
   AppSyncDataSourcePosts:

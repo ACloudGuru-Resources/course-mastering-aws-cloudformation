@@ -11,26 +11,39 @@ const themeDark = responsiveFontSizes(
       type: 'dark',
     },
     overrides: {
-      // MuiCssBaseline: {
-      //   '@global': {
-      //     // html: { overflowX: 'hidden' },
-      //     // body: { overflowX: 'hidden' },
-      //     '@font-face': [PublicaSansRegular, PublicaSansMedium, KlickBold],
-      //   },
-      // },
-      // MuiTooltip: {
-      //   tooltip: {
-      //     backgroundColor: '#000',
-      //   },
-      //   arrow: {
-      //     color: '#000',
-      //   },
-      // },
-      // MuiAppBar: {
-      //   colorPrimary: {
-      //     backgroundColor: '#f6f5f5',
-      //   },
-      // },
+      MuiFormLabel: {
+        root: {
+          color: '#fff',
+          '&$focused, &$error': {
+            color: '#fff',
+          },
+        },
+      },
+      MuiInputBase: {
+        input: {
+          color: '#fff',
+        },
+      },
+      MuiOutlinedInput: {
+        root: {
+          '& $notchedOutline': {
+            borderColor: '#fff',
+          },
+          '&$focused $notchedOutline': {
+            borderColor: '#fff',
+          },
+          '&$error $notchedOutline': {
+            borderColor: '#f44336',
+          },
+        },
+      },
+      MuiFormHelperText: {
+        root: {
+          '&$error': {
+            color: '#fff',
+          },
+        },
+      },
     },
   }),
 )

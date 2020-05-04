@@ -1,4 +1,5 @@
 
+EXPIRES = $(eval EXPIRES := $(shell echo $$(($$(date +%s) + 15552000))))$(EXPIRES) # 6 months from today
 SERVICE = $(eval SERVICE := $(shell cut -d "=" -f 2 <<< $(shell npm run env | grep "npm_package_name")))$(SERVICE)
 GIT_REPO = $(eval GIT_REPO := $(shell basename `git rev-parse --show-toplevel`))$(GIT_REPO)
 GIT_BRANCH = $(eval GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD))$(GIT_BRANCH)
@@ -20,6 +21,7 @@ deploy: check-env
 		--no-fail-on-empty-changeset \
 		--parameter-overrides \
 				GitHubUser=${GITHUB_USER} \
+				APIKeyExpires=${EXPIRES} \
 		--region '${REGION}' \
 		--profile '${PROFILE}' \
 		--tags \
