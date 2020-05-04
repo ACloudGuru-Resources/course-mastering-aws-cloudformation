@@ -1,6 +1,6 @@
 const config = {
   git: {
-    hash: process.env.REACT_APP_GIT_HASH,
+    hash: process.env.REACT_APP_GIT_VERSION,
   },
   site: {
     api: process.env.REACT_APP_SERVICE_ENDPOINT_WEBSOCKET,
