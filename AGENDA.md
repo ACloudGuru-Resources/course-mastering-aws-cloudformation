@@ -44,9 +44,9 @@ Chapter 7 - Working with Serverless
   - Ch07_L02 – JAMStack Deployment
 
 Chapter 8 - Putting it all together
-  - Ch08_L01 – Overview
-  - Ch08_L03 – Demo the Portal
-  - Ch08_L04 – Clean up
+  - Ch08_L01 – Programmatic CloudFormation 
+    - Cloud Portal Intro
+  - Ch08_L02 – Portal Code walk-thru
 
 Chapter 9 - Other Tools
   - Ch09_L01 - Frameworks
