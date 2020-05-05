@@ -1,0 +1,43 @@
+Transform: ACG-StackProxy-2020-02-16
+
+Parameters:
+  StageParameter:
+    Type: String
+    Default: dev
+    Description: Feature Branch Name
+Resources:
+  ProxyEntry:
+    Type: DVB::StackProxy::ProxyEntry
+    Properties:
+      Service: !Ref AWS::StackName
+      Stage: !Ref StageParameter
+      Origin: !GetAtt WebsiteBucket.DomainName
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Effect: Allow
+          Principal:
+            CanonicalUser:
+              - !GetAtt ProxyEntry.CloudfrontOAI
+            AWS:
+              - !GetAtt ProxyEntry.OriginRequestProxyRoleARN
+          Action:
+            - s3:ListBucket
+            - s3:GetObject
+          Resource:
+            - !Sub arn:aws:s3:::${WebsiteBucket}
+            - !Sub arn:aws:s3:::${WebsiteBucket}/*
+
+Outputs:
+  SiteURL:
+    Description: URL for this site
+    Value: !Sub https://${ProxyEntry.Host}
+  WebsiteBucket:
+    Description: S3 Bucket for this site
+    Value: !Ref WebsiteBucket

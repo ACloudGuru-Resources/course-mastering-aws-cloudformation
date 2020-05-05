@@ -1,0 +1,14 @@
+{
+  "name": "acg-portal",  
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build:backend": "cd backend && yarn build",
+    "deploy:backend": "cd backend && yarn deploy",
+    "start": "cd frontend && yarn start"
+  }
+}

@@ -1,0 +1,359 @@
+Description: Demo Site
+
+Transform:
+  - AWS::Serverless-2016-10-31
+  - ACG-StackProxy-2020-02-16
+
+Parameters:
+  Service:
+    Type: String
+  Stage:
+    Type: String
+  StageFlag:
+    Type: String
+  SSLCertARN:
+    Type: String
+    Default: arn:aws:acm:us-east-1:645655324390:certificate/0f3d1402-3d47-4233-b2ac-4a6f0020005e
+  RCDomain:
+    Type: String
+    Default: rc.acg.danvanbrunt.com
+  ProdDomain:
+    Type: String
+    Default: prod.acg.danvanbrunt.com
+
+Conditions:
+  isProd: !Equals [!Ref StageFlag, prod]
+  isRC: !Equals [!Ref StageFlag, rc]
+  isDev: !Equals [!Ref StageFlag, dev]
+  isProdOrRC: !Or [!Condition isProd, !Condition isRC]
+
+Globals:
+  Function:
+    Runtime: nodejs12.x
+    MemorySize: 1024
+    Timeout: 6
+    CodeUri: functions
+    Environment:
+      Variables:
+        DEMOCONNECTION_TABLE:
+          Ref: DemoConnectionsTable
+
+Resources:
+  ConnectionManagerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AWS::StackName}-connectionManager
+  DefaultMessagesLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AWS::StackName}-defaultMessages
+  SendMessageLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AWS::StackName}-sendMessage
+  IamRoleLambdaExecution:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub ${AWS::StackName}-lambda
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:CreateLogGroup
+                Resource:
+                  - !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}*:*
+              - Effect: Allow
+                Action:
+                  - logs:PutLogEvents
+                Resource:
+                  - !Sub arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}*:*:*"
+              - Effect: Allow
+                Action:
+                  - execute-api:ManageConnections
+                Resource:
+                  - arn:aws:execute-api:*:*:**/@connections/*
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource:
+                  - !GetAtt DemoConnectionsTable.Arn
+                  - !Sub ${DemoConnectionsTable.Arn}/*
+              - Effect: Allow
+                Action:
+                  - execute-api:ManageConnections
+                Resource:
+                  - arn:aws:execute-api:*:*:*/@connections/*
+      Path: /
+      RoleName: !Sub ${AWS::StackName}-${AWS::Region}-lambdaRole
+  ConnectionManagerLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-connectionManager
+      Handler: handler.connectionManager
+      Role: !GetAtt IamRoleLambdaExecution.Arn
+  DefaultMessagesLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-defaultMessages
+      Handler: handler.defaultMessage
+      Role: !GetAtt IamRoleLambdaExecution.Arn
+  SendMessageLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-sendMessage
+      Handler: handler.sendMessage
+      Role: !GetAtt IamRoleLambdaExecution.Arn
+  WebsocketsApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub ${AWS::StackName}-websockets
+      RouteSelectionExpression: $request.body.action
+      Description: Serverless Websockets
+      ProtocolType: WEBSOCKET
+  ConnectionManagerWebsocketsIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ConnectionManagerLambdaFunction.Arn}/invocations
+  DefaultMessagesWebsocketsIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DefaultMessagesLambdaFunction.Arn}/invocations
+  SendMessageWebsocketsIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendMessageLambdaFunction.Arn}/invocations
+  ConnectionManagerLambdaPermissionWebsockets:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt ConnectionManagerLambdaFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+    DependsOn:
+      - WebsocketsApi
+  DefaultMessagesLambdaPermissionWebsockets:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt DefaultMessagesLambdaFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+    DependsOn:
+      - WebsocketsApi
+  SendMessageLambdaPermissionWebsockets:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt SendMessageLambdaFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+    DependsOn:
+      - WebsocketsApi
+  SconnectWebsocketsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      RouteKey: $connect
+      AuthorizationType: NONE
+      Target: !Sub integrations/${ConnectionManagerWebsocketsIntegration}
+  SdisconnectWebsocketsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      RouteKey: $disconnect
+      AuthorizationType: NONE
+      Target: !Sub integrations/${ConnectionManagerWebsocketsIntegration}
+  SdefaultWebsocketsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      RouteKey: $default
+      AuthorizationType: NONE
+      Target: !Sub integrations/${DefaultMessagesWebsocketsIntegration}
+  sendMessageWebsocketsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      RouteKey: sendMessage
+      AuthorizationType: NONE
+      Target: !Sub integrations/${SendMessageWebsocketsIntegration}
+  WebsocketsDeploymentStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      StageName: !Ref Stage
+      Description: Serverless Websockets
+      DeploymentId: !Ref WebsocketsDeployment
+  WebsocketsDeployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    Properties:
+      ApiId: !Ref WebsocketsApi
+      Description: Serverless Websockets
+    DependsOn:
+      - SconnectWebsocketsRoute
+      - SdisconnectWebsocketsRoute
+      - SdefaultWebsocketsRoute
+      - sendMessageWebsocketsRoute
+
+  ProxyEntry:
+    Type: DVB::StackProxy::ProxyEntry
+    Properties:
+      Service: !Ref Service
+      Stage: !Ref Stage
+      Origin: !GetAtt WebsiteBucket.DomainName
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Effect: Allow
+          Principal: !If
+            - isProdOrRC
+            - CanonicalUser:
+                - !GetAtt CloudfrontOAI.S3CanonicalUserId
+              AWS:
+                - !GetAtt ProxyEntry.OriginRequestRoleArn
+            - CanonicalUser:
+                - !GetAtt ProxyEntry.CloudfrontOAI
+              AWS:
+                - !GetAtt ProxyEntry.OriginRequestProxyRoleARN
+          Action:
+            - s3:ListBucket
+            - s3:GetObject
+          Resource:
+            - !Sub arn:aws:s3:::${WebsiteBucket}
+            - !Sub arn:aws:s3:::${WebsiteBucket}/*
+  CloudfrontOAI:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Condition: isProdOrRC
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub Created for ${AWS::StackName}
+  CDN:
+    Type: AWS::CloudFront::Distribution
+    Condition: isProdOrRC
+    Properties:
+      DistributionConfig:
+        ViewerCertificate:
+          AcmCertificateArn: !Ref SSLCertARN
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2018
+        Aliases:
+          - !GetAtt ProxyEntry.Host
+        Enabled: true
+        HttpVersion: http2
+        PriceClass: PriceClass_All
+        IPV6Enabled: true
+        Origins:
+          - DomainName: !GetAtt WebsiteBucket.DomainName
+            Id: s3-origin
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${CloudfrontOAI}
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - DELETE
+            - GET
+            - HEAD
+            - OPTIONS
+            - PATCH
+            - POST
+            - PUT
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+            Headers:
+              - Host
+              - CloudFront-Viewer-Country
+              - Accept-Language
+          DefaultTTL: 3600
+          MaxTTL: 86400
+          MinTTL: 0
+          TargetOriginId: s3-origin
+          ViewerProtocolPolicy: redirect-to-https
+          LambdaFunctionAssociations:
+            - EventType: origin-request
+              LambdaFunctionARN: !GetAtt ProxyEntry.OriginRequestLambdaArn
+            - EventType: origin-response
+              LambdaFunctionARN: !GetAtt ProxyEntry.OriginResponseLambdaARN
+  DnsRecords:
+    Condition: isProdOrRC
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: !If
+        - isProd
+        - !Ref ProdDomain
+        - !Sub ${Stage}--${Service}.${RCDomain}
+      Comment: DNS records associated with demo-site-feat-demo
+      RecordSets:
+        - Name: !GetAtt ProxyEntry.Host
+          Type: A
+          AliasTarget:
+            DNSName: !GetAtt CDN.DomainName
+            HostedZoneId: Z2FDTNDATAQYW2
+  DemoConnectionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: connectionId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: connectionId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+Outputs:
+  SiteUrl:
+    Value: !Sub https://${ProxyEntry.Host}
+    Description: URL of the website
+  WebsiteBucket:
+    Value: !Ref WebsiteBucket
+    Description: ID of the S3 bucket hosting static files
+  CdnUrl:
+    Condition: isProdOrRC
+    Value: !GetAtt CDN.DomainName
+    Description: URL of the CloudFront distribution
+  DistributionId:
+    Condition: isProdOrRC
+    Value:
+      Ref: CDN
+    Description: ID of the CloudFront distribution
+  ServiceEndpointWebsocket:
+    Description: URL of the service endpoint
+    Value: !Sub wss://${WebsocketsApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${Stage}

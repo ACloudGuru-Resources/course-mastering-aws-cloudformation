@@ -1,0 +1,15 @@
+{
+  "name": "acg-votingapp",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build:backend": "cd backend && yarn build",
+    "deploy:backend": "cd backend && yarn deploy",
+    "build:frontend": "cd frontend && yarn build",
+    "deploy:frontend": "cd frontend && yarn deploy"
+  }
+}

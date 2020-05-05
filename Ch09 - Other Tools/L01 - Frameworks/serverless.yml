@@ -1,0 +1,14 @@
+service: my-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  myFunction:
+    handler: index.handler
+    events:
+      - http:
+          path: api/public
+          method: get
+          cors: true

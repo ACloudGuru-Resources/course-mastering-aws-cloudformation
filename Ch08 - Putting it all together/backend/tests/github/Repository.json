@@ -1,0 +1,19 @@
+{
+  "field": "repository",
+  "source": {
+    "tags": [
+      {
+        "key": "GIT_BRANCH",
+        "value": "master"
+      },
+      {
+        "key": "SERVICE",
+        "value": "acg-votingapp-backend"
+      },
+      {
+        "key": "GIT_REPOSITORY",
+        "value": "course-mastering-aws-cloudformation"
+      }
+    ]
+  }
+}

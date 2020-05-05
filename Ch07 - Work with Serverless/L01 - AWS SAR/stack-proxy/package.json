@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.619.0",
+    "axios": "^0.19.2",
+    "bluebird": "^3.5.4",
+    "cfn-lambda": "^4.0.0",
+    "clone": "^2.1.2",
+    "crypto": "^1.0.1",
+    "debug": "^4.1.1",
+    "graphql": "^0.13.2",
+    "lodash.chunk": "^4.2.0",
+    "lodash.filter": "^4.6.0",
+    "lodash.find": "^4.6.0",
+    "lodash.map": "^4.6.0",
+    "middy": "^0.33.2",
+    "middy-reroute": "^2.1.4"
+  },
+  "scripts": {
+    "build": "webpack-cli",
+    "clean": "rimraf .aws-sam .vscode",
+    "prebuild": "rimraf .aws-sam .vscode",
+    "prewatch": "rimraf .aws-sam .vscode",
+    "watch": "webpack-cli -w",
+    "deploy": "make deploy"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "aws-sam-webpack-plugin": "^0.5.1",
+    "babel-loader": "^8.0.6",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  }
+}
