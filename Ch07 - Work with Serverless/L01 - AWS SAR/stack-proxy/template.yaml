@@ -341,6 +341,10 @@ Resources:
                 Action:
                   - "*"
                 Resource: "*"
+  DeployerIAMKeys:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref DeployerRole
   OriginMapTBL:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -455,3 +459,7 @@ Outputs:
   GitHubWebhook:
     Description: Endpoint for the GitHub Webhook
     Value: !Sub https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/prod/deletebranch
+  DeployerAccessKeyID:
+    Value: !Ref DeployerIAMKeys
+  DeployerAccessKeySecret:
+    Value: !GetAtt DeployerIAMKeys.SecretAccessKey

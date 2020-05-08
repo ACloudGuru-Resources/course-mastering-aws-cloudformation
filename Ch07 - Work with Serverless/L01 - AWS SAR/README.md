@@ -50,9 +50,9 @@ aws serverlessrepo create-application \
   --profile $PROFILE
 ```
 
-### Create AWS SAR Application Version
+### **OPTIONAL**: Create AWS SAR Application Version
 ```bash
-SAR_APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
+SAR_APP_ID="arn:aws:serverlessrepo:us-east-1:XXXXXXXXXXXX:applications/StackProxy"
 SAR_VERSION="0.5.0"
 aws serverlessrepo create-application-version \
   --application-id $SAR_APP_ID \
@@ -87,7 +87,6 @@ aws cloudformation deploy \
   --region $REGION \
   --profile $PROFILE
 ```
-
 
 ## Deploy Hello World App
 
