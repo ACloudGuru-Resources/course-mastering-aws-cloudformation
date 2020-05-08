@@ -1,8 +1,15 @@
 
 ## Deploy Stack Proxy as AWS SAR App 
 
+1) Create Wildcard Hosted Zone (HZ)
+2) Point DNS at HZ
+3) Create SSL Cert for Wildcard domain
+4) [Add SAR Policy to Deploy Bucket](#Add-SAR-Policy-to-Deploy-Bucket)
+5) [Package Template](#Package-Template)
+6) [Create AWS SAR Application](#Create-AWS-SAR-Application)
+
 ### Add SAR Policy to Deploy Bucket
-`sar-bucket-policy.json`
+`./sar-bucket-policy.json`
 
 ### Package Template
 ```bash
@@ -74,6 +81,9 @@ aws cloudformation deploy \
 
 
 ## Deploy Hello World App
+
+1) [Deploy Hello World Infra](#Deploy-Hello-World-Infra)
+2) [Deploy Hello World HTML to S3](Deploy-Hello-World-HTML-to-S3)
 
 ### Deploy Hello World Infra
 ```bash
