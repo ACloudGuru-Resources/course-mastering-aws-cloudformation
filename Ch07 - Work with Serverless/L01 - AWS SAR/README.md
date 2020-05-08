@@ -1,18 +1,18 @@
 
 ## Deploy Stack Proxy as AWS SAR App 
 
-1) [Create Wildcard Hosted Zone (HZ)](#Create-Wildcard-Hosted-Zone-(HZ))
-2) [Point DNS at HZ](#Point-DNS-at-HZ)
+1) [Create Stack Proxy Hosted Zone (HZ)](#Create-Stack-Proxy-Hosted-Zone-(HZ))
+2) [Point DNS at Hosted Zone Name Servers](#Point-DNS-at-Hosted-Zone-Name-Servers)
 3) [Create SSL Cert for Wildcard domain](#Create-SSL-Cert-for-Wildcard-domain)
 4) [Add SAR Policy to Deploy Bucket](#Add-SAR-Policy-to-Deploy-Bucket)
 5) [Package Template](#Package-Template)
 6) [Create AWS SAR Application](#Create-AWS-SAR-Application)
 
-### Create Wildcard Hosted Zone (HZ)
-Eg. `*.acg.danvanbrunt.com`
+### Create Stack Proxy Hosted Zone (HZ)
+Eg. `acg.danvanbrunt.com`
 
-### Point DNS at HZ
-Eg. `acg.danvanbrunt.com` -> NSs of: `*.acg.danvanbrunt.com`
+### Point DNS at Hosted Zone Name Servers
+Eg. `acg.danvanbrunt.com` -> NSs of: `acg.danvanbrunt.com`
 
 ### Create SSL Cert for Wildcard domain
 Eg. `*.acg.danvanbrunt.com`
