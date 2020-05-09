@@ -52,7 +52,7 @@ aws serverlessrepo create-application \
 
 ### **OPTIONAL**: Create AWS SAR Application Version
 ```bash
-SAR_APP_ID="arn:aws:serverlessrepo:us-east-1:XXXXXXXXXXXX:applications/StackProxy"
+SAR_APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
 SAR_VERSION="0.5.0"
 aws serverlessrepo create-application-version \
   --application-id $SAR_APP_ID \
@@ -67,11 +67,11 @@ aws serverlessrepo create-application-version \
 ### Deploy Instance of Application
 ```bash
 APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
-SEMVER=0.5.0
+SEMVER=0.1.0
 STACKNAME=stack-proxy
 DOMAIN=acg.danvanbrunt.com
 GITHUB_WEBHOOK_SECRET=2JGEJPgPBKMJKg
-SSLCERT_ARN="arn:aws:acm:us-east-1:645655324390:certificate/0f3d1402-3d47-4233-b2ac-4a6f0020005e"
+SSLCERT_ARN="arn:aws:acm:us-east-1:645655324390:certificate/307ab9aa-4e54-4042-93b6-2c61c643e97e"
 REGION=us-east-1
 PROFILE=cloudguru
 aws cloudformation deploy \
