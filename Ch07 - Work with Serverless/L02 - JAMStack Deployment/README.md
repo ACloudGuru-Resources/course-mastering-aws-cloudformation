@@ -26,3 +26,10 @@ Eg. `TEMPLATE_LOCATION, DEPLOY_BUCKET, AWS_DEFAULT_REGION`
 ### Create Feature Branch
 Eg. `feat-test`
 
+
+## Code Review
+- [Backend Template](https://github.com/iDVB/course-mastering-aws-cloudformation/blob/800402a6840c6f6f66d6b396977270f2ea95e5c0/Ch07%20-%20Work%20with%20Serverless/L02%20-%20JAMStack%20Deployment/backend/template.yaml#L218-L223)
+- [Embeded Git Hash](https://github.com/iDVB/course-mastering-aws-cloudformation/blob/800402a6840c6f6f66d6b396977270f2ea95e5c0/Ch07%20-%20Work%20with%20Serverless/L02%20-%20JAMStack%20Deployment/frontend/public/index.html#L2)
+- [Outputs Script](https://github.com/iDVB/course-mastering-aws-cloudformation/blob/800402a6840c6f6f66d6b396977270f2ea95e5c0/Ch07%20-%20Work%20with%20Serverless/L02%20-%20JAMStack%20Deployment/backend/scripts/outputs.js#L7)
+- [_redirects](https://github.com/iDVB/course-mastering-aws-cloudformation/blob/800402a6840c6f6f66d6b396977270f2ea95e5c0/Ch07%20-%20Work%20with%20Serverless/L02%20-%20JAMStack%20Deployment/frontend/public/_redirects#L2) + [middy-reroute](https://www.npmjs.com/package/middy-reroute)
+- [SAM webpack plugin](https://github.com/iDVB/course-mastering-aws-cloudformation/blob/800402a6840c6f6f66d6b396977270f2ea95e5c0/Ch07%20-%20Work%20with%20Serverless/L02%20-%20JAMStack%20Deployment/backend/package.json#L15)
