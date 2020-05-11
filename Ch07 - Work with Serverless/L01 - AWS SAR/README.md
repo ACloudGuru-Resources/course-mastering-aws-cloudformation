@@ -1,8 +1,24 @@
 
 ## Deploy Stack Proxy as AWS SAR App 
 
+1) [Create Stack Proxy Hosted Zone (HZ)](#Create-Stack-Proxy-Hosted-Zone-(HZ))
+2) [Point DNS at Hosted Zone Name Servers](#Point-DNS-at-Hosted-Zone-Name-Servers)
+3) [Create SSL Cert for Wildcard domain](#Create-SSL-Cert-for-Wildcard-domain)
+4) [Add SAR Policy to Deploy Bucket](#Add-SAR-Policy-to-Deploy-Bucket)
+5) [Package Template](#Package-Template)
+6) [Create AWS SAR Application](#Create-AWS-SAR-Application)
+
+### Create Stack Proxy Hosted Zone (HZ)
+Eg. `acg.danvanbrunt.com`
+
+### Point DNS at Hosted Zone Name Servers
+Eg. `acg.danvanbrunt.com` -> NSs of: `acg.danvanbrunt.com`
+
+### Create SSL Cert for Wildcard domain
+Eg. `*.acg.danvanbrunt.com`
+
 ### Add SAR Policy to Deploy Bucket
-`sar-bucket-policy.json`
+`./sar-bucket-policy.json`
 
 ### Package Template
 ```bash
@@ -34,7 +50,7 @@ aws serverlessrepo create-application \
   --profile $PROFILE
 ```
 
-### Create AWS SAR Application Version
+### **OPTIONAL**: Create AWS SAR Application Version
 ```bash
 SAR_APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
 SAR_VERSION="0.5.0"
@@ -51,11 +67,11 @@ aws serverlessrepo create-application-version \
 ### Deploy Instance of Application
 ```bash
 APP_ID="arn:aws:serverlessrepo:us-east-1:645655324390:applications/StackProxy"
-SEMVER=0.5.0
+SEMVER=0.1.0
 STACKNAME=stack-proxy
 DOMAIN=acg.danvanbrunt.com
 GITHUB_WEBHOOK_SECRET=2JGEJPgPBKMJKg
-SSLCERT_ARN="arn:aws:acm:us-east-1:645655324390:certificate/0f3d1402-3d47-4233-b2ac-4a6f0020005e"
+SSLCERT_ARN="arn:aws:acm:us-east-1:645655324390:certificate/307ab9aa-4e54-4042-93b6-2c61c643e97e"
 REGION=us-east-1
 PROFILE=cloudguru
 aws cloudformation deploy \
@@ -72,8 +88,10 @@ aws cloudformation deploy \
   --profile $PROFILE
 ```
 
-
 ## Deploy Hello World App
+
+1) [Deploy Hello World Infra](#Deploy-Hello-World-Infra)
+2) [Deploy Hello World HTML to S3](Deploy-Hello-World-HTML-to-S3)
 
 ### Deploy Hello World Infra
 ```bash

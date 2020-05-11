@@ -53,5 +53,5 @@ Chapter 9 - Other Tools
     - Serverless Framework
     - AWS SAM
     - AWS CDK
-  - Ch09_L02 – CloudFormation Registry
+  - Ch09_L02 – CloudFormation Registry & CLI Discussion
   - Ch09_L03 – Conclusion

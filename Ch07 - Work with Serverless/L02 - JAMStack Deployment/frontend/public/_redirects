@@ -1,2 +1,4 @@
 
-/devto    http://www.devto.ca/2019/04/devto-building-serverless-pipelines-12-steps-to-return-to-work/   302 
+/whatnext    https://acloud.guru/learn/lambda-edge   302 
+/api/*       https://api.github.com/:splat           200
+

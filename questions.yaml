@@ -1,0 +1,18 @@
+001:
+  question: The stem for the question
+  answers:
+    - text: Correct answer text
+      correct: true
+    - text: Incorrect answer text
+    - text: Incorrect answer text
+    - text: Incorrect answer text
+  explanation: "Why the correct answer is correct, why others are not "
+  links:
+    - Title for URL (URL)
+  lesson:
+    - Chapter X quiz
+  difficulty: L/M/H relative to the level
+  questiontype: "Level according to Bloom's Taxonomy (1/2/3/4/5/6)"
+  tags:
+    - services referenced in the question
+    - service 2
