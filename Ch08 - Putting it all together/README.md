@@ -1,5 +1,12 @@
 
-## Create and Encrypt SSMParam Secrets
+## Deploy Custom Cloud Portal
+
+1) [Setup Personal Access Token](https://github.com/settings/tokens)
+2) [Create/Encrypt SSMParam Secrets](#Create/Encrypt-SSMParam-Secrets)
+3) [Deploy Backend](#Deploy-Backend)
+4) [Build & Run Local Frontend](#Build-&-Run-Local-Frontend)
+
+### Create/Encrypt SSMParam Secrets
 ```bash
 REGION=us-east-1
 PROFILE=cloudguru
@@ -12,7 +19,7 @@ aws ssm put-parameter \
     --profile $PROFILE
 ```
 
-## Deploy Backend
+### Deploy Backend
 ```bash
 yarn install
 yarn build:backend
