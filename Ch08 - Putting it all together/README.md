@@ -50,3 +50,23 @@ yarn start
 - Show all repos, and ablity to hide some from view
 - Add lighthouse test to build and be able to view historical results in the Cloud Portal
 - Add other stats to Cloud Portal page. Eg. GA, Epsigon, PagerDuty, Code Coverage etc
+
+## Clean up
+- GitHub Access Token
+- GitHub Repo Secrets
+- SSM Params
+- Stacks
+- CloudWatch Logs
+- User, Roles
+- Course Deployment bucket
+
+### Delete All Log Groups
+**WARNING** Be very careful, this will delete all the logs in your account. 
+Be sure this is what you want to do before running. 
+```bash
+REGION=us-east-1
+PROFILE=cloudguru
+aws logs describe-log-groups --query 'logGroups[*].logGroupName' --region $REGION --profile $PROFILE --output table | \
+awk '{print $2}' | grep -v ^$ | while read x; do  echo "deleting $x" ; aws logs delete-log-group --log-group-name $x --region $REGION --profile $PROFILE; done
+```
+[source](https://gist.github.com/pahud/1e875cb1252a622173cc2236be5c2963)
