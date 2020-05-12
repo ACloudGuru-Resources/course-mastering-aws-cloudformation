@@ -63,6 +63,7 @@ yarn start
 ### Delete All Log Groups
 **WARNING** Be very careful, this will delete all the logs in your account. 
 Be sure this is what you want to do before running. 
+
 ```bash
 REGION=us-east-1
 PROFILE=cloudguru
