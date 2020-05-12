@@ -58,6 +58,8 @@ yarn start
 - Stacks
 - CloudWatch Logs
 - User, Roles
+- SSL Cert
+- KMS Key
 - Course Deployment bucket
 
 ### Delete All Log Groups
@@ -70,8 +72,3 @@ aws logs describe-log-groups --query 'logGroups[*].logGroupName' --region $REGIO
 awk '{print $2}' | grep -v ^$ | while read x; do  echo "deleting $x" ; aws logs delete-log-group --log-group-name $x --region $REGION --profile $PROFILE; done
 ```
 [source](https://gist.github.com/pahud/1e875cb1252a622173cc2236be5c2963)
-
-### Delete Ghost Buckets
-```bash
-aws s3 rb s3://bucket-name --force
-```
