@@ -36,3 +36,17 @@ yarn deploy:backend \
 ```bash
 yarn start
 ```
+
+## Code Review
+1) Stack-Repo Relation Tags
+2) Feature: Create Branch
+3) Feature: Delete Branch
+
+
+## Improvement Ideas
+- Abstract Stacks, Repos and GitHub Actions into "Projects"
+- Have environment completion statuses take into account GitHub Action build status
+- Use DynamoDB to track relationships rather than just stack tags
+- Show all repos, and ablity to hide some from view
+- Add lighthouse test to build and be able to view historical results in the Cloud Portal
+- Add other stats to Cloud Portal page. Eg. GA, Epsigon, PagerDuty, Code Coverage etc
