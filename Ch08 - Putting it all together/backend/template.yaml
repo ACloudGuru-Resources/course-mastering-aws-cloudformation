@@ -15,10 +15,6 @@ Parameters:
 
 Resources:
   # RESOLVER FUNCTIONS
-  LambdaPosts:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: functions/posts
   LambdaCFN:
     Type: AWS::Serverless::Function
     Properties:
@@ -128,8 +124,6 @@ Resources:
               - Effect: Allow
                 Action: lambda:invokeFunction
                 Resource:
-                  - !GetAtt LambdaPosts.Arn
-                  - !Join ["", [!GetAtt LambdaPosts.Arn, ":*"]]
                   - !GetAtt LambdaCFN.Arn
                   - !Join ["", [!GetAtt LambdaCFN.Arn, ":*"]]
                   - !GetAtt LambdaGithub.Arn
@@ -152,9 +146,6 @@ Resources:
         }
 
         type Query {
-          getPost(id:ID!): Post
-          allPosts: [Post]
-
           getStack(id:ID!): Stack
           allStacks: [Stack]
 
@@ -163,21 +154,10 @@ Resources:
         }
 
         type Mutation {
-          addPost(id: ID!, author: String!, title: String, content: String, url: String): Post!
           createBranch(repository:String!, name:String!, sha:String!): RepoBranch
           deleteBranch(repository:String!, name:String!): RepoBranch
         }
 
-        type Post {
-          id: ID!
-          author: String!
-          title: String
-          content: String
-          url: String
-          ups: Int
-          downs: Int
-          relatedPosts: [Post]
-        }
         type Stack {
           stackId: String!
           stackName: String!
@@ -232,15 +212,6 @@ Resources:
       Expires: !Ref APIKeyExpires
 
   # DATASOURCES
-  AppSyncDataSourcePosts:
-    Type: AWS::AppSync::DataSource
-    Properties:
-      ApiId: !GetAtt AppSyncAPI.ApiId
-      Name: handlerPosts
-      Type: AWS_LAMBDA
-      LambdaConfig:
-        LambdaFunctionArn: !GetAtt LambdaPosts.Arn
-      ServiceRoleArn: !GetAtt RoleAppSync.Arn
   AppSyncDataSourceCFN:
     Type: AWS::AppSync::DataSource
     Properties:
@@ -259,75 +230,6 @@ Resources:
       LambdaConfig:
         LambdaFunctionArn: !GetAtt LambdaGithub.Arn
       ServiceRoleArn: !GetAtt RoleAppSync.Arn
-
-  # POST RESOLVERS
-  AppSyncResolverGetPost:
-    Type: AWS::AppSync::Resolver
-    Properties:
-      ApiId: !GetAtt AppSyncAPI.ApiId
-      TypeName: Query
-      FieldName: getPost
-      DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: |
-        {
-          "version": "2017-02-28",
-          "operation": "Invoke",
-          "payload": {
-            "field": "getPost",
-            "arguments":  $utils.toJson($context.arguments)
-          }
-        }
-      ResponseMappingTemplate: $util.toJson($context.result)
-  AppSyncResolverAddPost:
-    Type: AWS::AppSync::Resolver
-    Properties:
-      ApiId: !GetAtt AppSyncAPI.ApiId
-      TypeName: Mutation
-      FieldName: addPost
-      DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: |
-        {
-          "version": "2017-02-28",
-          "operation": "Invoke",
-          "payload": {
-            "field": "addPost",
-            "arguments":  $utils.toJson($context.arguments)
-          }
-        }
-      ResponseMappingTemplate: $util.toJson($context.result)
-  AppSyncResolverAllPosts:
-    Type: AWS::AppSync::Resolver
-    Properties:
-      ApiId: !GetAtt AppSyncAPI.ApiId
-      TypeName: Query
-      FieldName: allPosts
-      DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: |
-        {
-          "version": "2017-02-28",
-          "operation": "Invoke",
-          "payload": {
-            "field": "allPosts"
-          }
-        }
-      ResponseMappingTemplate: $util.toJson($context.result)
-  AppSyncResolverRelatedPosts:
-    Type: AWS::AppSync::Resolver
-    Properties:
-      ApiId: !GetAtt AppSyncAPI.ApiId
-      TypeName: Post
-      FieldName: relatedPosts
-      DataSourceName: !GetAtt AppSyncDataSourcePosts.Name
-      RequestMappingTemplate: |
-        {
-          "version": "2017-02-28",
-          "operation": "Invoke",
-          "payload": {
-            "field": "relatedPosts",
-            "source":  $utils.toJson($context.source)
-          }
-        }
-      ResponseMappingTemplate: $util.toJson($context.result)
 
   # CFN RESOLVERS
   AppSyncResolverGetStack:

@@ -21,7 +21,7 @@ import CreateBranch from '../graphql/mutations/CreateBranch'
 
 const BranchCreatorButton = ({ repo }) => {
   const branches = (repo && repo.branches.slice().reverse()) || []
-  const [createBranch, { data }] = useMutation(CreateBranch)
+  const [createBranch] = useMutation(CreateBranch)
   const classes = useStyles()
   const popupState = usePopupState({ variant: 'popover', popupId: 'demoMenu' })
   const [selected, setSelected] = useState(branches[0])
