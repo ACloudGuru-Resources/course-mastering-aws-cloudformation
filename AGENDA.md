@@ -47,6 +47,7 @@ Chapter 8 - Putting it all together
   - Ch08_L01 – Programmatic CloudFormation 
     - Cloud Portal Intro
   - Ch08_L02 – Portal Code walk-thru
+  - Ch08_L03 - Complete Course Clean-up
 
 Chapter 9 - Other Tools
   - Ch09_L01 - Frameworks
