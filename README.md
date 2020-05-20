@@ -3,12 +3,14 @@
 A Cloud Guru Course: Mastering CloudFormation
 
 ## Chapter 1 - Intro and Theory
+*Everything you need to set you up for a successful course. We'll quickly cover some tips when working with the AWS CLI. We'll then cover a brief review of the CloudFormation template anatomy including metadata, intrinsic functions, as well as exporting and importing values between templates.*
 
 ### Ch01_L01 – Introduction
 
-*Lecture Description:* Gain a high-level look at what this course has to offer. We’ll also give some tips for how to work thru it.
+*Take a high-level look at what this course has to offer.*
 
 ### Ch01_L02 – A Quick Refresher
+*A quick refresher on AWS CLI, CloudFormation fundenmentals, and navigating the AWS CloudFormation Docs.*
 
 1. DEMO: Working with the AWS CLI
 2. How CloudFormation works
@@ -19,6 +21,7 @@ A Cloud Guru Course: Mastering CloudFormation
 
 
 ### Ch01_L03 – Template Anatomy
+*A complete look at CloudFormation template anatomy, with Parameters/Types, Mappings, Conditions, Metadata, Resources and Outputs.*
 
 1. Parameters
    - [Constraints](http://bit.ly/2YyuvjE)
@@ -30,6 +33,7 @@ A Cloud Guru Course: Mastering CloudFormation
 6. Outputs
 
 ### Ch01_L04 – Template Operations
+*A detailed look at intrinsic functions as well as a deep dive on Exporting and Importing values between templates.*
 
 1. Intrinsic Functions
    - Ref, GetAtt
@@ -37,6 +41,7 @@ A Cloud Guru Course: Mastering CloudFormation
 
 
 ### Ch01_L05 – Tips & Watchouts
+*A list of the most common CloudFormation pitfalls as well how to best setup your code editor.*
 
 1. Trick-out your IDE
 2. Lambda@Edge Deletion Times
@@ -315,20 +320,6 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 2. Features
 3. Example Template
 
-## Chapter 10 - Challenge
-
-**Demo Description:** Put your CloudFormation knowledge to the test by creating a template that deploys a serverless website and uses a Macro to ensure the CDN has a standard WAF on it. (site code provided)
-
-### Ch10_L01 – Build a Serverless Website & API
-
-1. Discuss Goal
-2. Options Review
-
-### Ch10_L02 – Solution Review
-
-1. Possible Solution Review
-   - Template
-   - Code
 
 ## Links
 
