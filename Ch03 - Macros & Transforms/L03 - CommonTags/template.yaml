@@ -6,6 +6,6 @@ Resources:
   MacroFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs10.x
+      Runtime: nodejs12.x
       CodeUri: src
       Handler: index.handler
