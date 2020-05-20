@@ -336,17 +336,8 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 ## Missing Topics
 - CFN Designer
 - DependsOn
-- Tags
-- Replacement update behavior (http://bit.ly/31liOh8)
-- UpdateReplace Policies
-- Stack Policies (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/protect-stack-resources.html#stack-policy-intro-example)
 - Stack Notifications (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html)
 - WaitCondition
-- Update Types
-  - Update with No Interruption
-  - Updates with Some Interruption
-  - Replacement
-- Correct all NodeJS to 10.x
 
 
 
