@@ -40,17 +40,20 @@
   - Ch06_L04 – cfn-hup
 
 ## Chapter 7 - Working with Serverless
-  - Ch07_L01 – AWS Serverless Application Repository
-  - Ch07_L02 – JAMStack Deployment
+  - Ch07_L01 – AWS Serverless Application Repository - Part 1
+  - Ch07_L02 – AWS Serverless Application Repository - Part 2
+  - Ch07_L03 – AWS Serverless Application Repository - Part 3
+  - Ch07_L04 – JAMStack Deployment - Part 1
+  - Ch07_L05 – JAMStack Deployment - Part 2
 
 ## Chapter 8 - Putting it all together
-  - Ch08_L01 – Programmatic CloudFormation 
-    - Cloud Portal Intro
+  - Ch08_L01 – Programmatic CloudFormation
   - Ch08_L02 – Portal Code Walk-through
   - Ch08_L03 - Complete Course Clean-up
 
 ## Chapter 9 - Other Tools
   - Ch09_L01 - Frameworks
+    - Troposphere
     - Serverless Framework
     - AWS SAM
     - AWS CDK

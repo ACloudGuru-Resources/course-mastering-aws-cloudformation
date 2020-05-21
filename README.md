@@ -6,7 +6,6 @@ A Cloud Guru Course: Mastering CloudFormation
 *Everything you need to set you up for a successful course. We'll quickly cover some tips when working with the AWS CLI. We'll then cover a brief review of the CloudFormation template anatomy including metadata, intrinsic functions, as well as exporting and importing values between templates.*
 
 ### Ch01_L01 – Introduction
-
 *Take a high-level look at what this course has to offer.*
 
 ### Ch01_L02 – A Quick Refresher
@@ -21,7 +20,7 @@ A Cloud Guru Course: Mastering CloudFormation
 
 
 ### Ch01_L03 – Template Anatomy
-*A complete look at CloudFormation template anatomy, with Parameters/Types, Mappings, Conditions, Metadata, Resources and Outputs.*
+*A complete look at CloudFormation's template anatomy, with Parameters/Types, Mappings, Conditions, Metadata, Resources, Outputs and more.*
 
 1. Parameters
    - [Constraints](http://bit.ly/2YyuvjE)
@@ -41,7 +40,7 @@ A Cloud Guru Course: Mastering CloudFormation
 
 
 ### Ch01_L05 – Tips & Watchouts
-*A list of the most common CloudFormation pitfalls as well how to best setup your code editor.*
+*A list of the most common CloudFormation pitfalls as well how to best setup your code editor, when working with CloudFormation.*
 
 1. Trick-out your IDE
 2. Lambda@Edge Deletion Times
@@ -54,12 +53,13 @@ https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html
 
 
 ## Chapter 2 - Custom Resources
+*Learn to create, deploy and implement custom resources that can help extend CloudFormation way beyond just native resources.*
 
-**Lecture Description:** Learn to create, deploy and implement custom resources that can help extend native CloudFormation resources.
 **Demo Description:** Create and use a custom resource that provisions unique subdomains and routing based on application version.
 Eg. feat-blue--projectx.domain.com
 
 ### Ch02_L01 – Overview
+*A birds-eye view of Custom Resources; what they are and various use cases.*
 
 1. What they are
    - Lambda: Create, Update, Delete
@@ -68,6 +68,7 @@ Eg. feat-blue--projectx.domain.com
 3. Limits
 
 ### Ch02_L02 – What We Are Building 
+*A detailed walk-through of the custom resource you will be building; as well as calling out a few custom resource helper libraries.*
 
 1. Important Notes
    - Timeouts & Catching Errors
@@ -76,23 +77,25 @@ Eg. feat-blue--projectx.domain.com
 2. Helper Libraries
 3. Diagram: What We Are Building
 
-### Ch02_L02 – Let's Make one
+### Ch02_L03 – Let's Make one
+*A guided jounery in building your own custom resource, and how to deploy it.*
 
 1. DEMO: Create/Deploy Custom Resource
 2. DEMO: Review Custom Resource Function
 3. DEMO: Review Exports in Console
 
-### Ch02_L03 – Let's Use It
+### Ch02_L04 – Let's Use It
+*A complete guide to implementing and using your new custom resource*
 
 1. Using in another Template
 2. DEMO: Create, Update and Delete
 3. DEMO: Cleanup
 
 ## Chapter 3 - Macros & Transforms
-
-**Lecture Description:** Amplify your template functionality with Macros and Transforms. Learn to create and use custom template functions.
+*Elevate your template functionality with Macros and Transforms. Learn to create and use custom template functions.*
 
 ### Ch03_L01 – Overview
+*A comprehensive look at Macros & Transforms; along with various use cases and limits.*
 
 1. What they are
 2. Snippet vs Template-Level
@@ -100,6 +103,7 @@ Eg. feat-blue--projectx.domain.com
 4. Limits
 
 ### Ch03_L02 – Macro: String Operations
+*A hands-on lab where you will be building a deploying a Macro that is able to perform string manipulations in your templates.*
 
 1. What We're Building
   - String Operations (Capitalize, Replace, Max Length)
@@ -108,26 +112,31 @@ Eg. feat-blue--projectx.domain.com
 3. DEMO: Use Macro
 
 ### Ch03_L03 – Macro: Common Tags
+*A hands-on lab where you will be building a deploying a Macro that cleanly provides a way to globally tag all the resources at once.*
 
 1. What We're Building
 2. DEMO: Create/Deploy CommonTags Macro
 3. DEMO: Use Macro
 
 ### Ch03_L04 – Macro: Custom Resource Types
+*A hands-on lab where you will build & deploy a Macro that abstracts away your custom resource, making it appear as though it's a native resource type.*
 
 1. What We're Building
 2. DEMO: Create/Deploy S3Objects Macro
 3. DEMO: Use Macro
 
 ### Ch03_L05 – Unit Testing
+*Learn to debug and test your Lambda's locally, or as part of a deployment step.*
 
 1. Unit Testing
 2. DEMO: Setting up Macro Unit Tests
   - validate-template
 
 ## Chapter 4 – Best Practices
+*A focused look at the most impactful CloudFormation features, workflows and best practices for organizing, securing and managing your templates and stacks.*
 
 ### Ch04_L01 - Nested Stacks
+*An advanced exploration of Nested Stacks; how they work, use cases, features and a detailed hands-on demo.*
 
 1. What are they?
 3. Features & Benefits
@@ -138,6 +147,7 @@ Eg. feat-blue--projectx.domain.com
 5. Clean up
 
 ### Ch04_L02 - Working with Secrets
+*An extensive look at safe-guarding your secrets when working with CloudFormation without compromising on workflow or security.*
 
 1. Overview
 2. SSM vs Secrets Manager
@@ -148,9 +158,7 @@ Eg. feat-blue--projectx.domain.com
 5. Clean up
 
 ### Ch04_L03 - Template Strategies
-
-**Lecture Description:** Learn some of the best Practices, workflows and tools for managing your templates
-https://amzn.to/32Gkl36
+*A detailed examination of various techniques, workflows and tools for validating, cross-referencing, and orginizing your templates.*
 
 1. Reuse & Stack Separation
 3. Organize Stacks By Lifecycle and Ownership
@@ -160,6 +168,7 @@ https://amzn.to/32Gkl36
   - https://github.com/ScottBrenner/cfn-lint-action
 
 ### Ch04_L04 - Template Storage and Revisions
+*A practical look at a variety of approaches to automating the tasks of versioning, linting, packaging, storing and continuously deploying your templates.*
 
 1. Versioning
 2. Linting
@@ -168,11 +177,10 @@ https://amzn.to/32Gkl36
 5. Automated CI/CD Pipeline
 
 ## Chapter 5 - Mastering Stacks
-
-**Lecture Description:** Learn processes to create fast and reliable CI pipelines for your CloudFormation templates
+*A comprehensive review of some of the lesser known, but extremely powerful CloudFormation features.*
 
 ### Ch05_L01 - Service Roles
-http://bit.ly/2YL0yND
+*A guided investigation of service roles; what they are and the granular control over stacks they provide.*
 
 1. Why are they needed?
 2. DEMO: User & Role Setup
@@ -180,7 +188,7 @@ http://bit.ly/2YL0yND
 4. Cleanup
 
 ### Ch05_L02 – Change Sets
-https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#organizingstacks
+*An exploration of Change Sets; what they are, some powerful use cases along with a hands-on demo on how to take full advantage of them when you deploy.*
 
 1. What are they
 2. Use Case
@@ -188,7 +196,8 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 4. DEMO - Let's use one
 5. Cleanup
 
-### Ch05_L03 – StackSets
+### Ch05_L03-L04 – StackSets
+*An in-depth look at stack sets; some of their most important benefits and limitations as well as a hands-on demo of how they can help you master mult-region and account deploys.*
 
 1. StackSet Concepts
 2. Features & Benefits
@@ -198,23 +207,27 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 6. DEMO - Deploying with StackSets
 7. Cleanup
 
-### Ch05_L04 – Stack Policies
+### Ch05_L05 – Stack Policies
+*Learn how to completely protect your stack resources, with ease using stack policies.*
 
 1. What are they?
 2. DEMO: Using Stack Policies
 3. Cleanup
 
 ## Chapter 6 - Working with EC2 Instances (eg. GhostCMS)
+*Learn how to provision your EC2 instances complete with all required services, files, users, and groups all with native CloudFormation.*
 
 **Demo Description:** Build and deploy a Ghost Blogging CMS hosted on EC2. Learn how to provision the instance for required packages with CloudFormation.
 
 ### Ch06_L01 – CloudFormationInit
+*Learn about CloudFormationInit and how it can orgistrate your EC2 application provisioning.*
 
 1. [UserData (Procedural)](https://acloud.guru/course/aws-advanced-cloudformation/learn/d8067ef9-7840-7c93-e19e-6e1d9a52d756/e72173eb-7bbe-7db7-0d7c-eb486ba6e6f6/watch?backUrl=~2Fcourses) vs CloudFormationInit
 2. How it Works
 3. Provisioning Workflow
 
 ### Ch06_L02 - ConfigSets
+*Explore ConfigSets and how they offer declaritive control over the services, files, users, and groups that get installed on your EC2 instances*
 
 1. Overview
 2. packages
@@ -226,12 +239,14 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 8. services
 
 ### Ch06_L03 – cfn-hup
+*Learn how to use cfn-up to keep you EC2 instances in sync with changes to your templates.*
 
 1. How it works
 2. Configuring
 3. DEMO
 
 ### Ch06_L04 – Resource Policies
+*Learn how to orgastrate the provisioning, updating and deleting of your instances with resource policies and cfn-signal.*
 
 1. What are they?
 2. [Creation Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-creationpolicy.html)
@@ -240,10 +255,10 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 3. cfn-signal
 
 ## Chapter 7 - Working with Serverless
+*Learn advanced techniques and workflows when working with CloudFormation and serverless; along with solutions to common challenges.*
 
-### Ch07_L01 – AWS Serverless Application Repository
-
-**Demo Description:** A AWS Serverless Appliaction Repository Walkthru on what it is and how to benefit from it.
+### Ch07_L01-L03 – AWS Serverless Application Repository
+*A detailed look at AWS Serverless Application Repository; what it is and how to use it as your team's extensive infrastructure rolodex.*
 
 1. What is AWS SAR?
 2. Searching for Apps
@@ -251,12 +266,8 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.ht
 4. Using Apps
 https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource-based-policy-examples.html
 
-### Ch07_L02 – Serverless CI/CD Deployment Pipeline
-
-
-### Ch07_L03 – JAMStack Deployment (Voting App)
-
-**Demo Description:** Build a serverless and real-time voting platform with API Gateway sockets and DynamoDB.
+### Ch07_L03-L04 – JAMStack Deployment (Voting App)
+*Learn how to automate the deployment of a serverless real-time voting application; as well as solutions to related CloudFormation challenges.*
 
 1. What we’re going to build
 2. Review Template & Code
@@ -264,62 +275,47 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 3. Deleting S3 assets as part of stack delete
 
 ## Chapter 8 - Putting it all together (Self Service Portal)
+*Learn how you can programmatically explore and control CloudFormation in a custom built Cloud Portal complete with Github Repository and Actions Integrations.*
 
-**Demo Description:** Learn how you can use the AWS SDK programmatically to handle deployments for your templates, securely exposing this two your users.
+### Ch08_L01 – Programmatic CloudFormation
+*A discussion of common uses for programmic control of CloudFormation. A detailed look at the Cloud Portal application you'll be deploying as well as a step-by-step deployment walk-through.*
 
-### Ch08_L01 – Overview
+1. Use Cases
+2. Cloud Portal Intro
+3. Deployment
 
-1. What we’re going to build
-2. What we’ll learn
-3. Resources to be used
+### Ch08_L02 – Portal Code Walk-Through
+*A review of the Cloud Portal functionality followed by a comprehesive code walk-through to see what makes it tick.*
 
-### Ch08_L02 – Deploy & Review
+1. Cloud Portal Exploration
+2. Code Walk-Through
 
-1. Review Template
-2. Deploy
-3. Setup Google API App
-4. Review the CloudFormation Console
+### Ch08_L03 - Complete Course Clean-up
+*A full and complete walk-through and tear down of all stacks, keys, configs, ssm params, roles etc that we're created for this course.*
 
-### Ch08_L03 - Demo the Portal
-
-1. Customer Portal Login
-2. Provisioning Stack
-3. Updating Stack
-4. Deleting Stack
-
-### Ch08_L04 - Clean up
-
-1. Deleting Portal Stack
-2. Deleting Google App
+1. Clean up
 
 ## Chapter 9 - Other Tools
+*Simplfiy your CloudFormation workflow with a  an industry CLI tool. We’ll briefly review and compare a number of industry tool options. Additionally, we'll also be taking a quick look at the CloudFormation Registry and CLI.*
 
-**Lecture Description:** Simply your workflow with a CloudFormation based CLI tool. We’ll briefly review and compare a number of industry tool options.
+### Ch9_L01 – Frameworks
+*A high-level look at The Serverless Framework, AWS SAM, Troposphere and AWS CDK; compairing their feature sets and workflows.*
 
-### Ch9_L01 – Serverless Framework
+1. Troposphere
+2. The Serverless Framework
+3. AWS SAM
+4. AWS CDK
 
-1. Intro
-2. Features
-3. Example Template
+### Ch9_L02 – CloudFormation Registry and CLI
+*Learn how, even though new to the scene at time of recording; the CloudFormation Registry and CLI promise to significantly standardize and open up CloudFormation to third-party resources.*
 
-### Ch9_L02 – AWS SAM
+1. The Registry
+2. The CLI
+3. Using 3rd Party Providers
+4. Creating Your Own Provider
 
-1. Intro
-2. Features
-3. Example Template
-
-### Ch9_L03 – Troposphere
-
-1. Intro
-2. Features
-3. Example Template
-
-### Ch9_L04 – AWS CDK
-
-1. Intro
-2. Features
-3. Example Template
-
+### Ch9_L03 – Conclusion
+*Congradulations, a sincere thanks and brief good-bye; until next time.*
 
 ## Links
 
