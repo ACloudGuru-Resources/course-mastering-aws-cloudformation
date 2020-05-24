@@ -1,18 +1,25 @@
 ## Ch 01 - Intro and Theory
 - Which is the correct syntax to get an attribute off a resource?
 - What is the resource limit per CFN template?
+- which of the following is valid CloudFormation Syntax
+- which CloudFormation feature coule you use to lookup an EC2 instance Ref?
+- which is NOT a value Parameter Contraint?
 
 ## Ch 02 - Custom Resources
 - What feature could you use to shim in support for a missing service?
 - Which two services can back a custom resource?
+- Which of the following is the custom resource parameter that points to the backing ARN
+- Which is a value Custom Resource RequestType 
+- How long does CloudFormation wait for a Custom Resourcw to complete before timing out?
 
 ## Ch 03 - Macros & Transforms
 - How many Transforms can be used per template?
 - Which of the following is/are valid use case(s) for a Transform?
-- Which of the following is an incorrect statement. (Transforms can return intrinsic functions)
+- Which of the following is an incorrect statement. (Transforms can return intrinsic functions) You cant use Macros in nested stacks.
+- 
 
 ## Ch 04 - Best Practices
-- In terms of security, which of the following are the 2 best options for using secrets in your CloudFormation provisioned resources?
+- In terms of security, which of the following are the best options for using secrets in your CloudFormation provisioned resources?
 - Which works best if you needed to pass a value from a child stack up to its parent?
 - Template linting is very helpful, especially at identifying unmet permission related issues.
 
