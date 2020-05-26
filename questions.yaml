@@ -1,18 +1,521 @@
-001:
-  question: The stem for the question
+# CH 01
+000:
+  question: Which is valid syntax to get an attribute off a resource?
   answers:
-    - text: Correct answer text
+    - text: "!Get MyS3Bucket.Domain"
       correct: true
-    - text: Incorrect answer text
-    - text: Incorrect answer text
-    - text: Incorrect answer text
-  explanation: "Why the correct answer is correct, why others are not "
+    - text: "Fn::GetAtt: [ MyS3Bucket, Domain ]"
+      correct: true
+    - text: "{ 'Fn::GetAtt' : [ 'MyS3Bucket', 'Domain' ] }"
+      correct: true
+    - text: "!Get: MyS3Bucket.Domain"
+  explanation: "All but the last one are correct. There is no colon needed for YAML shorthand intrinsic funtions. The first is YAML shorthand. The second is long form. The third is JSON."
   links:
-    - Title for URL (URL)
+    - Fn::GetAtt (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html)
   lesson:
-    - Chapter X quiz
-  difficulty: L/M/H relative to the level
-  questiontype: "Level according to Bloom's Taxonomy (1/2/3/4/5/6)"
+    - Chapter 1 quiz
+  difficulty: M
+  questiontype: "1"
   tags:
-    - services referenced in the question
-    - service 2
+    - CloudFormation
+000:
+  question: What is the resource limit per CloudFormation template?
+  answers:
+    - text: "2000"
+    - text: "100"
+    - text: "500"
+    - text: "200"
+      correct: true
+  explanation: "Each template can have a maximum of 200 resources. Nesting templates is a workaround to gain 200*N additional resources per child template."
+  links:
+    - CloudFormation Limits (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
+  lesson:
+    - Chapter 1 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Which CloudFormation feature is best used to ensure only existing/valid EC2 instance ARNs are used as inputs into a template?
+  answers:
+    - text: "Macro"
+    - text: "AWS-Specific Parameter Types"
+      correct: true
+    - text: "Transform"
+    - text: "Custom Resource"
+  explanation: "Using Parameter Types ensures only existing EC2 instances can be used in parameters and also supplies console users with a custom input field that lists only existing EC2 Instances from which they can choose."
+  links:
+    - AWS-Specific Parameter Types (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html#aws-specific-parameter-types)
+  lesson:
+    - Chapter 1 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Which is a valid Parameter Contraint?
+  answers:
+    - text: "MinLength"
+      correct: true
+    - text: "AllowedValues"
+      correct: true
+    - text: "RegEx"
+    - text: "MaxSize"
+  explanation: "Both 'MinLength' and 'AllowedValues' are valid. Controlling the minimum lenght of a string, and setting a list of possible values respectfully. The constraint used when wanting to use a regular expression is 'AllowedPattern' and MaxSize is just made up."
+  links:
+    - AWS-Specific Parameter Types (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html#parameters-section-structure-properties)
+  lesson:
+    - Chapter 1 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 02
+000:
+  question: Which is the best approach if you need to use an AWS resource that is currently unsupported in CloudFormation?
+  answers:
+    - text: "Write a Macro that can shim in support for the resource."
+    - text: "Write a custom resource that uses the AWS SDK to handle the resource."
+      correct: true
+    - text: "Declare and EC2 instance and install a service application onto it that can function as an alterative to your missing AWS service."
+    - text: "Give up, and wait for AWS to officially support it."
+  explanation: "While one of these might actually be a possible alternative, a Macro, won't help here. The best option is to create a custom resource to shim in the support. The only requirement is that the unsupported service is at least supported in AWS SDK."
+  links:
+    - AWS ElasticTranscoder Pipeline (https://github.com/iDVB/cfn-elastic-transcoder-pipeline)
+  lesson:
+    - Chapter 2 quiz
+  difficulty: H
+  questiontype: "3"
+  tags:
+    - CloudFormation
+000:
+  question: Which service(s) can be declared as a custom resource's service token?
+  answers:
+    - text: "AWS Lambda"
+      correct: true
+    - text: "Amazon Simple Queue Service"
+    - text: "Amazon EventBridge"
+    - text: "Amazon Simple Notification Service"
+      correct: true
+  explanation: "You can use both Lambda or an SNS topic to handle the custom resource. Since you can have many forms of compute listening to the SNS topic; there are many choices for processing the request. However, only Lambda and SNS can be specified as the Service Token."
+  links:
+    - Custom Resources (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html)
+  lesson:
+    - Chapter 2 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: What is a custom resource's 'RequestType' used for?
+  answers:
+    - text: "It can be used to determine if 'GetAtt' was used in order to return the proper attribute."
+    - text: "It defines which request type was used; GET, PUT, POST, or DELETE."
+    - text: "It can be used to determine which operation needs to be performed on the associated resource."
+      correct: true
+    - text: "It provides the phsyica resource id that relates to the underlining resource."
+  explanation: "The 'RequestType' is the property provided by CloudFormation to the custom resource each time it requests a CREATE, UPDATE or Delete on that resource. The custom resource uses this explicitly to determine which operation needs to be performed on the associated resource."
+  links:
+    - Custom Resource Request Types (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requesttypes.html)
+  lesson:
+    - Chapter 2 quiz
+  difficulty: M
+  questiontype: "2"
+  tags:
+    - CloudFormation
+000:
+  question: How long does CloudFormation wait for a Custom Resource to complete before timing out?
+  answers:
+    - text: "15 minutes"
+    - text: "It will never timeout."
+    - text: "30 minutes or whatever is set in the template as the custom resource 'timeout', whichever is less."
+      correct: true
+    - text: "1 hour"
+  explanation: "CloudFormation give the custom resource 1hour before timing out and rolling back. At which point CloudFormation will attempt to rollback, causing another call to the custom resource, in which case it will give another 1hour to process that new request. To avoid this, and specifically on Lambda backed custom resources, you can set a 'timeout' only on the Lambda, which will allow things to timeout much sooner."
+  links:
+    - Handling Custom Resource Timeouts (https://aws.amazon.com/premiumsupport/knowledge-center/best-practices-custom-cf-lambda/)
+  lesson:
+    - Chapter 2 quiz
+  difficulty: M
+  questiontype: "2"
+  tags:
+    - CloudFormation
+000:
+  question: Which of the following is the custom resource parameter that points to the backing ARN?
+  answers:
+    - text: "ServiceToken"
+      correct: true
+    - text: "TargetARN"
+    - text: "LambdaFunctionARN"
+    - text: "ServiceARN"
+  explanation: ""
+  links:
+    - Custom Resources (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html)
+  lesson:
+    - Chapter 2 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 03
+000:
+  question: How many Transforms can be used per template?
+  answers:
+    - text: "50"
+    - text: "200"
+    - text: "There is no limit."
+      correct: true
+    - text: "It depends on the number of resources in the template."
+  explanation: "There is currently no posted limit to the number of transforms you can use in a template."
+  links:
+    - Transforms (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html)
+  lesson:
+    - Chapter 3 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Which of the following is a valid use case for a Transform?
+  answers:
+    - text: "You want to process a string array and turn it into a yaml list."
+      correct: true
+    - text: "You want to process an attribute returned by an existing resource in the template."
+    - text: "You want something that can clone a template resource N number of times."
+      correct: true
+    - text: "You want to abstract away a custom resource, so that users instead interact with a custom resource type like 'DVB::S3::Object'."
+      correct: true
+  explanation: "All options are valid use cases except for processing a resources attributes. CloudFormation Transforms only run on static template YAML, before provisioning starts. The result means that you will not have access to any resources attributes at time of processing. For something like this you would have to use separate templates where one imports the outputs of another."
+  links:
+    - Snippet Transforms (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-transform.html)
+    - Template Transforms (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html)
+  lesson:
+    - Chapter 3 quiz
+  difficulty: H
+  questiontype: "2"
+  tags:
+    - CloudFormation
+000:
+  question: Which of the following are incorrect statements?
+  answers:
+    - text: "Macros can only be processed by AWS Lambda."
+    - text: "Transforms can't return intrinsic functions."
+      correct: true
+    - text: "Template level macros cannot process the 'AWSTemplateFormatVersion' or 'Transform' section of the template."
+    - text: "Macros can be used inside of nested stacks."
+  explanation: "Intrinsic functions included in the template are evaluated after any macros. So while transforms cannot specifically return the 'ImportValue' intrinsic function; all other intrinsic functions can be returned. Macro processing was added to CreateStack and UpdateStack of nested stacks in 2018."
+  links:
+    - Transforms (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-macros.html)
+    - Macros in Transforms (https://aws.amazon.com/about-aws/whats-new/2018/12/aws-cloudformation-macros-can-now-be-used-in-templates-with-nest/)
+  lesson:
+    - Chapter 3 quiz
+  difficulty: M
+  questiontype: "2"
+  tags:
+    - CloudFormation
+
+# CH 04
+000:
+  question: In terms of security, which of the following are reasonably safe options for using secrets in your CloudFormation provisioned Lambda functions?
+  answers:
+    - text: "Pass them into your templates as clear text parameters, then into your Lambda function as enviroment variables. If you set the 'KmsKeyArn' parameter of that Lambda, it will be encrypted then stored."
+    - text: "Encrypt them locally first using a KMS key. Then parameter them into your templates to then be set as Lambda environment variables. Use KMS to decrypt the variable in the function."
+      correct: true
+    - text: "Locally, use SSM to encrypt and create paramters in the store. Pass the parameter's name into the template. Use SSM to decrypt and retrieve the value in your function."
+      correct: true
+    - text: "Pass them into your template as cleartext parameters and then into a Secrets Manager secret resource. Then access them from the Lambda using the Secrets Manager in the SDK."
+      correct: true
+  explanation: "All the options are perfectly reasonable other than the option to 'Let Lambda encypt using the KmsKeyArn'. There is currenly no way to get CloudFormation or Lambda to encrypt your secrets before putting them into environment vars. You can however, do this from the AWS Lambda console."
+  links:
+    - Secrets Manager (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-secretsmanager-secret.html#cfn-secretsmanager-secret-secretstring)
+    - Lambda (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html#cfn-lambda-function-kmskeyarn)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: H
+  questiontype: "3"
+  tags:
+    - CloudFormation
+000:
+  question: Which works best if you needed to pass a value from a child stack up to its parent?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Template linting is very helpful, especially at identifying unmet permission related issues.
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 05
+000:
+  question: What works best for deploying stacks across multiple AWS accounts?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: What CloudFormation feature is used to hypothetically propose a deploy and see what stacks differences would occur?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: What CloudFormation feature works best for attaching permissions to the stack regarding who will be updating or deleting resources?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: What CloudFormation feature works best for locking down which resources in a stack can be updated or deleted?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 06
+000:
+  question: Which is the name of the service that updates CFN of the status during EC2 provisioning?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Which service is used to catch events regarding updates to the cloudformation template?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: What CloudFormation template feature can you use to consider an EC2 instance not completed until after application provisioning.
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 4 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 07
+000:
+  question: As far as access to your AWS SAR published apps which of the following is possible?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 7 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: AWS SAR hosts your templates and any lambda code for you.
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 7 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: When using am AWS SAR app in your template, it is in the form of a(n)...
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 7 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 08
+000:
+  question: How much do you pay for each CloudFormation API call when using the AWS SDK?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 8 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+
+# CH 09
+000:
+  question: Which of the CFN frameworks lets you chose from multiple programming languages to write in?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 9 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Which framework is the closest to native CloudFormation?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 9 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: What are the two key differences between CloudFormation Resource Providers and Custom Resources?
+  answers:
+    - text: ""
+    - text: ""
+      correct: true
+    - text: ""
+    - text: ""
+  explanation: ""
+  links:
+    - TITLE (URL)
+  lesson:
+    - Chapter 9 quiz
+  difficulty: M
+  questiontype: "1"
+  tags:
+    - CloudFormation

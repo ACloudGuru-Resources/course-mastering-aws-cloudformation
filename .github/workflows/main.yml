@@ -27,7 +27,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Build & Deploy
-        working-directory: "${{ github.workspace }}/Ch07 - Work with Serverless/Ch07 - Work with Serverless/JAMStack Deployment"
+        working-directory: "${{ github.workspace }}/Ch07 - Work with Serverless/JAMStack Deployment"
         run: |
           npm config set scripts-prepend-node-path auto # https://bit.ly/3cKK2Uf
           yarn install
