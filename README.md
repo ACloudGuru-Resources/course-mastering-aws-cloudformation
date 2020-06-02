@@ -18,6 +18,10 @@ A Cloud Guru Course: Mastering CloudFormation
    - Return Values (Ref, Fn::GetAtt)
 4. DEMO: Finding Resource documentation
 
+#### Links:
+- [Installing AWS CLI](https://amzn.to/3gIOw0h)
+- [VSCode Ext: google-search](https://bit.ly/2XQC71J) 
+
 
 ### Ch01_L03 – Template Anatomy
 *A complete look at CloudFormation's template anatomy, with Parameters/Types, Mappings, Conditions, Metadata, Resources, Outputs and more.*
@@ -31,6 +35,12 @@ A Cloud Guru Course: Mastering CloudFormation
 5. Resources
 6. Outputs
 
+#### Links:
+- [CloudFormation Template Anatomy](https://amzn.to/2ZXP1hb)
+- [SSM Parameter Types](https://amzn.to/2YCgtg5)
+- [AWS-Specific Parameter Types](https://amzn.to/2YCgsc1)
+- [Using AWS-Specific Parameter Types](https://go.aws/3eH6DSM)
+
 ### Ch01_L04 – Template Operations
 *A detailed look at intrinsic functions as well as a deep dive on Exporting and Importing values between templates.*
 
@@ -38,6 +48,11 @@ A Cloud Guru Course: Mastering CloudFormation
    - Ref, GetAtt
 2. Export/Imports Outputs
 
+#### Links:
+- [Intrinsic Function Reference](https://amzn.to/3gJmnGz)
+- [Pseudo Parameter Reference](https://amzn.to/39dPAVT)
+- [Fn::ImportValue](https://amzn.to/2BpHPAj)
+- [X-Reference CloudFormation Outputs](https://amzn.to/32CvJNG)
 
 ### Ch01_L05 – Tips & Watchouts
 *A list of the most common CloudFormation pitfalls as well how to best setup your code editor, when working with CloudFormation.*
@@ -49,8 +64,18 @@ A Cloud Guru Course: Mastering CloudFormation
 5. Renaming Things
 6. Stateful Resources and Updates / Deletes
 7. [Limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
-https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html
 
+#### Links:
+- [VSCode Ext: vscode-yaml](https://bit.ly/2I6hU0v)
+- [VSCode Ext: vscode-cfn-lint](https://bit.ly/2weofV0)
+- [VSCode Ext: json2yaml](https://bit.ly/2IdykEd)
+- [VSCode Ext: sort-lines](https://bit.ly/397Ln66)
+- [VSCode Ext: cform](https://bit.ly/2Tc5vyq)
+- [CloudFront Propagation Times](https://go.aws/2ZWD8bc)
+- [Deleting Lambda@Edge Functions and Replicas](https://amzn.to/2YCF5Gs)
+- [Verify Domains for SES using Custom Resources](https://bit.ly/38aD0p2)
+- [Moving and Renaming Resources](https://bit.ly/3eAQYEc)
+- [CloudFormation Limits](https://amzn.to/2YA8eSy)
 
 ## Chapter 2 - Custom Resources
 *Learn to create, deploy and implement custom resources that can help extend CloudFormation way beyond just native resources.*
@@ -67,6 +92,13 @@ Eg. feat-blue--projectx.domain.com
 2. Features & Use Cases
 3. Limits
 
+#### Links:
+- [Extend CloudFormation with Custom Resources](https://bit.ly/3gLtwpK)
+- [cfn-response Module](https://amzn.to/2NT6hjn)
+- [Custom Resource Limits](https://amzn.to/2YA8eSy)
+- [Avoid Two Hour Exception Timeout](https://bit.ly/3gNM8Wq)
+- [AWS::CloudFormation::CustomResource](https://amzn.to/2ZXqGIh)
+
 ### Ch02_L02 – What We Are Building 
 *A detailed walk-through of the custom resource you will be building; as well as calling out a few custom resource helper libraries.*
 
@@ -76,6 +108,12 @@ Eg. feat-blue--projectx.domain.com
    - Design functions for idempotency
 2. Helper Libraries
 3. Diagram: What We Are Building
+
+#### Links:
+- [custom-resource-helper](http://bit.ly/2NTFuTV)
+- [cfn-lambda](http://bit.ly/2NQRipU)
+- [cfn-wrapper-python](http://bit.ly/2NQS8my)
+- [cfn-custom-resource](http://bit.ly/2NQmSEh)
 
 ### Ch02_L03 – Let's Make one
 *A guided jounery in building your own custom resource, and how to deploy it.*
@@ -91,6 +129,9 @@ Eg. feat-blue--projectx.domain.com
 2. DEMO: Create, Update and Delete
 3. DEMO: Cleanup
 
+#### Links:
+- [X-Reference CloudFormation Outputs](https://amzn.to/32CvJNG)
+
 ## Chapter 3 - Macros & Transforms
 *Elevate your template functionality with Macros and Transforms. Learn to create and use custom template functions.*
 
@@ -101,6 +142,12 @@ Eg. feat-blue--projectx.domain.com
 2. Snippet vs Template-Level
 3. Features & Use Cases
 4. Limits
+
+#### Links:
+- [Template-Level Macros](https://amzn.to/36TkqCI)
+- [CommonTags](https://bit.ly/3ajCC9j)
+- [Macro Examples](https://bit.ly/2KLRBke)
+- [AWS SAM](https://bit.ly/36Skumz)
 
 ### Ch03_L02 – Macro: String Operations
 *A hands-on lab where you will be building a deploying a Macro that is able to perform string manipulations in your templates.*
@@ -135,7 +182,7 @@ Eg. feat-blue--projectx.domain.com
 ## Chapter 4 – Best Practices
 *A focused look at the most impactful CloudFormation features, workflows and best practices for organizing, securing and managing your templates and stacks.*
 
-### Ch04_L01 - Nested Stacks
+### Ch04_L01-L02 - Nested Stacks
 *An advanced exploration of Nested Stacks; how they work, use cases, features and a detailed hands-on demo.*
 
 1. What are they?
@@ -146,7 +193,13 @@ Eg. feat-blue--projectx.domain.com
 4. Recover a nested stacks hierarchy with ResourcesToSkip https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-continueupdaterollback.html#nested-stacks
 5. Clean up
 
-### Ch04_L02 - Working with Secrets
+#### Links:
+- [Nested Stacks](https://amzn.to/36PF9Y8)
+- [ContinueUpdateRollback](https://amzn.to/2wSEmrx)
+- [Recovering AWS CloudFormation stacks using ContinueUpdateRollback](https://go.aws/2x1Y3NN)
+- [Using ResourcesToSkip to recover a nested stacks hierarchy](https://amzn.to/3cpiHX8)
+
+### Ch04_L03 - Working with Secrets
 *An extensive look at safe-guarding your secrets when working with CloudFormation without compromising on workflow or security.*
 
 1. Overview
@@ -157,7 +210,13 @@ Eg. feat-blue--projectx.domain.com
 4. Decrypting in Lambda
 5. Clean up
 
-### Ch04_L03 - Template Strategies
+#### Links:
+- [AWS Secrets Manager: Store, Distribute, and Rotate Credentials Securely](https://go.aws/2PD8jTg)
+- [Rotating Your AWS Secrets Manager Secrets](https://amzn.to/2AwXEVa)
+- [AWS Secrets Manager Pricing](https://go.aws/2MjfcXs)
+- [Using dynamic references to specify template values](https://bit.ly/2yRjZfI)
+
+### Ch04_L04 - Template Strategies
 *A detailed examination of various techniques, workflows and tools for validating, cross-referencing, and orginizing your templates.*
 
 1. Reuse & Stack Separation
@@ -167,7 +226,7 @@ Eg. feat-blue--projectx.domain.com
   - https://github.com/aws-cloudformation/cfn-python-lint#basic-usage
   - https://github.com/ScottBrenner/cfn-lint-action
 
-### Ch04_L04 - Template Storage and Revisions
+### Ch04_L05 - Template Storage and Revisions
 *A practical look at a variety of approaches to automating the tasks of versioning, linting, packaging, storing and continuously deploying your templates.*
 
 1. Versioning
@@ -207,12 +266,18 @@ Eg. feat-blue--projectx.domain.com
 6. DEMO - Deploying with StackSets
 7. Cleanup
 
+#### Links:
+- [Prerequisites for Stack Set Operations](https://amzn.to/2VyDDWU)
+
 ### Ch05_L05 – Stack Policies
 *Learn how to completely protect your stack resources, with ease using stack policies.*
 
 1. What are they?
 2. DEMO: Using Stack Policies
 3. Cleanup
+
+#### Links:
+- [update-termination-protection](https://amzn.to/2TrEQwx)
 
 ## Chapter 6 - Working with EC2 Instances (eg. GhostCMS)
 *Learn how to provision your EC2 instances complete with all required services, files, users, and groups all with native CloudFormation.*
@@ -238,14 +303,7 @@ Eg. feat-blue--projectx.domain.com
 7. commands
 8. services
 
-### Ch06_L03 – cfn-hup
-*Learn how to use cfn-up to keep you EC2 instances in sync with changes to your templates.*
-
-1. How it works
-2. Configuring
-3. DEMO
-
-### Ch06_L04 – Resource Policies
+### Ch06_L03 – Resource Policies
 *Learn how to orgastrate the provisioning, updating and deleting of your instances with resource policies and cfn-signal.*
 
 1. What are they?
@@ -253,6 +311,17 @@ Eg. feat-blue--projectx.domain.com
 2. [Update Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-updatepolicy.html)
 2. [Deletion Policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)
 3. cfn-signal
+
+#### Links:
+- [Signaling AWS CloudFormation WaitConditions using AWS PrivateLink](https://go.aws/3cglkf7)
+
+
+### Ch06_L04 – cfn-hup
+*Learn how to use cfn-up to keep you EC2 instances in sync with changes to your templates.*
+
+1. How it works
+2. Configuring
+3. DEMO
 
 ## Chapter 7 - Working with Serverless
 *Learn advanced techniques and workflows when working with CloudFormation and serverless; along with solutions to common challenges.*
@@ -264,7 +333,10 @@ Eg. feat-blue--projectx.domain.com
 2. Searching for Apps
 3. Publishing Apps
 4. Using Apps
-https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource-based-policy-examples.html
+
+#### Links:
+- [AWS Serverless Application Repository Resource-Based Policy Examples](https://amzn.to/2yYfjoy)
+
 
 ### Ch07_L03-L04 – JAMStack Deployment (Voting App)
 *Learn how to automate the deployment of a serverless real-time voting application; as well as solutions to related CloudFormation challenges.*
@@ -273,6 +345,10 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 2. Review Template & Code
 3. Outputs injection
 3. Deleting S3 assets as part of stack delete
+
+#### Links:
+- [JAMStack](https://bit.ly/3ck1vlH)
+- [JAMStack Resources](https://bit.ly/2MlWG0I)
 
 ## Chapter 8 - Putting it all together (Self Service Portal)
 *Learn how you can programmatically explore and control CloudFormation in a custom built Cloud Portal complete with Github Repository and Actions Integrations.*
@@ -295,6 +371,9 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 
 1. Clean up
 
+#### Links:
+- [delete_all_awslogs.sh.md](https://bit.ly/2MkAh3Z)
+
 ## Chapter 9 - Other Tools
 *Simplfiy your CloudFormation workflow with a  an industry CLI tool. We’ll briefly review and compare a number of industry tool options. Additionally, we'll also be taking a quick look at the CloudFormation Registry and CLI.*
 
@@ -306,6 +385,17 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 3. AWS SAM
 4. AWS CDK
 
+#### Links:
+- [Troposphere](https://bit.ly/2Miyr3p)
+- [The Serverless Framework](https://bit.ly/2XlLJ5D)
+- [Repo: The Serverless Framework](https://bit.ly/2XnSUu3)
+- [AWS SAM: Serverless Application Model](https://go.aws/2vEzDd0)
+- [Repo: AWS SAM](https://bit.ly/2AwHjzM)
+- [AWS CDK: Cloud Development Kit](https://go.aws/2yUO1iT)
+- [Repo: AWS CDK](https://bit.ly/2XlZtgS)
+- [AWS CDK Examples](https://bit.ly/3dqnzN0)
+- [AWS CDK Construct Library](https://amzn.to/2yU9bO5)
+
 ### Ch9_L02 – CloudFormation Registry and CLI
 *Learn how, even though new to the scene at time of recording; the CloudFormation Registry and CLI promise to significantly standardize and open up CloudFormation to third-party resources.*
 
@@ -313,6 +403,14 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 2. The CLI
 3. Using 3rd Party Providers
 4. Creating Your Own Provider
+
+#### Links:
+- [Installing CloudFormation CLI](https://amzn.to/2IJwfjU)
+- [IAM Policies](https://amzn.to/2Uusx35)
+- [CloudFormation Resource Provider Pricing](https://go.aws/3dmQDVV)
+- [Using a 3rd Party Provider](https://bit.ly/2U8la26)
+- [Creating a Provider](https://amzn.to/33hqxPA)
+- [Building Your Own Provider](https://bit.ly/2QDJKGe) 
 
 ### Ch9_L03 – Conclusion
 *Congradulations, a sincere thanks and brief good-bye; until next time.*
@@ -334,17 +432,3 @@ https://docs.aws.amazon.com/serverlessrepo/latest/devguide/security_iam_resource
 - DependsOn
 - Stack Notifications (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html)
 - WaitCondition
-
-
-
-## Edits
-- StackSets and OUs in console vs CLI
-- Template Operations
-  - Conditionals !And is not used in example
-  - all code examples need to wipe in
-  - !Split UsualSuspectsParam instead of UsualSuspects:
-  
-- Setup of main deploy bucket in overview of course
-- setup yarn shortcut to install all node modules
-- Remove statement about using cfn-lambda as module
-- Add Blue-Green Deployment of CloudFormation Templates (Domains)
