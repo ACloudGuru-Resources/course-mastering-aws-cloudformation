@@ -238,31 +238,29 @@
   tags:
     - CloudFormation
 000:
-  question: Which works best if you needed to pass a value from a child stack up to its parent?
+  question: Which of the following works best if you need to pass a value from a child stack up to its parent?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Export the output from child stack and then use the intrinsic function AWS::ImportValue in the parent to get the value."
+    - text: "Export the output from the child stack and then in the parent stack, simply reference it using the GetAtt intrinsic function."
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "You can simply reference the child's resources directly from the parent using GetAtt."
+    - text: "Use a Transform to export the value."
+  explanation: "You much first declare the value as an output on the child and then reference it from the parent using GetAtt. This allows for isolation of resource information to only that with the child decides to share with the parent."
   links:
-    - TITLE (URL)
+    - Exporting Stack Output Values vs. Using Nested Stacks (https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html#output-vs-nested)
   lesson:
     - Chapter 4 quiz
-  difficulty: M
-  questiontype: "1"
+  difficulty: H
+  questiontype: "3"
   tags:
     - CloudFormation
 000:
   question: Template linting is very helpful, especially at identifying unmet permission related issues.
   answers:
-    - text: ""
-    - text: ""
+    - text: "TRUE"
+    - text: "FALSE"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+  explanation: "Permission related issues can only be determined during the deployment or runtime of the stack. No amount of template linting before that will uncover unmet permission related issues."
   links:
     - TITLE (URL)
   lesson:
@@ -276,69 +274,69 @@
 000:
   question: What works best for deploying stacks across multiple AWS accounts?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Use the AWS CLI command to deploy the CloudFormation stack and run once for each region and account you want to deploy."
+    - text: "You can't deploy stacks into multiple accounts without your IAM role having access to all those accounts."
+    - text: "Create a stack set and then specifing the regions and accounts you wish to deploy to."
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "Setup a custom resource that will replicate your stack to multiple accounts and regions."
+  explanation: "Deploying to multiple accounts and regions is precisely what CloudFormation StackSets is designed for. Manually running the deploy for each account/region works, but is certainly the least efficiant. Custom Resources is not even an option here. Your personal IAM role does not require access to each account that will be deployed to."
   links:
-    - TITLE (URL)
+    - StackSets Concepts (https://amzn.to/2XRpKnj)
   lesson:
-    - Chapter 4 quiz
+    - Chapter 5 quiz
   difficulty: M
-  questiontype: "1"
+  questiontype: "3"
   tags:
     - CloudFormation
 000:
   question: What CloudFormation feature is used to hypothetically propose a deploy and see what stacks differences would occur?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Test Changes"
+    - text: "Drift Detection"
+    - text: "Compare Changes"
+    - text: "Change Sets"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+  explanation: "Change sets can be used to preemptively look at what changes would occur to the stack if you deployed."
   links:
-    - TITLE (URL)
+    - Updating Stacks Using Change Sets (https://amzn.to/2XRRGYw)
   lesson:
-    - Chapter 4 quiz
+    - Chapter 5 quiz
   difficulty: M
   questiontype: "1"
   tags:
     - CloudFormation
 000:
-  question: What CloudFormation feature works best for attaching permissions to the stack regarding who will be updating or deleting resources?
+  question: You need to allow team members to deploy stacks, as well as delete them, but you want to control what they have access to deploy as well as NOT give their individual accounts access to those services directly. Whats the most efficient way to do this?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Setup stack Create/Update/Delete policies that lock the resources down to only approved ones."
+    - text: "Use service roles, by restricting the role to the approved services and give those team members access to applying that role to deploying/updating/deleting stacks."
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "Add resource policies in the template, locking down only the resources that are approved."
+    - text: "Ensure all users are added to a group and give that group access to the needed services."
+  explanation: "The most secure and efficient way to tackle this is with a Service Role. You give the role the needed access and allow members to use that role when making CloudFormation calls. This avoids the need for the individual team members needing the access and instead gets it from the role."
   links:
-    - TITLE (URL)
+    - AWS CloudFormation Service Role (https://amzn.to/2Ahi310)
   lesson:
-    - Chapter 4 quiz
-  difficulty: M
-  questiontype: "1"
+    - Chapter 5 quiz
+  difficulty: H
+  questiontype: "3"
   tags:
     - CloudFormation
 000:
-  question: What CloudFormation feature works best for locking down which resources in a stack can be updated or deleted?
+  question: What is the most effective and manageable way to lock down which resources in a stack can be updated or deleted?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Only give a subset of team members access to update or delete resources."
+    - text: "Setup stack policies to protect certain resources from being updated or deleted."
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "Use stack protection to prevent any of the resources from being deleteed or updated."
+    - text: "Apply the 'Retain' Deletion Policy to your chosen resources."
+  explanation: "Stack policies can be applied in order to lock down specific resources from being updated or deleted. You can even using wildcards when referencing the logical resource ids."
   links:
-    - TITLE (URL)
+    - Prevent Updates to Stack Resources (https://amzn.to/3hksL7E)
   lesson:
-    - Chapter 4 quiz
-  difficulty: M
-  questiontype: "1"
+    - Chapter 5 quiz
+  difficulty: H
+  questiontype: "3"
   tags:
     - CloudFormation
 
@@ -346,50 +344,50 @@
 000:
   question: Which is the name of the service that updates CFN of the status during EC2 provisioning?
   answers:
-    - text: ""
-    - text: ""
+    - text: "curStatus"
+    - text: "cfn-signal"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "cfn-hup"
+    - text: "config-sets"
+  explanation: "cfn-signal is a helper script that runs on the provisioning EC2 instance. It is used to signal to CloudFormation which waits until the stated number of signals is recieved before proceeding."
   links:
-    - TITLE (URL)
+    - cfn-signal (https://amzn.to/2ArL2iq)
   lesson:
-    - Chapter 4 quiz
+    - Chapter 6 quiz
   difficulty: M
   questiontype: "1"
   tags:
     - CloudFormation
 000:
-  question: Which service is used to catch events regarding updates to the cloudformation template?
+  question: Which service is used to catch events regarding updates to the CloudFormation template?
   answers:
-    - text: ""
-    - text: ""
+    - text: "cfn-init"
+    - text: "cfn-hup"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "cfn-signal"
+    - text: "cfn-events"
+  explanation: "The cfn-hup helper is a daemon that detects changes in resource metadata and runs user-specified actions when a change is detected."
   links:
-    - TITLE (URL)
+    - cfn-hup (https://amzn.to/30uCpyl)
   lesson:
-    - Chapter 4 quiz
+    - Chapter 6 quiz
   difficulty: M
   questiontype: "1"
   tags:
     - CloudFormation
 000:
-  question: What CloudFormation template feature can you use to consider an EC2 instance not completed until after application provisioning.
+  question: When writing your CloudFormation template, what is the best way to ensure your EC2 instance is considered incomplete until after application provisioning.
   answers:
-    - text: ""
-    - text: ""
+    - text: "Use cfn-hup to call our to CloudFormation once your application and service installation completes."
+    - text: "CloudFormation already waits until the EC2 instance has completed provisioning all its applications and services."
+    - text: "Setup a creation policy that wait for a single signal from the cfn-signal service at the end of your provisioning steps."
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "Use a custom resource to monitor your EC2 instance's provisioning status."
+  explanation: "Custom resources won't help you here. However, it would work to set up a CreationPolicy to listen for the cfn-signal service to call out once provisioning is complete."
   links:
-    - TITLE (URL)
+    - CreationPolicy Attribute (https://amzn.to/3fds8uB)
   lesson:
-    - Chapter 4 quiz
+    - Chapter 6 quiz
   difficulty: M
   questiontype: "1"
   tags:
@@ -399,48 +397,50 @@
 000:
   question: As far as access to your AWS SAR published apps which of the following is possible?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Fully Public"
+    - text: "Only a specific role"
+    - text: "Only specific accounts"
+    - text: "Only specific applications"
+    - text: "List only but not deploy"
+    - text: "All of the above"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+  explanation: "AWS SAR is completely integrated into IAM and thus gives you granular control over the service, who has access, to which applications, and which actions they can perform."
   links:
-    - TITLE (URL)
+    - How the AWS Serverless Application Repository Works with IAM (https://amzn.to/2ASwLeF)
   lesson:
     - Chapter 7 quiz
   difficulty: M
-  questiontype: "1"
+  questiontype: "2"
   tags:
     - CloudFormation
 000:
   question: AWS SAR hosts your templates and any lambda code for you.
   answers:
-    - text: ""
-    - text: ""
+    - text: "Yes, it will even store the built code for all versions."
+    - text: "No"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "Not the lambda code, but it does store a copy of the template."
+    - text: "Yes"
+  explanation: "It is actually up to you to store all versions of the template and any lambda code in S3. Using AWS SAM greatly simplfies this task though."
   links:
-    - TITLE (URL)
+    - Publishing Applications (https://amzn.to/3dSukaF)
   lesson:
     - Chapter 7 quiz
-  difficulty: M
-  questiontype: "1"
+  difficulty: H
+  questiontype: "2"
   tags:
     - CloudFormation
 000:
   question: When using am AWS SAR app in your template, it is in the form of a(n)...
   answers:
-    - text: ""
-    - text: ""
+    - text: "Custom Resource"
+    - text: "Macro"
+    - text: "Nested Stack"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "StackSet"
+  explanation: "You can either use AWS SAM transforms 'AWS::Serverless::Application' or as NestedStacks directly, either way they net out to be NestedStacks once tranforms have been processed."
   links:
-    - TITLE (URL)
+    - AWS::Serverless::Application (https://amzn.to/2MPN12R)
   lesson:
     - Chapter 7 quiz
   difficulty: M
@@ -452,14 +452,14 @@
 000:
   question: How much do you pay for each CloudFormation API call when using the AWS SDK?
   answers:
-    - text: ""
-    - text: ""
+    - text: "It varies by AWS account type."
+    - text: "Free"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "$0.0003 per 100 transactions."
+    - text: "It's based on how long your stack takes to process."
+  explanation: "As with other AWS services and the SDK you only pay for what you provision. So you should explore ways you can make the AWS SDK and CloudFormation work more efficiently for you."
   links:
-    - TITLE (URL)
+    - Getting Started (https://go.aws/37iZRju)
   lesson:
     - Chapter 8 quiz
   difficulty: M
@@ -471,14 +471,14 @@
 000:
   question: Which of the CFN frameworks lets you chose from multiple programming languages to write in?
   answers:
-    - text: ""
-    - text: ""
+    - text: "The Serverless Framework"
+    - text: "AWS CDK"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "AWS SAM"
+    - text: "Troposphere"
+  explanation: "Serverless Framework is YAML only. AWS SAM is YAML/JSON only. Troposphere is Python only. However, AWS CDK can be written in JavaScript, Typescript, Python, Java and C#."
   links:
-    - TITLE (URL)
+    - What is the AWS CDK? (https://amzn.to/30t4oys)
   lesson:
     - Chapter 9 quiz
   difficulty: M
@@ -488,14 +488,14 @@
 000:
   question: Which framework is the closest to native CloudFormation?
   answers:
-    - text: ""
-    - text: ""
+    - text: "AWS SAM"
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "Troposphere"
+    - text: "The Serverless Framework"
+    - text: "AWS CDK"
+  explanation: "AWS SAM specific transforms use standard and familar YAML syntax, and only really simplify the template, using native CloudFormation a Macro to process and still net out to native CloudFormation."
   links:
-    - TITLE (URL)
+    - What Is the AWS Serverless Application Model (https://amzn.to/3fdHGhT)
   lesson:
     - Chapter 9 quiz
   difficulty: M
@@ -505,17 +505,35 @@
 000:
   question: What are the two key differences between CloudFormation Resource Providers and Custom Resources?
   answers:
-    - text: ""
-    - text: ""
+    - text: "Custom Resources are processed at deploy-time."
+    - text: "Custom Resources are not integrated into IAM and thus do not have any resource specific policies."
       correct: true
-    - text: ""
-    - text: ""
-  explanation: ""
+    - text: "With a publicly available registry, you will not longer have to fiddle with hosting and deploying instances of your macros/custom resources in order to implement them in your template. With resource providers you would just use them as you see fit. The hosting is already taken care of by the resource provider's author."
+      correct: true
+    - text: "Resource providers have custom resource 'types' when viewing the template."
+  explanation: "With custom resource providers author's are responsible to host their own code, which is then avaiable to the users of the registry. (public/private) So no more needing to host anything yourself to use. Secondly, Resource Providers are complete integrated into IAM and thus can have specific policies that can apply granularly to resources native to an external provider."
   links:
-    - TITLE (URL)
+    - Creating Resource Providers (https://amzn.to/33hqxPA)
   lesson:
     - Chapter 9 quiz
   difficulty: M
   questiontype: "1"
+  tags:
+    - CloudFormation
+000:
+  question: Resource providers are completely free to create, host and implement. Which is the most true?
+  answers:
+    - text: "Yes"
+    - text: "Yes, other than the minor S3 hosting of the assets."
+    - text: "Yes, for native providers. Third-Party providers are billed per handler operation after the free tier."
+      correct: true
+    - text: "No"
+  explanation: "CloudFormation Providers are only billed for third-party providers and only after the free tier. All native providers (AWS::*, Alexa::*, and Custom::*) are completely free."
+  links:
+    - AWS CloudFormation Pricing (https://go.aws/3dmQDVV)
+  lesson:
+    - Chapter 9 quiz
+  difficulty: H
+  questiontype: "2"
   tags:
     - CloudFormation
