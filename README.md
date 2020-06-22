@@ -417,6 +417,8 @@ Eg. feat-blue--projectx.domain.com
 
 ## Links
 
+- [Course: Lambda@Edge](https://acloud.guru/learn/lambda-edge)
+- [Course: The Complete Serverless Course](https://acloud.guru/learn/the-complete-serverless-course)
 - [AWS CloudFormation User Guide](https://github.com/awsdocs/aws-cloudformation-user-guide)
 - [aws-cf-templates](https://github.com/widdix/aws-cf-templates)
 - [aws-cloudformation-templates](https://github.com/awslabs/aws-cloudformation-templates)
