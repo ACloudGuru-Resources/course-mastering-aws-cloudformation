@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "clone": "^2.1.2"
   }
 }
