@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/iDVB/acg-mastering-cloudformation#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.0.3",
     "clone": "^2.1.2"
   },
