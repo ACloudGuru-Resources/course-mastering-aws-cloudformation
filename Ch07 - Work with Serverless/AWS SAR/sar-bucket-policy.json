@@ -6,6 +6,11 @@
       "Principal": {
         "Service": "serverlessrepo.amazonaws.com"
       },
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "AWS::AccountId"
+        }
+      },
       "Action": "s3:GetObject",
       "Resource": "arn:aws:s3:::acg-deploy-bucket/*"
     }
