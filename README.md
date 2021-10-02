@@ -336,6 +336,7 @@ Eg. feat-blue--projectx.domain.com
 
 #### Links:
 - [AWS Serverless Application Repository Resource-Based Policy Examples](https://amzn.to/2yYfjoy)
+- [AW SAR Bucket Policy Security Fix](https://codeshield.io/blog/2021/08/26/sar_confused_deputy/)
 
 
 ### Ch07_L03-L04 – JAMStack Deployment (Voting App)
