@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "aws-sdk": "^2.619.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.2",
     "bluebird": "^3.5.4",
     "cfn-lambda": "^4.0.0",
