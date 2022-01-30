@@ -91,6 +91,12 @@ exports.handler = async event => {
   }
 
   let payload;
+    
+  event.body = decodeURIComponent(event.body);
+  event.body = event.body.split('=');
+  event.body.shift();
+  event.body = event.body.join('=');    
+    
   try {
     payload = JSON.parse(event.body);
   } catch (error) {
