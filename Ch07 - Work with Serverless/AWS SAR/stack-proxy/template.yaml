@@ -149,9 +149,7 @@ Resources:
                   - s3:GetObject
                   - s3:ListBucket
                 Resource:
-                  - !Sub arn:aws:s3:::${DefaultBucket}
-                  - !Sub arn:aws:s3:::${DefaultBucket}/*
-                  - arn:aws:s3:::*
+                  - '*'
               - Effect: Allow
                 Action:
                   - dynamodb:GetItem
